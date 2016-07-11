@@ -1,0 +1,57 @@
+#!/bin/bash
+
+have_jq=$(which jq)
+have_app=$(curl -sSo /dev/null -w %{http_code} http://localhost:6055/v1/endpoints)
+
+if [[ -z "${have_jq}" ]]; then
+  echo "You must have jq (https://stedolan.github.io/jq/) installed to use version-bump"
+  exit -1
+fi
+
+if [[ "${have_app}" != "200" ]]; then
+    echo "You must have the app running locally to use version-bump"
+    exit -1
+fi
+
+platform=$(uname -s)
+pkg="package.json"
+rdm="README.md"
+
+pkg_version=$(cat "${pkg}" |jq -r .version)
+
+echo "Current version: ${pkg_version}"
+echo "Please enter new version (must use semver):"
+read version
+
+if [[ "${version}" =~ [0-9]+\.[0-9]+\.[0-9]+ ]]; then
+    # String replace
+    pkg1_version="\"version\":\ \"${pkg_version}\""
+    pkg2_version="\"version\":\ \"${version}\""
+
+    if [[ "${platform}" == "Darwin" ]]; then
+        sed -i .bak "s/${pkg1_version}/${pkg2_version}/" "${pkg}"
+        rm "${pkg}.bak"
+    else
+        sed -i "s/${pkg1_version}/${pkg2_version}/" "${pkg}"
+    fi
+
+    echo
+    echo "Updating README"
+    ./generate-readme > README.md
+
+    echo
+    echo "Running git commands"
+    git status
+    git add --verbose "${pkg}" "${rdm}"
+
+    echo
+    git status
+    git commit --verbose --message="bump version to ${version}"
+
+    echo
+    git status
+else
+    echo "The version you entered (${version}) does not match the SemVer spec,"
+    echo "see more at http://semver.org/spec/v2.0.0.html"
+    exit -2
+fi
