@@ -1,6 +1,6 @@
 # MSS ShipIt API
 
-API Version `1.1.0`
+API Version `2.0.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit-api/)
 
@@ -436,6 +436,12 @@ replicas
 - required:    false
 - description: Number of containers to run in this provider, defaults 0
 - requirement: Must be 0 or positive Integer
+
+barge
+- type:        String
+- required:    true
+- description: The name of the barge, the provider should be deployed on.
+- requirement: Must be a string.
 
 ```
 
@@ -907,6 +913,12 @@ replicas
 - required:    false
 - description: Number of containers to run in this provider, defaults 0
 - requirement: Must be 0 or positive Integer
+
+barge
+- type:        String
+- required:    false
+- description: The name of the barge, the provider should be deployed on.
+- requirement: Must be a string.
 
 ```
 
