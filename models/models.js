@@ -97,6 +97,16 @@ schema.provider = {
     description: "Number of containers to run in this provider, defaults 0",
     requirement: "Must be 0 or positive Integer"
   },
+  barge: {
+    type: String,
+    unique: false,
+    create: true,
+    update: true,
+    required: true,
+    test: helpers.isString,
+    description: "The name of the barge, the provider should be deployed on.",
+    requirement: "Must be a string."
+  },
   envVars: ['envVar']
 }
 
