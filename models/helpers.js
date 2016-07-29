@@ -14,7 +14,7 @@ e.isInteger = function(callBack,i) {
 }
 
 e.isValidDockerLink = function(callBack,i) {
-  var regexp = /^([a-zA-Z0-9.-]*)(\/?([a-z0-9.-]{1,63}))*:?([a-zA-Z0-9.-]*)$/
+  var regexp = /^([a-zA-Z0-9.-]*)(\/?([a-z0-9.-]{1,63}))+:?([a-zA-Z0-9.-]*)$/
   callBack(regexp.test(i));
 }
 
