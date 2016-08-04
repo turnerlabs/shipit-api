@@ -96,9 +96,9 @@ function genDesc(o, sub, type) {
   }
 }
 
-p('# MSS ShipIt API\n');
+p('# ShipIt API\n');
 p('API Version `%s`\n', packageJson.version);
-p('[Additional documentation](http://blog.harbor.inturner.io/docs/shipit-api/)\n\n');
+p('[Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)\n\n');
 
 Object.keys(data).forEach(type => {
     data[type].forEach(o => {
