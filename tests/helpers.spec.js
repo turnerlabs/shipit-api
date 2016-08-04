@@ -36,6 +36,8 @@ describe('isValidDockerLink', () => {
     it('should return false for invalid links', () => helpers.isValidDockerLink(expectFalse, ':foo'));
     it('should return false for invalid links', () => helpers.isValidDockerLink(expectFalse, 'foo_bar:0.1.1'));
     it('should return false for invalid links', () => helpers.isValidDockerLink(expectTrue, 'foo-bar:0.1.1'));
+    it('should return false for invalid links', () => helpers.isValidDockerLink(expectTrue, 'garbage/foo-bar:0.1.1'));
+    it('should return false for invalid links', () => helpers.isValidDockerLink(expectTrue, 'garbage.io/garbage/foo-bar:0.1.1'));
 });
 
 describe('isValidPort', () => {
