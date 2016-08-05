@@ -51,6 +51,7 @@ function genDesc(o, sub, type) {
         .replace(/(\/[A-Za-z:/]+)/g, (match, p1) => '`' + p1 + '`')
 
     p('### %s `%s`\n', type, o.path);
+    p('[![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)  ')
     p('> %s\n', desc);
 
     if (headers.length > 0) {
