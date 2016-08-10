@@ -12,13 +12,13 @@ config.mongodb = {
     db: {
       w: 1,
       socketOptions: {
-        keepAlive: 1,
+        keepAlive: 120,
         connectTimeoutMS: 30000
       }
     },
     server: {
       socketOptions: {
-        keepAlive: 1,
+        keepAlive: 120,
         connectTimeoutMS: 30000
       },
       auto_reconnect: true

@@ -58,7 +58,7 @@ genE.endpoints.forEach(function (i) {
   r.fields = genFields(i.type,i.fields);
   r.function = function(req,res) {
     auth.checkToken(req.body, function(validUser) {
-      if (! validUser) {
+      if (!validUser) {
         if (/^.*\/environment\/.*$/.test(i.path)) {
           checkBuildToken(req.params,req.body,function(validBuildToken) {
             if(validBuildToken) {
