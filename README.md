@@ -1,8 +1,8 @@
-# MSS ShipIt API
+# ShipIt API
 
-API Version `2.0.0`
+API Version `2.0.1`
 
-[Additional documentation](http://blog.harbor.inturner.io/docs/shipit-api/)
+[Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
 
 ### GET `/v1/shipments`
