@@ -1,6 +1,6 @@
 # ShipIt API
 
-API Version `2.0.1`
+API Version `2.0.2`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
