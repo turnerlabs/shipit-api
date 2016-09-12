@@ -1,0 +1,26 @@
+machine:
+  node:
+    version: 4.2.5
+  services:
+    - docker
+  
+dependencies:
+  pre:
+    - npm install
+    - npm test
+  override:
+    - docker info
+    - ./set_build_values > buildprops;
+    - source buildprops; docker build -t quay.io/turner/$HARBOR_SHIPMENT:$HARBOR_VERSION .
+
+test:
+  override:
+    - source buildprops; docker run -d -e MONGO_URI=$MONGO_URI -e TESTING=true -e PORT=$PORT -e HEALTHCHECK=/hc -p $PORT:$PORT quay.io/turner/$HARBOR_SHIPMENT:$HARBOR_VERSION; sleep 1
+    - curl -s http://localhost:$PORT/hc?[1-1000]
+
+deployment:
+  hub:
+    branch: [master, develop, circle-ci]
+    commands:
+      - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USER" -p="$DOCKER_PASSWORD" quay.io
+      - source buildprops; docker push quay.io/turner/$HARBOR_SHIPMENT:$HARBOR_VERSION
