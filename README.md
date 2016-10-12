@@ -1,6 +1,8 @@
 # ShipIt API
 
-API Version `2.0.2`
+[![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
+
+API Version `2.1.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
@@ -68,6 +70,7 @@ group
 
 ```
 
+
 ### POST `/v1/shipment/:Shipment/envVars`
 
 > Creates new envVar `:EnvVar` under `/shipment/:Shipment`. Returns new object if successful or error otherwise
@@ -114,6 +117,7 @@ type
 
 ```
 
+
 ### POST `/v1/shipment/:Shipment/environments`
 
 > Creates new environment `:Environment` under `/shipment/:Shipment`. Returns new object if successful or error otherwise
@@ -152,6 +156,7 @@ dockercfg
 - requirement: Must be base64 encoded and be a valid docker config file
 
 ```
+
 
 ### POST `/v1/shipment/:Shipment/environment/:Environment/envVars`
 
@@ -199,6 +204,7 @@ type
 
 ```
 
+
 ### POST `/v1/shipment/:Shipment/environment/:Environment/containers`
 
 > Creates new container `:Container` under `/shipment/:Shipment/environment/:Environment`. Returns new object if successful or error otherwise
@@ -238,6 +244,7 @@ image
                'registry.domain/docker-image-name:tag' (must be a DNS label)
 
 ```
+
 
 ### POST `/v1/shipment/:Shipment/environment/:Environment/container/:Container/ports`
 
@@ -354,6 +361,7 @@ ssl_management_type
 
 ```
 
+
 ### POST `/v1/shipment/:Shipment/environment/:Environment/container/:Container/envVars`
 
 > Creates new envVar `:EnvVar` under `/shipment/:Shipment/environment/:Environment/container/:Container`. Returns new object if successful or error otherwise
@@ -400,6 +408,7 @@ type
 
 ```
 
+
 ### POST `/v1/shipment/:Shipment/environment/:Environment/providers`
 
 > Creates new provider `:Provider` under `/shipment/:Shipment/environment/:Environment`. Returns new object if successful or error otherwise
@@ -444,6 +453,7 @@ barge
 - requirement: Must be a string.
 
 ```
+
 
 ### POST `/v1/shipment/:Shipment/environment/:Environment/provider/:Provider/envVars`
 
@@ -490,6 +500,7 @@ type
 - requirement: Must be 'basic', 'discover', or 'hidden'
 
 ```
+
 
 ### POST `/v1/logs`
 
@@ -548,6 +559,7 @@ updated
 
 ```
 
+
 ### PUT `/v1/shipment/:name`
 
 > Updates shipment `:Shipment`. Returns updated object if successful or error otherwise
@@ -580,6 +592,7 @@ group
 - requirement: Must be a valid group from argonaut.turner.com that the user belongs to
 
 ```
+
 
 ### PUT `/v1/shipment/:Shipment/envVar/:name`
 
@@ -621,6 +634,7 @@ type
 
 ```
 
+
 ### PUT `/v1/shipment/:Shipment/environment/:name`
 
 > Updates environment `:Environment` under `/shipment/:Shipment`. Returns updated object if successful or error otherwise
@@ -653,6 +667,7 @@ dockercfg
 - requirement: Must be base64 encoded and be a valid docker config file
 
 ```
+
 
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/envVar/:name`
 
@@ -694,6 +709,7 @@ type
 
 ```
 
+
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/container/:name`
 
 > Updates container `:Container` under `/shipment/:Shipment/environment/:Environment`. Returns updated object if successful or error otherwise
@@ -727,6 +743,7 @@ image
                'registry.domain/docker-image-name:tag' (must be a DNS label)
 
 ```
+
 
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/container/:Container/port/:name`
 
@@ -843,6 +860,7 @@ ssl_management_type
 
 ```
 
+
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/container/:Container/envVar/:name`
 
 > Updates envVar `:EnvVar` under `/shipment/:Shipment/environment/:Environment/container/:Container`. Returns updated object if successful or error otherwise
@@ -883,6 +901,7 @@ type
 
 ```
 
+
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/provider/:name`
 
 > Updates provider `:Provider` under `/shipment/:Shipment/environment/:Environment`. Returns updated object if successful or error otherwise
@@ -921,6 +940,7 @@ barge
 - requirement: Must be a string.
 
 ```
+
 
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/provider/:Provider/envVar/:name`
 
@@ -961,6 +981,7 @@ type
 - requirement: Must be 'basic', 'discover', or 'hidden'
 
 ```
+
 
 ### PUT `/v1/logs/:name`
 
@@ -1010,6 +1031,29 @@ updated
 - required:    false
 - description: The timestamp the change was made.
 - requirement: Must be a valid number.
+
+```
+
+
+### PUT `/v1/shipment/:Shipment/environment/:name/buildToken`
+
+> Rolls the build token for this Shipment. Returns the Shipment or error
+
+#### Headers
+
+```
+x-username
+- type:        String
+- required:    true
+- description: The username of authenticated user
+- requirement: Must be a valid turner ldap username
+
+x-token
+- type:        String
+- required:    true
+- description: The token of authenticated user
+- requirement: Must be a valid token for username authenticated against
+               http://auth.services.dmtio.net
 
 ```
 
