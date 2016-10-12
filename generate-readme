@@ -92,11 +92,13 @@ function genDesc(o, sub, type) {
       });
       p('```');
       p('');
+      p('');
     }
   }
 }
 
 p('# ShipIt API\n');
+p('[![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)\n')
 p('API Version `%s`\n', packageJson.version);
 p('[Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)\n\n');
 

@@ -8,49 +8,59 @@ requestHandlers.setMongoose(genE.m);
 var genEndpoints = [];
 
 var manualEndpoints = [
-  {
-    path:        '/v1/shipments',
-    type:        'get',
-    function:    requestHandlers.getAllShipments,
-    description: 'Returns an array of all shipments',
-    fields: []
-  },
-  {
-    path:        '/v1/shipment/:name',
-    type:        'get',
-    function:    requestHandlers.getShipment,
-    description: 'Returns an object with information about a particular shipment',
-    fields: []
-  },
-  {
-    path:        '/v1/shipment/:Shipment/environment/:name',
-    type:        'get',
-    function:    requestHandlers.getEnvironment,
-    description: 'Returns an environment object, with a parentShipment field containing the parent shipment',
-    fields: []
-  },
-  {
-    path:        '/v1/envVar/search',
-    type:        'get',
-    function:    requestHandlers.searchEnvVars,
-    description: 'Returns a shipment environment, that contains the envVar name and value',
-    fields: []
-  },
-  {
-    path:        '/v1/logs/shipment/:Shipment/environment/:Environment',
-    type:        'get',
-    function:    requestHandlers.getShipmentEnvironmentLogs,
-    description: 'Returns the changes for a shipment and environment pair.',
-    fields: []
-  },
-  {
-    path:        '/v1/logs/shipment/:Shipment',
-    type:        'get',
-    function:    requestHandlers.getShipmentLogs,
-    description: 'Returns all changes for a shipment. Same as searching /v1/logs/shipment/:Shipment/environment/parent',
-    fields: []
-  }
-]
+    {
+        "path":         '/v1/shipments',
+        "type":         'get',
+        "function":     requestHandlers.getAllShipments,
+        "description":  'Returns an array of all shipments',
+        "fields":       []
+    },
+    {
+        "path":         '/v1/shipment/:name',
+        "type":         'get',
+        "function":     requestHandlers.getShipment,
+        "description":  'Returns an object with information about a particular shipment',
+        "fields":       []
+    },
+    {
+        "path":         '/v1/shipment/:Shipment/environment/:name',
+        "type":         'get',
+        "function":     requestHandlers.getEnvironment,
+        "description":  'Returns an environment object, with a parentShipment field containing the parent shipment',
+        "fields":       []
+    },
+    {
+        "path":         '/v1/shipment/:Shipment/environment/:name/buildToken',
+        "type":         'put',
+        "function":     requestHandlers.rollBuildToken,
+        "description":  'Rolls the build token for this Shipment. Returns the Shipment or error',
+        "fields":       [
+                            {field: 'username', type: 'String', required: true, requirement: 'Must be a valid turner ldap username', description: 'The username of authenticated user'},
+                            {field: 'token',    type: 'String', required: true, requirement: 'Must be a valid token for username authenticated against http://auth.services.dmtio.net', description: 'The token of authenticated user'}
+                        ]
+    },
+    {
+        "path":         '/v1/envVar/search',
+        "type":         'get',
+        "function":     requestHandlers.searchEnvVars,
+        "description":  'Returns a shipment environment, that contains the envVar name and value',
+        "fields":       []
+    },
+    {
+        "path":         '/v1/logs/shipment/:Shipment/environment/:Environment',
+        "type":         'get',
+        "function":     requestHandlers.getShipmentEnvironmentLogs,
+        "description":  'Returns the changes for a shipment and environment pair.',
+        "fields":       []
+    },
+    {
+        "path":         '/v1/logs/shipment/:Shipment',
+        "type":         'get',
+        "function":     requestHandlers.getShipmentLogs,
+        "description":  'Returns all changes for a shipment. Same as searching /v1/logs/shipment/:Shipment/environment/parent',
+        "fields":       []
+    }
+];
 
 genE.endpoints.forEach(function (i) {
   var r = {path: '/v1' + i.path, type: i.type, description: i.description};

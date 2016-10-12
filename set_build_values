@@ -1,0 +1,30 @@
+#!/bin/bash
+
+have_jq=$(which jq)
+
+if [[ -z "${have_jq}" ]]; then
+  echo "You must have jq (https://stedolan.github.io/jq/) installed to use set_build_values"
+  exit -1
+fi
+
+platform=$(uname -s)
+turner_metadata="./TURNER_METADATA"
+pkg="package.json"
+
+if [ -f "$turner_metadata" ]; then
+  source $turner_metadata
+  harbor_version=$VERSION 
+  harbor_shipment=$NAME
+else 
+  harbor_version=$(cat "${pkg}" | jq -r .version)
+  harbor_shipment=$(cat "${pkg}" | jq -r .name)
+fi
+
+if [ $CIRCLE_BRANCH != "master" ]; then
+    harbor_version=$harbor_version-$CIRCLE_BRANCH-$CIRCLE_BUILD_NUM
+fi
+
+export HARBOR_VERSION=$harbor_version
+export HARBOR_SHIPMENT=$harbor_shipment
+echo "HARBOR_VERSION=$HARBOR_VERSION"
+echo "HARBOR_SHIPMENT=$HARBOR_SHIPMENT"

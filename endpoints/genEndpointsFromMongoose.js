@@ -4,7 +4,7 @@ let plural   = require('pluralize').plural,
     m        = require('../mongoose/mongoose'),
     models   = require('../models/models'),
     documentToObject = require('../lib/documentToObject'),
-    jsondiff = require('jsondiffpatch'),
+    saveLog  = require('../lib/saveLog').save,
     nils     = ['',null];
 
 module.exports = function(){
@@ -408,35 +408,4 @@ function update(f,r,updateObj,callBack, auth) {
       });
     }
   });
-}
-
-/**
-*  saveLog
-*  @param: jsonA {Object|MongooseDocObject}
-*  @param: jsonB {Object|MongooseDocObject}
-*
-*  take in two different json objects and save a log with the difference between the two.
-*  Also save, who made the change and when. This can later be queried by shipment + environment pair.
-*  If there is no environment, then we know that we are saving against the parent shipment, and hence we
-*  are naming the environment parent.
-*
-*  We are doing a stringify and a parse on each json object passed in. This is because we can either pass in a
-*  raw json object or a mongoose document object.
-*/
-function saveLog(jsonA, jsonB, auth) {
-    let diff = jsondiff.diff(JSON.parse(JSON.stringify(jsonA)), JSON.parse(JSON.stringify(jsonB))) || {};
-    delete diff._id;
-    delete diff.__v;
-    delete diff._parentId;
-    diff = JSON.stringify(diff);
-    auth = auth || {};
-    let log = {
-      shipment: auth.shipment,
-      environment: auth.environment || 'parent',
-      user: auth.username,
-      updated: Math.floor(Date.now()),
-      diff: diff
-    };
-    let logDoc = new m.Logs(log);
-    logDoc.save();
 }

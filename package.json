@@ -1,6 +1,6 @@
 {
   "name": "mss-shipit-api",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "mss-shipit-api",
   "author": {
     "name": "Josh Lohrman",
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server.js",
-    "postinstall": "mocha tests;"
+    "test": "node ./node_modules/mocha/bin/mocha tests"
   },
   "contributors": [
     {
@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "body-parser": "1.13.1",
-    "chai": "^3.4.1",
     "cors": "2.7.1",
     "express": "4.13.0",
     "jsondiffpatch": "^0.1.43",
@@ -43,5 +42,9 @@
   },
   "engines": {
     "node": "4.2.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
   }
 }
