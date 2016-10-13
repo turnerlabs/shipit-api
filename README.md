@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
 
-API Version `2.1.0`
+API Version `2.1.1`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
