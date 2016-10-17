@@ -1,7 +1,7 @@
 {
-  "name": "mss-shipit-api",
-  "version": "2.1.1",
-  "description": "mss-shipit-api",
+  "name": "shipit-api",
+  "version": "2.1.2",
+  "description": "An API for Shipments in Harbor",
   "license": "Apache-2.0",
   "author": {
     "name": "Josh Lohrman",
@@ -28,7 +28,7 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git://bitbucket.org/vgtf/mss-shipit-api.git"
+    "url": "https://github.com/turnerlabs/shipit-api"
   },
   "dependencies": {
     "body-parser": "1.13.1",
