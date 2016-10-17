@@ -23,4 +23,5 @@ deployment:
   staging:
     branch: [master]
     commands:
+      - source buildprops; docker tag "quay.io/turner/${HARBOR_CONTAINER}:${HARBOR_VERSION}" "quay.io/turner/${HARBOR_CONTAINER}:latest"
       - source buildprops; docker push "quay.io/turner/${HARBOR_CONTAINER}:latest"
