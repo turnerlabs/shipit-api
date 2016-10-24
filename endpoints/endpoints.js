@@ -126,6 +126,8 @@ genE.endpoints.forEach(function (i) {
             if (logObj.body.type === 'hidden') {
                 logObj.body.value = '***';
                 authObject.hidden = true;
+            } else if (logObj.body.type === 'basic') {
+                authObject.hidden = false;
             }
             doer(i,r,req,res,authObject)
           }
