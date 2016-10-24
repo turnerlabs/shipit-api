@@ -129,7 +129,8 @@ genE.endpoints.forEach(function (i) {
             } else if (logObj.body.type === 'basic') {
                 authObject.hidden = false;
             }
-            doer(i,r,req,res,authObject)
+            console.log(authObject, logObj);
+            doer(i,r,req,res,authObject);
           }
         });
       }
