@@ -125,8 +125,8 @@ genE.endpoints.forEach(function (i) {
             delete logObj.body.ports;
             if (logObj.body.type === 'hidden') {
                 logObj.body.value = '***';
+                authObject.hidden = true;
             }
-            console.log(JSON.stringify(logObj));
             doer(i,r,req,res,authObject)
           }
         });
