@@ -50,14 +50,14 @@ var manualEndpoints = [
         "path":         '/v1/logs/shipment/:Shipment/environment/:Environment',
         "type":         'get',
         "function":     requestHandlers.getShipmentEnvironmentLogs,
-        "description":  'Returns the changes for a shipment and environment pair.',
+        "description":  'Returns the changes for a shipment and environment pair. Must be authenticated to get hidden logs.',
         "fields":       []
     },
     {
         "path":         '/v1/logs/shipment/:Shipment',
         "type":         'get',
         "function":     requestHandlers.getShipmentLogs,
-        "description":  'Returns all changes for a shipment. Same as searching /v1/logs/shipment/:Shipment/environment/parent',
+        "description":  'Returns all changes for a shipment. Same as searching /v1/logs/shipment/:Shipment/environment/parent. Must be authenticated to get hidden logs.',
         "fields":       []
     }
 ];
@@ -125,9 +125,12 @@ genE.endpoints.forEach(function (i) {
             delete logObj.body.ports;
             if (logObj.body.type === 'hidden') {
                 logObj.body.value = '***';
+                authObject.hidden = true;
+            } else if (logObj.body.type === 'basic') {
+                authObject.hidden = false;
             }
-            console.log(JSON.stringify(logObj));
-            doer(i,r,req,res,authObject)
+            console.log(authObject, logObj);
+            doer(i,r,req,res,authObject);
           }
         });
       }
