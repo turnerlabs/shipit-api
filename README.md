@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
 
-API Version `2.1.3`
+API Version `2.2.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
@@ -25,11 +25,11 @@ API Version `2.1.3`
 
 ### GET `/v1/logs/shipment/:Shipment/environment/:Environment`
 
-> Returns the changes for a shipment and environment pair.
+> Returns the changes for a shipment and environment pair. Must be authenticated to get hidden logs.
 
 ### GET `/v1/logs/shipment/:Shipment`
 
-> Returns all changes for a shipment. Same as searching `/v`1`/logs/shipment/:Shipment/environment/parent`
+> Returns all changes for a shipment. Same as searching `/v`1`/logs/shipment/:Shipment/environment/parent`. Must be authenticated to get hidden logs.
 
 ### POST `/v1/shipments`
 
@@ -539,6 +539,12 @@ environment
 - description: Name of environment for the difference.
 - requirement: Must be a valid group from argonaut.turner.com that the user belongs to
 
+hidden
+- type:        Boolean
+- required:    true
+- description: If the log is supposed to be hidden or not.
+- requirement: Must be a valid boolean.
+
 diff
 - type:        String
 - required:    true
@@ -1004,36 +1010,6 @@ x-token
                http://auth.services.dmtio.net
 
 ```
-
-#### Fields
-
-```
-environment
-- type:        String
-- required:    false
-- description: Name of environment for the difference.
-- requirement: Must be a valid group from argonaut.turner.com that the user belongs to
-
-diff
-- type:        String
-- required:    false
-- description: The difference, stored as a JSON string.
-- requirement: Must be a valid string.
-
-user
-- type:        String
-- required:    false
-- description: The user that made the change.
-- requirement: Must be a valid string.
-
-updated
-- type:        Number
-- required:    false
-- description: The timestamp the change was made.
-- requirement: Must be a valid number.
-
-```
-
 
 ### PUT `/v1/shipment/:Shipment/environment/:name/buildToken`
 
