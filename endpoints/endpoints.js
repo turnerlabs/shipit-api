@@ -125,9 +125,12 @@ genE.endpoints.forEach(function (i) {
             delete logObj.body.ports;
             if (logObj.body.type === 'hidden') {
                 logObj.body.value = '***';
+                authObject.hidden = true;
+            } else if (logObj.body.type === 'basic') {
+                authObject.hidden = false;
             }
-            console.log(JSON.stringify(logObj));
-            doer(i,r,req,res,authObject)
+            console.log(authObject, logObj);
+            doer(i,r,req,res,authObject);
           }
         });
       }
