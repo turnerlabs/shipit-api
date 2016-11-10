@@ -26,10 +26,11 @@ dependencies:
       
 deployment:
   staging:
-    branch: [develop, master]
+    branch: [develop]
     commands:
       - source props; docker run -it --env-file props quay.io/turner/harbor-deploy deploy
     branch: [master]
     commands:
+      - source props; docker run -it --env-file props quay.io/turner/harbor-deploy deploy
       - source props; docker tag "${IMAGE}" "${LATEST}"
       - source props; docker push "${LATEST}"
