@@ -409,7 +409,7 @@ schema.logs = {
     create: true,
     update: false,
     required: true,
-    test: helpers.isValidInteger,
+    test: helpers.isValidDate,
     description: "The timestamp the change was made.",
     requirement: "Must be a valid number."
   },
