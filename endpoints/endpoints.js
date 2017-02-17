@@ -69,7 +69,7 @@ genE.endpoints.forEach(function (i) {
   r.function = function(req,res) {
     auth.checkToken(req.body, function(validUser) {
       if (!validUser) {
-        if (/^.*\/environment\/.*$/.test(i.path)) {
+        if (/^.*\/environment\/.*$/.test(i.path) || i.path === '/logs') {
           checkBuildToken(req.params,req.body,function(validBuildToken) {
             if(validBuildToken) {
               doer(i,r,req,res, {
@@ -150,6 +150,9 @@ function checkBuildToken(f,o,callBack) {
    } else {
      var environment = f.Environment;
    }
+
+   var shipment = f.Shipment || o.shipment;
+   environment = environment || o.environment;
    m.Environment.findOne({name: environment, _parentId: '/Shipment_' + f.Shipment}).limit({buildToken: 1}).exec(function(err, result) {
      if (err) callBack(false);
      else if (result === null) callBack(false);
