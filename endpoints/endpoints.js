@@ -123,6 +123,7 @@ genE.endpoints.forEach(function (i) {
             delete logObj.body.token;
             delete logObj.body.private_key;
             delete logObj.body.ports;
+            delete logObj.body.buildToken;
             if (logObj.body.type === 'hidden') {
                 logObj.body.value = '***';
                 authObject.hidden = true;
@@ -153,7 +154,7 @@ function checkBuildToken(f,o,callBack) {
 
    var shipment = f.Shipment || o.shipment;
    environment = environment || o.environment;
-   m.Environment.findOne({name: environment, _parentId: '/Shipment_' + f.Shipment}).limit({buildToken: 1}).exec(function(err, result) {
+   m.Environment.findOne({name: environment, _parentId: '/Shipment_' + shipment}).limit({buildToken: 1}).exec(function(err, result) {
      if (err) callBack(false);
      else if (result === null) callBack(false);
      else callBack( (o.buildToken === result.buildToken) );
