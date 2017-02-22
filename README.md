@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
 
-API Version `2.2.1`
+API Version `2.3.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
@@ -989,7 +989,7 @@ type
 ```
 
 
-### PUT `/v1/logs/:name`
+### PUT `/v1/logs/:updated`
 
 > Updates logs `:Logs`. Returns updated object if successful or error otherwise
 
@@ -1231,7 +1231,7 @@ x-token
 
 ```
 
-### DELETE `/v1/logs/:name`
+### DELETE `/v1/logs/:updated`
 
 > Deletes logs `:Logs`. Returns success status if successful or error otherwise
 
