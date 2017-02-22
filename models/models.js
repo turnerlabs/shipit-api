@@ -351,7 +351,7 @@ schema.logs = {
     userEditable: true,
     find: true,
     topLevel: true,
-    default: 'name'
+    default: 'updated'
   },
   shipment: {
     type: String,
@@ -405,11 +405,11 @@ schema.logs = {
   },
   updated: {
     type: Number,
-    unique: false,
+    unique: true,
     create: true,
     update: false,
     required: true,
-    test: helpers.isValidInteger,
+    test: helpers.isValidDate,
     description: "The timestamp the change was made.",
     requirement: "Must be a valid number."
   },
