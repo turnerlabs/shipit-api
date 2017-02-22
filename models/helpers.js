@@ -102,6 +102,11 @@ e.isValidInteger = function(callBack,i) {
   else callBack((i === (i|0)));
 }
 
+e.isValidDate = function(callback, timestamp) {
+  var valid = (new Date(timestamp)).getTime() > 0;
+  callback(valid);
+}
+
 e.validGroupForUser = function(callBack,i,r,o,m) {
 
 }

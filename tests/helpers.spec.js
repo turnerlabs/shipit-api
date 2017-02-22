@@ -137,3 +137,8 @@ describe('isValidInteger', () => {
     it('should return false for double', () => helpers.isValidInteger(expectFalse, 1.5));
     it('should return false for undefined', () => helpers.isValidInteger(expectFalse));
 });
+
+describe('isValidDate', () => {
+    it('should return true', () => helpers.isValidDate(expectTrue, 1487266145420));
+    it('should return false', () => helpers.isValidDate(expectFalse, "foo"));
+});
