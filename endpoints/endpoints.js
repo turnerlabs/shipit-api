@@ -130,6 +130,7 @@ genE.endpoints.forEach(function (i) {
             } else if (logObj.body.type === 'basic' || logObj.body.type === 'discover') {
                 authObject.hidden = false;
             }
+            console.log(JSON.stringify(logObj));
             doer(i,r,req,res,authObject);
           }
         });
