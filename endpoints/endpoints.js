@@ -121,16 +121,16 @@ genE.endpoints.forEach(function (i) {
             authObject.environment = req.params.Environment;
             delete logObj.body.username;
             delete logObj.body.token;
-            delete logObj.body.private_key;
             delete logObj.body.ports;
             delete logObj.body.buildToken;
-            if (logObj.body.type === 'hidden') {
+            if (logObj.body.type === 'hidden' || logObj.body.private_key) {
                 logObj.body.value = '***';
                 authObject.hidden = true;
             } else if (logObj.body.type === 'basic' || logObj.body.type === 'discover') {
                 authObject.hidden = false;
             }
             delete logObj.body;
+            delete logObj.body.private_key;
             console.log(authObject, logObj);
             doer(i,r,req,res,authObject);
           }
