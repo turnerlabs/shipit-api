@@ -126,7 +126,7 @@ genE.endpoints.forEach(function (i) {
                 authObject.hidden = false;
             }
             delete logObj.body;
-            console.log(authObject, logObj);
+            console.log(JSON.stringify(logObj));
             doer(i,r,req,res,authObject);
           }
         });
