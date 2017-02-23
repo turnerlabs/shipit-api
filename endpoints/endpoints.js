@@ -119,10 +119,6 @@ genE.endpoints.forEach(function (i) {
                 body: JSON.parse(JSON.stringify(req.body))
             };
             authObject.environment = req.params.Environment;
-            delete logObj.body.username;
-            delete logObj.body.token;
-            delete logObj.body.ports;
-            delete logObj.body.buildToken;
             if (logObj.body.type === 'hidden' || logObj.body.private_key) {
                 logObj.body.value = '***';
                 authObject.hidden = true;
@@ -130,7 +126,6 @@ genE.endpoints.forEach(function (i) {
                 authObject.hidden = false;
             }
             delete logObj.body;
-            delete logObj.body.private_key;
             console.log(authObject, logObj);
             doer(i,r,req,res,authObject);
           }
