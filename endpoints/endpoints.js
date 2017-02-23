@@ -115,16 +115,23 @@ genE.endpoints.forEach(function (i) {
                 method: r.type,
                 path: r.path,
                 shipment: authObject.shipment,
-                environment: req.params.Environment
+                environment: req.params.Environment,
+                body: JSON.parse(JSON.stringify(req.body))
             };
             authObject.environment = req.params.Environment;
+            delete logObj.body.username;
+            delete logObj.body.token;
+            delete logObj.body.private_key;
+            delete logObj.body.ports;
+            delete logObj.body.buildToken;
             if (logObj.body.type === 'hidden') {
                 logObj.body.value = '***';
                 authObject.hidden = true;
             } else if (logObj.body.type === 'basic' || logObj.body.type === 'discover') {
                 authObject.hidden = false;
             }
-            console.log(JSON.stringify(logObj));
+            delete logObj.body;
+            console.log(authObject, logObj);
             doer(i,r,req,res,authObject);
           }
         });
