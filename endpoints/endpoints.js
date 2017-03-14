@@ -118,7 +118,7 @@ genE.endpoints.forEach(function (i) {
                 environment: req.params.Environment
             };
             authObject.environment = req.params.Environment;
-            if (req.body.type === 'hidden' || req.body.private_key) {
+            if (!req.body.type || req.body.type === 'hidden' || req.body.private_key) {
                 authObject.hidden = true;
             } else if (req.body.type === 'basic' || req.body.type === 'discover') {
                 authObject.hidden = false;
