@@ -13,6 +13,7 @@ let endPoints = {get:[],post:[],put:[],delete:[]},
     healthcheck = process.env.HEALTHCHECK || '/_hc';
 
 let app = express();
+let retriedConnection = 0;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -40,11 +41,17 @@ app.all('/v1/*', function (req, res, next) {
 
 app.get(healthcheck, (req, res, next) => {
   if (mongoose.connection.readyState === 1) {
+      retriedConnection = 0;
       res.send('OK Version: ' + appVersion);
   } else {
-      let msg = 'ERROR: Mongoose Connection Is Broken';
-      console.error(msg);
-      res.status(500).send(msg);
+      if (retriedConnection > 30) {
+          console.error('ERROR: Mongoose Connection Is Broken');
+          res.status(500).send('ERROR: Mongoose Connection Is Broken');
+      } else {
+          retriedConnection++;
+          console.error("ERROR: Retrying Connection to DB", retriedConnection);
+          res.send('OK Version: ' + appVersion);
+      }
   }
 });
 
@@ -59,6 +66,17 @@ app.get('/v1/endpoints', function (req, res) {
     res.send(JSON.stringify(endPoints));
 });
 
-app.listen(myPort, function () {
+let server = app.listen(myPort, function () {
   console.log('INFO', 'Server started on ' + myPort);
 });
+
+process.on('SIGTERM', function onSigterm () {
+  console.info('ERROR: Got SIGTERM. Graceful shutdown start', new Date().toISOString())
+
+  // Wait a little bit to give enough time for Kubernetes readiness probe to fail
+  // (we are not ready to serve more traffic)
+  // Don't worry livenessProbe won't kill it until (failureThreshold: 3) => 30s
+  server.close(function () {
+    process.exit(0);
+  });
+})
