@@ -73,9 +73,8 @@ let server = app.listen(myPort, function () {
 process.on('SIGTERM', function onSigterm () {
   console.info('ERROR: Got SIGTERM. Graceful shutdown start', new Date().toISOString())
 
-  // Wait a little bit to give enough time for Kubernetes readiness probe to fail
-  // (we are not ready to serve more traffic)
-  // Don't worry livenessProbe won't kill it until (failureThreshold: 3) => 30s
+  // If we get SIGTERM, then k8s is about to kill us. We should tell our server to close down. This will
+  // stopy any new connections from coming in, and will all any open connections time to finish.
   server.close(function () {
     process.exit(0);
   });
