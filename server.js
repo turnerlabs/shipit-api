@@ -10,7 +10,8 @@ let express         = require('express'),
 
 let endPoints = {get:[],post:[],put:[],delete:[]},
     myPort = process.env.PORT || 6055,
-    healthcheck = process.env.HEALTHCHECK || '/_hc';
+    healthcheck = process.env.HEALTHCHECK || '/_hc',
+    ALLOWED_RETRIES = process.env.ALLOWED_RETRIES || 5;
 
 let app = express();
 let retriedConnection = 0;
@@ -44,7 +45,7 @@ app.get(healthcheck, (req, res, next) => {
       retriedConnection = 0;
       res.send('OK Version: ' + appVersion);
   } else {
-      if (retriedConnection > 30) {
+      if (retriedConnection > ALLOWED_RETRIES) {
           console.error('ERROR: Mongoose Connection Is Broken');
           res.status(500).send('ERROR: Mongoose Connection Is Broken');
       } else {
