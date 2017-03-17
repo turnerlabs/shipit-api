@@ -6,7 +6,8 @@ let express         = require('express'),
     genEndpoints    = require('./endpoints/endpoints'),
     appVersion      = require('./package.json').version,
     renderEndPoints = require('./endpoints/render'),
-    mongoose        = require('mongoose');
+    mongoose        = require('mongoose'),
+    morgan = require('morgan');
 
 let endPoints = {get:[],post:[],put:[],delete:[]},
     myPort = process.env.PORT || 6055,
@@ -16,6 +17,7 @@ let app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(morgan('tiny'));
 app.use(function (req, res, next) {
     req.body.username = null
     req.body.username = req.headers['x-username'] || '';

@@ -118,12 +118,12 @@ genE.endpoints.forEach(function (i) {
                 environment: req.params.Environment
             };
             authObject.environment = req.params.Environment;
-            if (!req.body.type || req.body.type === 'hidden' || req.body.private_key) {
+            if (req.body.hidden === true || req.body.type === 'hidden' || req.body.private_key) {
                 authObject.hidden = true;
-            } else if (req.body.type === 'basic' || req.body.type === 'discover') {
+            } else if (req.body.type === 'basic' || req.body.type === 'discover' || req.body.hidden === false) {
                 authObject.hidden = false;
             }
-            console.log(JSON.stringify(logObj));
+            authObject.name = req.params.Port || req.params.Container || req.params.Provider || req.params.Environment || req.params.Shipment
             doer(i,r,req,res,authObject);
           }
         });
