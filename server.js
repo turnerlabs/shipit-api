@@ -75,7 +75,7 @@ process.on('SIGTERM', function onSigterm () {
   console.info('ERROR: Got SIGTERM. Graceful shutdown start', new Date().toISOString())
 
   // If we get SIGTERM, then k8s is about to kill us. We should tell our server to close down. This will
-  // stopy any new connections from coming in, and will all any open connections time to finish.
+  // stop any new connections from coming in, and give open connections time to finish.
   server.close(function () {
     process.exit(0);
   });
