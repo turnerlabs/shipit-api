@@ -13,13 +13,14 @@ config.mongodb = {
       w: 1,
       socketOptions: {
         keepAlive: 120,
-        connectTimeoutMS: 30000
+        connectTimeoutMS: 10000
       }
     },
     server: {
+      poolSize: 25,
       socketOptions: {
         keepAlive: 120,
-        connectTimeoutMS: 30000
+        connectTimeoutMS: 10000
       },
       auto_reconnect: true
     }
@@ -45,4 +46,29 @@ Object.keys(schemas).forEach(function(schema) {
   schemas[schema].indexes.forEach(function(ind) {
     tempSchema.index(ind.fields,{unique: ind.unique});
   });
+});
+
+
+// set listeners on mongodb to let us know what is going on with MongoDB
+e.DB.on('connecting', function() {
+  console.log('connecting to MongoDB...');
+});
+e.DB.on('error', function(error) {
+  console.error('Error in MongoDb connection: ' + error);
+  mongoose.connection.close();
+});
+e.DB.on('connected', function() {
+  mongoose.connection.readyState = 1;
+  console.log('MongoDB connected!');
+});
+e.DB.once('open', function() {
+  console.log('MongoDB connection opened!');
+});
+e.DB.on('reconnected', function () {
+  mongoose.connection.readyState = 1;
+  console.log('MongoDB reconnected!');
+});
+e.DB.on('disconnected', function() {
+  console.log('MongoDB disconnected!');
+  mongoose.connection.readyState = 0;
 });

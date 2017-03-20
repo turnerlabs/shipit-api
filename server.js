@@ -10,9 +10,11 @@ let express         = require('express'),
 
 let endPoints = {get:[],post:[],put:[],delete:[]},
     myPort = process.env.PORT || 6055,
-    healthcheck = process.env.HEALTHCHECK || '/_hc';
+    healthcheck = process.env.HEALTHCHECK || '/_hc',
+    ALLOWED_RETRIES = process.env.ALLOWED_RETRIES || 5;
 
 let app = express();
+let retriedConnection = 0;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -40,11 +42,17 @@ app.all('/v1/*', function (req, res, next) {
 
 app.get(healthcheck, (req, res, next) => {
   if (mongoose.connection.readyState === 1) {
+      retriedConnection = 0;
       res.send('OK Version: ' + appVersion);
   } else {
-      let msg = 'ERROR: Mongoose Connection Is Broken';
-      console.error(msg);
-      res.status(500).send(msg);
+      if (retriedConnection > ALLOWED_RETRIES) {
+          console.error('ERROR: Mongoose Connection Is Broken');
+          res.status(500).send('ERROR: Mongoose Connection Is Broken');
+      } else {
+          retriedConnection++;
+          console.error("ERROR: Retrying Connection to DB", retriedConnection);
+          res.send('OK Version: ' + appVersion);
+      }
   }
 });
 
@@ -59,6 +67,16 @@ app.get('/v1/endpoints', function (req, res) {
     res.send(JSON.stringify(endPoints));
 });
 
-app.listen(myPort, function () {
+let server = app.listen(myPort, function () {
   console.log('INFO', 'Server started on ' + myPort);
 });
+
+process.on('SIGTERM', function onSigterm () {
+  console.info('ERROR: Got SIGTERM. Graceful shutdown start', new Date().toISOString())
+
+  // If we get SIGTERM, then k8s is about to kill us. We should tell our server to close down. This will
+  // stop any new connections from coming in, and give open connections time to finish.
+  server.close(function () {
+    process.exit(0);
+  });
+})
