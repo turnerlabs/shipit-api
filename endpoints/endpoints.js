@@ -103,7 +103,7 @@ genE.endpoints.forEach(function (i) {
             authObject.newgroup = req.body.group;
           }
         }
-        checkUserGroup(authObject,function(err,code) {
+        checkUserGroup(authObject, r.type, function(err,code) {
           if(err) {
             res.status(code);
             res.send(JSON.stringify({error: err}));
@@ -118,12 +118,12 @@ genE.endpoints.forEach(function (i) {
                 environment: req.params.Environment
             };
             authObject.environment = req.params.Environment;
-            if (!req.body.type || req.body.type === 'hidden' || req.body.private_key) {
+            if (req.body.hidden === true || req.body.type === 'hidden' || req.body.private_key) {
                 authObject.hidden = true;
-            } else if (req.body.type === 'basic' || req.body.type === 'discover') {
+            } else if (req.body.type === 'basic' || req.body.type === 'discover' || req.body.hidden === false) {
                 authObject.hidden = false;
             }
-            console.log(JSON.stringify(logObj));
+            authObject.name = req.params.Port || req.params.Container || req.params.Provider || req.params.Environment || req.params.Shipment
             doer(i,r,req,res,authObject);
           }
         });
@@ -228,7 +228,7 @@ function genFields(type,fields,sub) {
   return f;
 }
 
-function checkUserGroup(o,callBack) {
+function checkUserGroup(o, method, callBack) {
   if( typeof o.newgroup === 'undefined' ) {
     if ( typeof o.shipment === 'undefined' ) {
       callBack('When creating a shipment or modifying group, you must define a group that you are a member of',422);
@@ -240,21 +240,21 @@ function checkUserGroup(o,callBack) {
           callBack('You cannot preform this action because the resource does not exist',422);
         } else {
           o.currentgroup = result.group;
-          checkCurrentGroup(o,callBack) ;
+          checkCurrentGroup(o, method, callBack) ;
         }
       });
     }
   } else {
-    checkNewGroup(o,callBack);
+    checkNewGroup(o, method, callBack);
   }
 }
 
-function checkCurrentGroup(o,callBack) {
+function checkCurrentGroup(o, method, callBack) {
   var n = {username: o.username, group: o.currentgroup};
-  auth.checkGroup(n,function(success) {
+  auth.checkGroup(n, method, function(success) {
     if(success) {
       if(typeof o.newgroup === 'string') {
-        checkNewGroup(o,callBack);
+        checkNewGroup(o, method, callBack);
       } else {
         callBack(false,200);
       }
@@ -264,16 +264,16 @@ function checkCurrentGroup(o,callBack) {
   });
 }
 
-function checkNewGroup(o,callBack) {
+function checkNewGroup(o, method, callBack) {
   var n = {username: o.username, group: o.newgroup};
-  auth.checkGroup(n,function(success) {
+  auth.checkGroup(n, method, function(success) {
     if(success) {
       callBack(false,200);
     } else {
       callBack('You cannot set group of this shipment to ' + n.group + ' because you are not a member',422);
     }
   });
-};
+}
 
 function finisher(err,o,res) {
   if(err) {
