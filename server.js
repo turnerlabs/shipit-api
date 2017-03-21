@@ -17,7 +17,6 @@ let app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(morgan('tiny'));
 app.use(function (req, res, next) {
     req.body.username = null
     req.body.username = req.headers['x-username'] || '';
@@ -49,6 +48,8 @@ app.get(healthcheck, (req, res, next) => {
       res.status(500).send(msg);
   }
 });
+
+app.use(morgan('tiny'));
 
 genEndpoints.forEach(function(i) {
   app[i.type](i.path,i.function);
