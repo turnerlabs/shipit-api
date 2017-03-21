@@ -393,6 +393,16 @@ schema.logs = {
     description: "The difference, stored as a JSON string.",
     requirement: "Must be a valid string."
   },
+  name: {
+    type: String,
+    unique: false,
+    create: true,
+    update: false,
+    required: false,
+    test: helpers.isString,
+    description: "The type of object being changed.",
+    requirement: "Must be a valid string."
+  },
   user: {
     type: String,
     unique: false,
