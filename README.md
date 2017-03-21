@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
 
-API Version `2.3.0`
+API Version `2.4.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
@@ -549,6 +549,12 @@ diff
 - type:        String
 - required:    true
 - description: The difference, stored as a JSON string.
+- requirement: Must be a valid string.
+
+name
+- type:        String
+- required:    false
+- description: The type of object being changed.
 - requirement: Must be a valid string.
 
 user
