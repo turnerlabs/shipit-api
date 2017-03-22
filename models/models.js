@@ -310,6 +310,17 @@ schema.environment = {
     requirement: "Must be base64 encoded and be a valid docker config file",
     auth: true
   },
+  enableMonitoring: {
+    type: Boolean,
+    unique: false,
+    create: true,
+    update: true,
+    required: false,
+    default: true,
+    test: helpers.isBoolean,
+    description: 'Boolean, if true then monitoring of this Shipment Environment will be setup.',
+    requirement: 'must be a valid boolean'
+  },
   envVars: ['envVar'],
   containers: ['container'],
   providers: ['provider']
