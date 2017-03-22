@@ -1,6 +1,6 @@
 {
   "name": "shipit-api",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "An API for Shipments in Harbor",
   "license": "Apache-2.0",
   "scripts": {
