@@ -1,12 +1,8 @@
 {
   "name": "shipit-api",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "An API for Shipments in Harbor",
   "license": "Apache-2.0",
-  "author": {
-    "name": "Josh Lohrman",
-    "email": "josh.lohrman@turner.com"
-  },
   "scripts": {
     "start": "node server.js",
     "test": "node ./node_modules/mocha/bin/mocha tests"
