@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
 
-API Version `2.4.0`
+API Version `2.5.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
@@ -154,6 +154,12 @@ dockercfg
 - required:    false
 - description: The docker cfg value
 - requirement: Must be base64 encoded and be a valid docker config file
+
+enableMonitoring
+- type:        Boolean
+- required:    false
+- description: Boolean, if true then monitoring of this Shipment Environment will be setup.
+- requirement: must be a valid boolean
 
 ```
 
@@ -677,6 +683,12 @@ dockercfg
 - required:    false
 - description: The docker cfg value
 - requirement: Must be base64 encoded and be a valid docker config file
+
+enableMonitoring
+- type:        Boolean
+- required:    false
+- description: Boolean, if true then monitoring of this Shipment Environment will be setup.
+- requirement: must be a valid boolean
 
 ```
 
