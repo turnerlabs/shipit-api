@@ -75,7 +75,7 @@ genE.endpoints.forEach(function (i) {
               doer(i,r,req,res, {
                 username: 'buildtoken',
                 shipment: req.params.Shipment || req.params.name,
-                environment: req.params.Environment
+                environment: req.params.Environment || req.params.name
               });
             } else {
               sendAuthzError(res);
@@ -108,22 +108,13 @@ genE.endpoints.forEach(function (i) {
             res.status(code);
             res.send(JSON.stringify({error: err}));
           } else {
-            var logObj = {
-                date: date,
-                username: authObject.username,
-                group: authObject.newgroup,
-                method: r.type,
-                path: r.path,
-                shipment: authObject.shipment,
-                environment: req.params.Environment
-            };
-            authObject.environment = req.params.Environment;
+            authObject.environment = req.params.Environment || req.params.name;
             if (req.body.hidden === true || req.body.type === 'hidden' || req.body.private_key) {
                 authObject.hidden = true;
             } else if (req.body.type === 'basic' || req.body.type === 'discover' || req.body.hidden === false) {
                 authObject.hidden = false;
             }
-            authObject.name = req.params.Port || req.params.Container || req.params.Provider || req.params.Environment || req.params.Shipment
+            authObject.name = req.params.name || req.params.Port || req.params.Container || req.params.Provider || req.params.Environment || req.params.Shipment;
             doer(i,r,req,res,authObject);
           }
         });
