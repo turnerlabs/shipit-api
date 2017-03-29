@@ -108,14 +108,13 @@ genE.endpoints.forEach(function (i) {
             res.status(code);
             res.send(JSON.stringify({error: err}));
           } else {
-            authObject.environment = req.params.Environment;
+            authObject.environment = req.params.Environment || req.params.name;
             if (req.body.hidden === true || req.body.type === 'hidden' || req.body.private_key) {
                 authObject.hidden = true;
             } else if (req.body.type === 'basic' || req.body.type === 'discover' || req.body.hidden === false) {
                 authObject.hidden = false;
             }
             authObject.name = req.params.name || req.params.Port || req.params.Container || req.params.Provider || req.params.Environment || req.params.Shipment;
-            authObject.environment = req.params.Environment || req.params.name;
             doer(i,r,req,res,authObject);
           }
         });
