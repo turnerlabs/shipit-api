@@ -276,7 +276,7 @@ schema.port = {
     create: true,
     update: true,
     required: false,
-    default: 1,
+    default: 3,
     test: helpers.isValidInteger,
     description: "The timeout value for the healthcheck for container monitoring",
     requirement: "Must be 0 or positive Integer"
