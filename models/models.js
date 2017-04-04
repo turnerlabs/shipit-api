@@ -269,6 +269,17 @@ schema.port = {
     test: helpers.isValidSslManager,
     description: 'SSL management type.',
     requirement: 'Must be a valid SSL Management type (iam or acm)'
+  },
+  healthcheck_timeout: {
+    type: Number,
+    unique: false,
+    create: true,
+    update: true,
+    required: false,
+    default: 1,
+    test: helpers.isValidInteger,
+    description: "The timeout value for the healthcheck for container monitoring",
+    requirement: "Must be 0 or positive Integer"
   }
 }
 

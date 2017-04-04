@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/turnerlabs/shipit-api/tree/master.svg?style=shield)](https://circleci.com/gh/turnerlabs/shipit-api/tree/master)
 
-API Version `2.5.0`
+API Version `2.6.0`
 
 [Additional documentation](http://blog.harbor.inturner.io/docs/shipit/)
 
@@ -364,6 +364,12 @@ ssl_management_type
 - required:    false
 - description: SSL management type.
 - requirement: Must be a valid SSL Management type (iam or acm)
+
+healthcheck_timeout
+- type:        Number
+- required:    false
+- description: The timeout value for the healthcheck for container monitoring
+- requirement: Must be 0 or positive Integer
 
 ```
 
@@ -881,6 +887,12 @@ ssl_management_type
 - required:    false
 - description: SSL management type.
 - requirement: Must be a valid SSL Management type (iam or acm)
+
+healthcheck_timeout
+- type:        Number
+- required:    false
+- description: The timeout value for the healthcheck for container monitoring
+- requirement: Must be 0 or positive Integer
 
 ```
 
