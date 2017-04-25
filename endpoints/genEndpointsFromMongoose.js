@@ -70,9 +70,9 @@ function populateFields(endpoints,name,schemaO,myParent) {
   var updateDesc = 'Updates '     + descString + '. Returns updated object if successful or error otherwise';
   var deleteDesc = 'Deletes '     + descString + '. Returns success status if successful or error otherwise';
   if(typeof r.metadata.userEditable === 'boolean' && r.metadata.userEditable) {
-    endpoints.push({path: r.basePath + '/' + r.plural, type: 'post', function: r.create, fields: r.fields, description: createDesc, encrypt: r.metadata.encrypt});
-    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'put', function: r.update, fields: r.fields, description: updateDesc, encrypt: r.metadata.encrypt});
-    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'delete', function: r.delete, fields: r.fields, description: deleteDesc, encrypt: r.metadata.encrypt});
+    endpoints.push({path: r.basePath + '/' + r.plural, type: 'post', function: r.create, fields: r.fields, description: createDesct});
+    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'put', function: r.update, fields: r.fields, description: updateDesc});
+    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'delete', function: r.delete, fields: r.fields, description: deleteDesc});
   }
   Object.keys(schema).forEach(function(field) { if (field !== '_metadata') {
     var obj = schema[field];
