@@ -1,10 +1,14 @@
 "use strict";
 
 let plural   = require('pluralize').plural,
+    crypto = require('node-cryptojs-aes'),
+    CryptoJS = crypto.CryptoJS,
+    JsonFormatter = crypto.JsonFormatter,
     m        = require('../mongoose/mongoose'),
     models   = require('../models/models'),
     documentToObject = require('../lib/documentToObject'),
     saveLog  = require('../lib/saveLog').save,
+    futurama = process.env.FUTURAMA || null,
     nils     = ['',null];
 
 module.exports = function(){
@@ -66,9 +70,9 @@ function populateFields(endpoints,name,schemaO,myParent) {
   var updateDesc = 'Updates '     + descString + '. Returns updated object if successful or error otherwise';
   var deleteDesc = 'Deletes '     + descString + '. Returns success status if successful or error otherwise';
   if(typeof r.metadata.userEditable === 'boolean' && r.metadata.userEditable) {
-    endpoints.push({path: r.basePath + '/' + r.plural, type: 'post', function: r.create, fields: r.fields, description: createDesc});
-    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'put', function: r.update, fields: r.fields, description: updateDesc});
-    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'delete', function: r.delete, fields: r.fields, description: deleteDesc});
+    endpoints.push({path: r.basePath + '/' + r.plural, type: 'post', function: r.create, fields: r.fields, description: createDesc, encrypt: r.metadata.encrypt});
+    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'put', function: r.update, fields: r.fields, description: updateDesc, encrypt: r.metadata.encrypt});
+    endpoints.push({path: r.basePath + '/' + r.singular + '/:' + r.metadata.default, type: 'delete', function: r.delete, fields: r.fields, description: deleteDesc, encrypt: r.metadata.encrypt});
   }
   Object.keys(schema).forEach(function(field) { if (field !== '_metadata') {
     var obj = schema[field];
@@ -131,7 +135,7 @@ function spawnCheckCreate(r) {
           if(callBackCount <= 0) {
             callBack(err);
           }
-        },o[field],r,o,m);
+        },o[field], r, o, m);
       }
     });
   }
@@ -237,6 +241,14 @@ function entryExists(model,findObj,callBack) {
 
 function doCreate(r,createObj,callBack, auth) {
   var newDoc = new m[r.model](createObj);
+  console.log(r.forEach)
+  for (var key in r.fields) {
+      // put encryption on a field by field basis, so we can easily encrypt anything
+      //if (newDoc[key] && r.fields[key].encrypted === true && futurama) {
+      if (newDoc[key] && futurama) {
+          newDoc[key] = CryptoJS.AES.encrypt(newDoc[key], futurama, { format: JsonFormatter }).toString();
+      }
+  }
   newDoc.save(function(err, newDoc) {
      if(err) {callBack(err); return};
      saveLog({}, newDoc, auth);
@@ -369,6 +381,17 @@ function spawnUpdate(r) {
       if(unsetObj) {
         updateObj['$unset']=unsetObj;
       }
+
+      console.log(r.fields)
+
+      for (var key in r.fields) {
+          // put encryption on a field by field basis, so we can easily encrypt anything
+          //if (updateObj[key] && r.fields[key].encrypted === true && futurama) {
+          if (updateObj[key] && futurama) {
+              updateObj[key] = CryptoJS.AES.encrypt(updateObj[key], futurama, { format: JsonFormatter }).toString();
+          }
+      }
+
       update(f,r,updateObj,callBack, auth);
     }, auth);
   }
