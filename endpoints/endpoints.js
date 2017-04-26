@@ -231,7 +231,7 @@ function checkUserGroup(o, method, callBack) {
         } else if (result === null) {
           callBack('You cannot preform this action because the resource does not exist',422);
         } else {
-          o.currentgroup = crypto.decrypt(result.group);
+          o.currentgroup = result.group;
           checkCurrentGroup(o, method, callBack) ;
         }
       });
@@ -258,7 +258,6 @@ function checkCurrentGroup(o, method, callBack) {
 
 function checkNewGroup(o, method, callBack) {
   var n = {username: o.username, group: o.newgroup};
-  n.group = crypto.decrypt(n.group);
   auth.checkGroup(n, method, function(success) {
     if(success) {
       callBack(false,200);
