@@ -1,14 +1,12 @@
 "use strict";
 
 let plural   = require('pluralize').plural,
-    crypto = require('node-cryptojs-aes'),
-    CryptoJS = crypto.CryptoJS,
-    JsonFormatter = crypto.JsonFormatter,
     m        = require('../mongoose/mongoose'),
     models   = require('../models/models'),
+    crypto   = require('../lib/crypto'),
+    sha256   = require('crypto'),
     documentToObject = require('../lib/documentToObject'),
     saveLog  = require('../lib/saveLog').save,
-    futurama = process.env.FUTURAMA || null,
     nils     = ['',null];
 
 module.exports = function(){
@@ -241,16 +239,23 @@ function entryExists(model,findObj,callBack) {
 
 function doCreate(r,createObj,callBack, auth) {
   var newDoc = new m[r.model](createObj);
-  console.log(r.forEach)
   for (var key in r.fields) {
       // put encryption on a field by field basis, so we can easily encrypt anything
-      //if (newDoc[key] && r.fields[key].encrypted === true && futurama) {
-      if (newDoc[key] && futurama) {
-          newDoc[key] = CryptoJS.AES.encrypt(newDoc[key], futurama, { format: JsonFormatter }).toString();
+      if (newDoc[key] && r.fields[key].encrypted === true) {
+            if (r.fields[key].sha256) {
+                newDoc[key + '_sha256'] = sha256.createHash('sha256').update(newDoc[key]).digest('base64');
+            }
+            newDoc[key] = crypto.encrypt(newDoc[key]);
       }
   }
   newDoc.save(function(err, newDoc) {
      if(err) {callBack(err); return};
+     for (var key in r.fields) {
+         // put encryption on a field by field basis, so we can easily encrypt anything
+         if (newDoc[key] && r.fields[key].encrypted === true) {
+               newDoc[key] = crypto.decrypt(newDoc[key]);
+         }
+     }
      saveLog({}, newDoc, auth);
      callBack(false,documentToObject(newDoc));
   });
@@ -382,13 +387,14 @@ function spawnUpdate(r) {
         updateObj['$unset']=unsetObj;
       }
 
-      console.log(r.fields)
-
       for (var key in r.fields) {
           // put encryption on a field by field basis, so we can easily encrypt anything
-          //if (updateObj[key] && r.fields[key].encrypted === true && futurama) {
-          if (updateObj[key] && futurama) {
-              updateObj[key] = CryptoJS.AES.encrypt(updateObj[key], futurama, { format: JsonFormatter }).toString();
+          if (updateObj[key] && r.fields[key].encrypted === true) {
+              // if model say to put sha on object. This means it probably needs to be queried later.
+              if (r.fields[key].sha256) {
+                  updateObj[key + '_sha256'] = sha256.createHash('sha256').update(updateObj[key]).digest('base64');
+              }
+              updateObj[key] = crypto.encrypt(updateObj[key]);
           }
       }
 
@@ -416,6 +422,7 @@ function update(f,r,updateObj,callBack, auth) {
 
       // get just whats being changed
       keys.forEach((key) => {
+          newDoc[key] = crypto.decrypt(newDoc[key]);
           oldObject[key] = newDoc[key];
       });
 
@@ -424,6 +431,12 @@ function update(f,r,updateObj,callBack, auth) {
         m[r.model].findOne(findObj).exec(function(err, newDoc) {
           if(err) {callBack(err); return}
           // save diff
+          for (var key in r.fields) {
+              // put encryption on a field by field basis, so we can easily encrypt anything
+              if (updateObj[key] && r.fields[key].encrypted === true) {
+                    updateObj[key] = crypto.decrypt(updateObj[key]);
+              }
+          }
           saveLog(oldObject, updateObj, auth);
           callBack(false,newDoc);
           return;

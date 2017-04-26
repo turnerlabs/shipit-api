@@ -3,6 +3,7 @@ var requestHandlers  = require('../lib/requestHandlers.js');
 var auth             = require('../lib/auth.js');
 var documentToObject = require('../lib/documentToObject');
 var m                = genE.m;
+var crypto = require('../lib/crypto');
 requestHandlers.setMongoose(genE.m);
 
 var genEndpoints = [];
@@ -141,7 +142,7 @@ function checkBuildToken(f,o,callBack) {
    m.Environment.findOne({name: environment, _parentId: '/Shipment_' + shipment}).limit({buildToken: 1}).exec(function(err, result) {
      if (err) callBack(false);
      else if (result === null) callBack(false);
-     else callBack( (o.buildToken === result.buildToken) );
+     else callBack( (o.buildToken === crypto.decrypt(result.buildToken)) );
    });
 }
 
@@ -230,7 +231,7 @@ function checkUserGroup(o, method, callBack) {
         } else if (result === null) {
           callBack('You cannot preform this action because the resource does not exist',422);
         } else {
-          o.currentgroup = result.group;
+          o.currentgroup = crypto.decrypt(result.group);
           checkCurrentGroup(o, method, callBack) ;
         }
       });
@@ -257,6 +258,7 @@ function checkCurrentGroup(o, method, callBack) {
 
 function checkNewGroup(o, method, callBack) {
   var n = {username: o.username, group: o.newgroup};
+  n.group = crypto.decrypt(n.group);
   auth.checkGroup(n, method, function(success) {
     if(success) {
       callBack(false,200);

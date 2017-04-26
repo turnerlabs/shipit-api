@@ -1,8 +1,12 @@
-var randomstring = require("randomstring");
+"use strict";
+
+let randomstring = require("randomstring"),
+    crypto = require("../lib/crypto");
+
 var e = module.exports;
 
 e.generateToken = function(length) {
-  return randomstring.generate(length || 50);
+  return crypto.encrypt(randomstring.generate(length || 50));
 }
 
 e.isString = function(callBack,i) {

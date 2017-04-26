@@ -24,6 +24,7 @@ schema.envVar = {
     update: true,
     required: true,
     encrypted: true,
+    sha256: true,
     test: helpers.isString,
     description: "The value the envvar gets set to",
     requirement: "Must be a valid string",
@@ -451,6 +452,6 @@ schema.logs = {
     test: helpers.isValidDate,
     description: "The timestamp the change was made.",
     requirement: "Must be a valid number."
-  },
+  }
 
 }
