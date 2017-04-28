@@ -1,6 +1,7 @@
 "use strict";
 
 let express         = require('express'),
+    timeout         = require('connect-timeout'),
     bodyParser      = require('body-parser'),
     cors            = require('cors'),
     genEndpoints    = require('./endpoints/endpoints'),
@@ -17,6 +18,7 @@ let endPoints = {get:[],post:[],put:[],delete:[]},
 let app = express();
 let retriedConnection = 0;
 
+app.use(timeout(120000));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(function (req, res, next) {
