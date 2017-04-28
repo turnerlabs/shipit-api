@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "body-parser": "1.13.1",
+    "connect-timeout": "^1.8.0",
     "cors": "2.7.1",
     "crypto": "0.0.3",
     "express": "4.13.0",
