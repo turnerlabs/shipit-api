@@ -256,6 +256,7 @@ function doCreate(r,createObj,callBack, auth) {
                newDoc[key] = crypto.decrypt(newDoc[key]);
          }
      }
+     delete newDoc.value_sha256;
      saveLog({}, newDoc, auth);
      callBack(false,documentToObject(newDoc));
   });
@@ -308,6 +309,12 @@ function deleteSubs(gID, r, auth) {
       if(Array.isArray(results)) {
         results.forEach(function(result) {
           var subGID = gID + '/' + s.model + '_' + result[s.metadata.default];
+          for (var key in r.fields) {
+              // put encryption on a field by field basis, so we can easily encrypt anything
+              if (result[key] && r.fields[key].encrypted === true) {
+                    result[key] = crypto.decrypt(result[key]);
+              }
+          }
           saveLog(result, {}, auth);
           deleteSubs(subGID,s, auth);
           result.remove();
@@ -437,6 +444,10 @@ function update(f,r,updateObj,callBack, auth) {
                     updateObj[key] = crypto.decrypt(updateObj[key]);
               }
           }
+
+          delete oldObject.value_sha256;
+          delete updateObject.value_sha256;
+          delete newDoc.value_sha256;
           saveLog(oldObject, updateObj, auth);
           callBack(false,newDoc);
           return;

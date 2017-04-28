@@ -29,6 +29,16 @@ schema.envVar = {
     description: "The value the envvar gets set to",
     requirement: "Must be a valid string",
   },
+  value_sha256: {
+    type: String,
+    unique: false,
+    create: true,
+    update: true,
+    required: false,
+    test: helpers.isString,
+    description: "The value the envvar gets set to",
+    requirement: "Must be a valid string",
+  },
   type: {
     type: String,
     unique: false,
