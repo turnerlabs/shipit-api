@@ -35,6 +35,7 @@ schema.envVar = {
     create: true,
     update: true,
     required: false,
+    hide: true,
     test: helpers.isString,
     description: "The value the envvar gets set to",
     requirement: "Must be a valid string",
