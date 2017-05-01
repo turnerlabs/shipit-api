@@ -6,7 +6,7 @@ let randomstring = require("randomstring"),
 var e = module.exports;
 
 e.generateToken = function(length) {
-  return crypto.encrypt(randomstring.generate(length || 50));
+  return randomstring.generate(length || 50);
 }
 
 e.isString = function(callBack,i) {
