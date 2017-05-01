@@ -4,7 +4,6 @@ let plural   = require('pluralize').plural,
     m        = require('../mongoose/mongoose'),
     models   = require('../models/models'),
     crypto   = require('../lib/crypto'),
-    sha256   = require('crypto'),
     documentToObject = require('../lib/documentToObject'),
     saveLog  = require('../lib/saveLog').save,
     nils     = ['',null];
@@ -243,7 +242,7 @@ function doCreate(r,createObj,callBack, auth) {
       // put encryption on a field by field basis, so we can easily encrypt anything
       if (newDoc[key] && r.fields[key].encrypted === true) {
             if (r.fields[key].sha256) {
-                newDoc[key + '_sha256'] = sha256.createHash('sha256').update(newDoc[key]).digest('base64');
+                newDoc[key + '_sha256'] = crypto.sha256(newDoc[key]);
             }
             newDoc[key] = crypto.encrypt(newDoc[key]);
       }
@@ -399,7 +398,7 @@ function spawnUpdate(r) {
           if (updateObj[key] && r.fields[key].encrypted === true) {
               // if model say to put sha on object. This means it probably needs to be queried later.
               if (r.fields[key].sha256) {
-                  updateObj[key + '_sha256'] = sha256.createHash('sha256').update(updateObj[key]).digest('base64');
+                  updateObj[key + '_sha256'] = crypto.sha256(updateObj[key]);
               }
               updateObj[key] = crypto.encrypt(updateObj[key]);
           }
