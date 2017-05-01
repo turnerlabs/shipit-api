@@ -250,7 +250,8 @@ function doCreate(r,createObj,callBack, auth) {
   newDoc.save(function(err, newDoc) {
      if(err) {callBack(err); return};
      for (var key in r.fields) {
-         // put encryption on a field by field basis, so we can easily encrypt anything
+         // decrypt the doc so we can store the changes in the log
+         // the entire diff will be encrypted vs the individual pieces of it
          if (newDoc[key] && r.fields[key].encrypted === true) {
                newDoc[key] = crypto.decrypt(newDoc[key]);
          }
@@ -309,7 +310,7 @@ function deleteSubs(gID, r, auth) {
         results.forEach(function(result) {
           var subGID = gID + '/' + s.model + '_' + result[s.metadata.default];
           for (var key in r.fields) {
-              // put encryption on a field by field basis, so we can easily encrypt anything
+              // decrypt the individual values so we can save the DELETE diff
               if (result[key] && r.fields[key].encrypted === true) {
                     result[key] = crypto.decrypt(result[key]);
               }
