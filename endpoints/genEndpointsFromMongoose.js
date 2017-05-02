@@ -442,6 +442,9 @@ function update(f,r,updateObj,callBack, auth) {
               // put encryption on a field by field basis, so we can easily encrypt anything
               if (updateObj[key] && r.fields[key].encrypted === true) {
                     updateObj[key] = crypto.decrypt(updateObj[key]);
+                    if (oldObject[key]) {
+                        oldObject[key] = crypto.decrypt(oldObject[key]);
+                    }
               }
           }
 
