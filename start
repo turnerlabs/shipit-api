@@ -6,4 +6,5 @@ else
     echo "No Secret File..."
 fi
 
+echo $FUTURAMA
 node /opt/shipit-api/server.js
