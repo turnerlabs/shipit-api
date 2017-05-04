@@ -1,4 +1,8 @@
-var randomstring = require("randomstring");
+"use strict";
+
+let randomstring = require("randomstring"),
+    crypto = require("../lib/crypto");
+
 var e = module.exports;
 
 e.generateToken = function(length) {

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -f "${SECRET_FILE}" ]; then
+    export FUTURAMA=$(tail -1 "${SECRET_FILE}")
+else
+    echo "No Secret File..."
+fi
+
+node /opt/shipit-api/server.js

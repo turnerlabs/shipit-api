@@ -3,6 +3,7 @@ var requestHandlers  = require('../lib/requestHandlers.js');
 var auth             = require('../lib/auth.js');
 var documentToObject = require('../lib/documentToObject');
 var m                = genE.m;
+var crypto = require('../lib/crypto');
 requestHandlers.setMongoose(genE.m);
 
 var genEndpoints = [];
@@ -141,7 +142,7 @@ function checkBuildToken(f,o,callBack) {
    m.Environment.findOne({name: environment, _parentId: '/Shipment_' + shipment}).limit({buildToken: 1}).exec(function(err, result) {
      if (err) callBack(false);
      else if (result === null) callBack(false);
-     else callBack( (o.buildToken === result.buildToken) );
+     else callBack( (o.buildToken === crypto.decrypt(result.buildToken)) );
    });
 }
 
