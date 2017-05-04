@@ -23,6 +23,19 @@ schema.envVar = {
     create: true,
     update: true,
     required: true,
+    encrypted: true,
+    sha256: true,
+    test: helpers.isString,
+    description: "The value the envvar gets set to",
+    requirement: "Must be a valid string",
+  },
+  value_sha256: {
+    type: String,
+    unique: false,
+    create: true,
+    update: true,
+    required: false,
+    hide: true,
     test: helpers.isString,
     description: "The value the envvar gets set to",
     requirement: "Must be a valid string",
@@ -222,7 +235,8 @@ schema.port = {
     auth: true,
     test: helpers.isString,
     description: 'Private key for a SSL Certificate (pem encoded)',
-    requirement: 'Must be a valid String'
+    requirement: 'Must be a valid String',
+    encrypted: true
   },
   public_key_certificate: {
     type: String,
@@ -234,7 +248,8 @@ schema.port = {
     auth: true,
     test: helpers.isString,
     description: 'Public key for a SSL Certificate (pem encoded)',
-    requirement: 'Must be a valid String'
+    requirement: 'Must be a valid String',
+    encrypted: true
   },
   certificate_chain: {
     type: String,
@@ -246,7 +261,8 @@ schema.port = {
     auth: true,
     test: helpers.isString,
     description: 'SSL certificate chain (pem encoded)',
-    requirement: 'Must be a valid String'
+    requirement: 'Must be a valid String',
+    encrypted: true
   },
   ssl_arn: {
     type: String,
@@ -306,6 +322,7 @@ schema.environment = {
     required: true,
     generator: helpers.generateToken,
     test: helpers.isToken,
+    encrypted: true,
     auth: true,
     description: "Long lived auth token",
     requirement: "Must be a random string",
@@ -317,6 +334,7 @@ schema.environment = {
     update: true,
     required: false,
     test: helpers.isString,
+    encrypted: true,
     description: "The docker cfg value",
     requirement: "Must be base64 encoded and be a valid docker config file",
     auth: true
@@ -412,6 +430,7 @@ schema.logs = {
     update: false,
     required: true,
     test: helpers.isString,
+    encrypted: true,
     description: "The difference, stored as a JSON string.",
     requirement: "Must be a valid string."
   },
@@ -444,6 +463,6 @@ schema.logs = {
     test: helpers.isValidDate,
     description: "The timestamp the change was made.",
     requirement: "Must be a valid number."
-  },
+  }
 
 }

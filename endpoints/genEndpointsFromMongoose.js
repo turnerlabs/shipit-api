@@ -3,6 +3,7 @@
 let plural   = require('pluralize').plural,
     m        = require('../mongoose/mongoose'),
     models   = require('../models/models'),
+    crypto   = require('../lib/crypto'),
     documentToObject = require('../lib/documentToObject'),
     saveLog  = require('../lib/saveLog').save,
     nils     = ['',null];
@@ -131,7 +132,7 @@ function spawnCheckCreate(r) {
           if(callBackCount <= 0) {
             callBack(err);
           }
-        },o[field],r,o,m);
+        },o[field], r, o, m);
       }
     });
   }
@@ -237,8 +238,25 @@ function entryExists(model,findObj,callBack) {
 
 function doCreate(r,createObj,callBack, auth) {
   var newDoc = new m[r.model](createObj);
+  for (var key in r.fields) {
+      // put encryption on a field by field basis, so we can easily encrypt anything
+      if (newDoc[key] && r.fields[key].encrypted === true) {
+            if (r.fields[key].sha256) {
+                newDoc[key + '_sha256'] = crypto.sha256(newDoc[key]);
+            }
+            newDoc[key] = crypto.encrypt(newDoc[key]);
+      }
+  }
   newDoc.save(function(err, newDoc) {
      if(err) {callBack(err); return};
+     for (var key in r.fields) {
+         // decrypt the doc so we can store the changes in the log
+         // the entire diff will be encrypted vs the individual pieces of it
+         if (newDoc[key] && r.fields[key].encrypted === true) {
+               newDoc[key] = crypto.decrypt(newDoc[key]);
+         }
+     }
+     delete newDoc.value_sha256;
      saveLog({}, newDoc, auth);
      callBack(false,documentToObject(newDoc));
   });
@@ -291,6 +309,12 @@ function deleteSubs(gID, r, auth) {
       if(Array.isArray(results)) {
         results.forEach(function(result) {
           var subGID = gID + '/' + s.model + '_' + result[s.metadata.default];
+          for (var key in r.fields) {
+              // decrypt the individual values so we can save the DELETE diff
+              if (result[key] && r.fields[key].encrypted === true) {
+                    result[key] = crypto.decrypt(result[key]);
+              }
+          }
           saveLog(result, {}, auth);
           deleteSubs(subGID,s, auth);
           result.remove();
@@ -369,6 +393,18 @@ function spawnUpdate(r) {
       if(unsetObj) {
         updateObj['$unset']=unsetObj;
       }
+
+      for (var key in r.fields) {
+          // put encryption on a field by field basis, so we can easily encrypt anything
+          if (updateObj[key] && r.fields[key].encrypted === true) {
+              // if model say to put sha on object. This means it probably needs to be queried later.
+              if (r.fields[key].sha256) {
+                  updateObj[key + '_sha256'] = crypto.sha256(updateObj[key]);
+              }
+              updateObj[key] = crypto.encrypt(updateObj[key]);
+          }
+      }
+
       update(f,r,updateObj,callBack, auth);
     }, auth);
   }
@@ -393,6 +429,7 @@ function update(f,r,updateObj,callBack, auth) {
 
       // get just whats being changed
       keys.forEach((key) => {
+          newDoc[key] = crypto.decrypt(newDoc[key]);
           oldObject[key] = newDoc[key];
       });
 
@@ -401,6 +438,19 @@ function update(f,r,updateObj,callBack, auth) {
         m[r.model].findOne(findObj).exec(function(err, newDoc) {
           if(err) {callBack(err); return}
           // save diff
+          for (var key in r.fields) {
+              // put encryption on a field by field basis, so we can easily encrypt anything
+              if (updateObj[key] && r.fields[key].encrypted === true) {
+                    updateObj[key] = crypto.decrypt(updateObj[key]);
+                    if (oldObject[key]) {
+                        oldObject[key] = crypto.decrypt(oldObject[key]);
+                    }
+              }
+          }
+
+          delete oldObject.value_sha256;
+          delete updateObj.value_sha256;
+          delete newDoc.value_sha256;
           saveLog(oldObject, updateObj, auth);
           callBack(false,newDoc);
           return;
