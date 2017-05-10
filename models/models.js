@@ -303,9 +303,10 @@ schema.port = {
     create: true,
     update: true,
     required: false,
-    default: "elb",
+    default: "default",
+    test: helpers.isString,
     description: 'LoadBalancer type',
-    requirement: 'Must be a valid lbtype (elb,alb)'
+    requirement: 'Must be a valid lbtype (default,elb,alb)'
   }
 }
 
