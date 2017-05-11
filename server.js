@@ -75,7 +75,7 @@ let server = app.listen(myPort, function () {
 });
 
 process.on('SIGTERM', function onSigterm () {
-  console.info('ERROR: Got SIGTERM. Graceful shutdown start', new Date().toISOString())
+  console.info('WARNING: Got SIGTERM. Graceful shutdown start', new Date().toISOString())
 
   // If we get SIGTERM, then k8s is about to kill us. We should tell our server to close down. This will
   // stop any new connections from coming in, and give open connections time to finish.
