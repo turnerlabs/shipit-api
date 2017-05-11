@@ -448,8 +448,8 @@ function update(f,r,updateObj,callBack, auth) {
               }
           }
 
-          oldObject && delete oldObject.value_sha256;
-          updateObj && delete updateObj.value_sha256;
+          delete oldObject.value_sha256;
+          delete updateObj.value_sha256;
           saveLog(oldObject, updateObj, auth);
           callBack(false,newDoc);
           return;
