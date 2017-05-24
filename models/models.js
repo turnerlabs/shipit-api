@@ -296,6 +296,17 @@ schema.port = {
     test: helpers.isValidInteger,
     description: "The timeout value for the healthcheck for container monitoring",
     requirement: "Must be 0 or positive Integer"
+  },
+  lbtype: {
+    type: String,
+    unique: false,
+    create: true,
+    update: true,
+    required: false,
+    default: "default",
+    test: helpers.isString,
+    description: 'LoadBalancer type',
+    requirement: 'Must be a valid lbtype (default,elb,alb)'
   }
 }
 
