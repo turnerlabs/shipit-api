@@ -1,0 +1,14 @@
+{
+  "protocol": "https",
+  "healthcheck": "/_",
+  "external": true,
+  "primary": true,
+  "public_vip": false,
+  "enable_proxy_protocol": false,
+  "ssl_arn": "foo",
+  "ssl_management_type": "acm",
+  "healthcheck_timeout": 5,
+  "public_port": 80,
+  "value": 17290,
+  "name": "PORT"
+}

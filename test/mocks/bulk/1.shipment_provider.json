@@ -1,0 +1,36 @@
+{
+  "enableMonitoring": false,
+  "name": "test1",
+  "parentShipment": {
+    "name": "bulk-shipment-app",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "CUSTOMER",
+        "value": "mss",
+        "type": "basic"
+      }
+    ]
+  },
+  "envVars": [
+    {
+      "name": "NODE_ENV",
+      "value": "development",
+      "type": "basic"
+    }
+  ],
+  "providers": [
+    {
+      "replicas": 2,
+      "barge": "test",
+      "name": "aws:us-east-1",
+      "envVars": [
+        {
+          "name": "LOCATION",
+          "value": "ec2",
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}

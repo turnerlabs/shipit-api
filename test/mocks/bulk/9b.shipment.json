@@ -1,0 +1,20 @@
+{
+  "enableMonitoring": true,
+  "name": "test",
+  "parentShipment": {
+    "name": "bulk-test-app",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "CUSTOMER",
+        "value": "ops",
+        "type": "basic"
+      },
+      {
+        "name": "NEW_VAR",
+        "value": "only in b",
+        "type": "basic"
+      }
+    ]
+  }
+}

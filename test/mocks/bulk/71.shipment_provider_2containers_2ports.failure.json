@@ -1,0 +1,78 @@
+{
+  "enableMonitoring": false,
+  "name": "test6",
+  "parentShipment": {
+    "name": "bulk-shipment-app",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "CUSTOMER",
+        "value": "mss",
+        "type": "basic"
+      }
+    ]
+  },
+  "envVars": [
+    {
+      "name": "TEST",
+      "value": "true",
+      "type": "basic"
+    }
+  ],
+  "providers": [
+    {
+      "replicas": 4,
+      "barge": "test",
+      "name": "aws:us-east-1",
+      "envVars": [
+        {
+          "name": "LOCATION",
+          "value": "ec2",
+          "type": "basic"
+        }
+      ]
+    }
+  ],
+  "containers": [
+    {
+      "name": "hello-world-app",
+      "envVars": [],
+      "ports": [
+        {
+          "protocol": "http",
+          "healthcheck": "/_hc",
+          "external": true,
+          "primary": true,
+          "public_vip": false,
+          "enable_proxy_protocol": false,
+          "ssl_arn": "",
+          "ssl_management_type": "iam",
+          "healthcheck_timeout": 1,
+          "public_port": 80,
+          "value": 15080,
+          "name": "PORT"
+        }
+      ]
+    },
+    {
+      "image": "registry.services.dmtio.net/sidecar:0.1.0",
+      "name": "sidecar-app",
+      "envVars": [],
+      "ports": [
+        {
+          "protocol": "http",
+          "healthcheck": "/sidecar",
+          "external": false,
+          "primary": false,
+          "public_vip": false,
+          "enable_proxy_protocol": false,
+          "ssl_arn": "",
+          "ssl_management_type": "iam",
+          "healthcheck_timeout": 1,
+          "value": 7878,
+          "name": "PORT_SIDECAR"
+        }
+      ]
+    }
+  ]
+}

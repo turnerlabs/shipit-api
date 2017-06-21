@@ -1,0 +1,4 @@
+ {
+   "name": "mss-hello-world",
+   "image": "registry.services.dmtio.net/mss-hello-world:0.1.0"
+ }

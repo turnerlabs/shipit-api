@@ -1,0 +1,109 @@
+{
+  "name": "back",
+  "buildToken": null,
+  "enableMonitoring": true,
+  "envVars": [
+    {
+      "name": "PORT",
+      "value": "8081",
+      "type": "basic"
+    },
+    {
+      "name": "PORT_1",
+      "value": "8082",
+      "type": "basic"
+    },
+    {
+      "name": "SHIP_LOGS",
+      "value": "logzio",
+      "type": "hidden"
+    }
+  ],
+  "providers": [
+    {
+      "name": "east-1",
+      "replicas": 20,
+      "barge": "test-east",
+      "envVars": [{
+        "name": "THING",
+        "value": "SO COOL!",
+        "type": "basic"
+      }]
+    },
+    {
+      "name": "ec2",
+      "replicas": 20,
+      "barge": "test25",
+      "envVars": [
+        {
+          "name": "THING",
+          "value": "SO COOL!",
+          "type": "basic"
+        },
+        {
+          "name": "THING2",
+          "value": "awesome.",
+          "type": "basic"
+        }
+      ]
+    }
+  ],
+  "containers": [{
+      "name": "webapp",
+      "image": "nginx:4.0.0",
+      "envVars": [{
+        "name": "THING2",
+        "value": "awesome.",
+        "type": "basic"
+      },{
+        "name": "THING3",
+        "value": "awesome.",
+        "type": "hidden"
+      },{
+        "name": "SHIP_LOGS",
+        "value": "logzio",
+        "type": "hidden"
+      }],
+      "ports": [{
+          "protocol": "http",
+          "healthcheck": "/_ping",
+          "external": true,
+          "primary": true,
+          "public_vip": false,
+          "enable_proxy_protocol": false,
+          "ssl_arn": "",
+          "ssl_management_type": "iam",
+          "healthcheck_timeout": 1,
+          "value": 80,
+          "name": "PORT"
+      },{
+          "protocol": "https",
+          "healthcheck": "/_ping",
+          "external": true,
+          "primary": false,
+          "public_vip": false,
+          "enable_proxy_protocol": false,
+          "ssl_arn": "foooooooooo",
+          "ssl_management_type": "iam",
+          "healthcheck_timeout": 1,
+          "value": 443,
+          "name": "PORT_SSL"
+      }]
+  }],
+  "parentShipment": {
+    "name": "foo",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "PORT",
+        "value": "8081",
+        "type": "basic"
+      },
+      {
+        "name": "PORT_3",
+        "value": "8082",
+        "type": "basic"
+      }
+    ]
+  }
+}

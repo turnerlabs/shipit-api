@@ -1,0 +1,14 @@
+{
+  "enableMonitoring": false,
+  "name": "test0",
+  "parentShipment": {
+    "name": "bulk-shipment-app",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "CUSTOMER",
+        "type": "basic"
+      }
+    ]
+  }
+}

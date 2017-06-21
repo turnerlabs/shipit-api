@@ -1,0 +1,80 @@
+{
+    "enableMonitoring": false,
+    "name": "dev",
+    "parentShipment": {
+        "name": "tester-test",
+        "group": "test",
+        "envVars": [
+            {
+                "type": "basic",
+                "value": "mss",
+                "name": "CUSTOMER"
+            },
+            {
+                "type": "basic",
+                "value": "tester-test",
+                "name": "PRODUCT"
+            },
+            {
+                "type": "basic",
+                "value": "test",
+                "name": "PROJECT"
+            },
+            {
+                "type": "basic",
+                "value": "example.com",
+                "name": "PROPERTY"
+            }
+        ]
+    },
+    "envVars": [
+        {
+            "type": "basic",
+            "value": "/",
+            "name": "HEALTHCHECK"
+        },
+        {
+            "type": "basic",
+            "value": "54321",
+            "name": "PORT"
+        }
+    ],
+    "providers": [
+        {
+            "replicas": 0,
+            "barge": "test",
+            "name": "ec2",
+            "envVars": []
+        }
+    ],
+    "containers": [
+        {
+            "image": "registry.services.dmtio.net/mss-test:0.0.1",
+            "name": "tester-test",
+            "envVars": [
+                {
+                    "type": "basic",
+                    "value": "/",
+                    "name": "HEALTHCHECK"
+                }
+            ],
+            "ports": [
+                {
+                    "protocol": "http",
+                    "healthcheck": "/",
+                    "external": true,
+                    "primary": true,
+                    "public_vip": false,
+                    "enable_proxy_protocol": false,
+                    "ssl_arn": "",
+                    "ssl_management_type": "iam",
+                    "healthcheck_timeout": 1,
+                    "enable_sticky_sessions": true,
+                    "public_port": 80,
+                    "value": 3000,
+                    "name": "primary"
+                }
+            ]
+        }
+    ]
+}

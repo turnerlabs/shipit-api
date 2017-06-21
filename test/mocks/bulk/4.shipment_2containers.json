@@ -1,0 +1,43 @@
+{
+  "enableMonitoring": false,
+  "name": "test4",
+  "parentShipment": {
+    "name": "bulk-shipment-app",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "CUSTOMER",
+        "value": "mss",
+        "type": "basic"
+      }
+    ]
+  },
+  "envVars": [
+    {
+      "name": "NODE_ENV",
+      "value": "development",
+      "type": "basic"
+    }
+  ],
+  "providers": [],
+  "containers": [
+    {
+      "image": "registry.services.dmtio.net/hello-world:0.1.0",
+      "name": "hello-world-app",
+      "envVars": [
+        {
+          "name": "HEALTHCHECK",
+          "value": "/",
+          "type": "basic"
+        }
+      ],
+      "ports": []
+    },
+    {
+      "image": "registry.services.dmtio.net/sidecar:0.1.0",
+      "name": "sidecar-app",
+      "envVars": [],
+      "ports": []
+    }
+  ]
+}

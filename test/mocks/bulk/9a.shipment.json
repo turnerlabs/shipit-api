@@ -1,0 +1,85 @@
+{
+  "enableMonitoring": false,
+  "name": "test",
+  "parentShipment": {
+    "name": "bulk-test-app",
+    "group": "test",
+    "envVars": [
+      {
+        "name": "CUSTOMER",
+        "value": "mss",
+        "type": "basic"
+      },
+      {
+        "name": "MY_SECRET",
+        "value": "private",
+        "type": "hidden"
+      }
+    ]
+  },
+  "envVars": [
+    {
+      "name": "NODE_ENV",
+      "value": "development",
+      "type": "basic"
+    },
+    {
+      "name": "MY_SECRET",
+      "value": "private",
+      "type": "hidden"
+    }
+  ],
+  "providers": [
+    {
+      "replicas": 2,
+      "barge": "test",
+      "name": "aws:us-east-1",
+      "envVars": [
+        {
+          "name": "LOCATION",
+          "value": "ec2",
+          "type": "basic"
+        },
+        {
+          "name": "MY_SECRET",
+          "value": "private",
+          "type": "hidden"
+        }
+      ]
+    }
+  ],
+  "containers": [
+    {
+      "image": "registry.services.dmtio.net/hello-world:0.1.0",
+      "name": "hello-world-app",
+      "envVars": [
+        {
+          "name": "HEALTHCHECK",
+          "value": "/",
+          "type": "basic"
+        },
+        {
+          "name": "MY_SECRET",
+          "value": "private",
+          "type": "hidden"
+        }
+      ],
+      "ports": [
+        {
+          "protocol": "http",
+          "healthcheck": "/_hc",
+          "external": true,
+          "primary": true,
+          "public_vip": false,
+          "enable_proxy_protocol": false,
+          "ssl_arn": "",
+          "ssl_management_type": "iam",
+          "healthcheck_timeout": 1,
+          "public_port": 80,
+          "value": 15080,
+          "name": "PORT"
+        }
+      ]
+    }
+  ]
+}

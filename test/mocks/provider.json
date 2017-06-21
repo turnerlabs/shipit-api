@@ -1,0 +1,5 @@
+{
+  "name": "ec2",
+  "replicas": 100,
+  "barge": "tester"
+}

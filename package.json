@@ -1,0 +1,65 @@
+{
+  "name": "shipit-api",
+  "version": "2.10.0-sql",
+  "description": "An API for Shipments in Harbor",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "./bin/www",
+    "build": "docker build -t \"shipit-api:$(jq -r .version < package.json)\" .",
+    "local": "v=$(jq -r .version < package.json); s=$(cat ./test/.secret); docker run -p 7077:7077 -e PORT='7077' -e DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:5432/test\" -e LOCAL_SECRET=\"${s}\" \"shipit-api:${v}\"",
+    "test": "DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test\" SECRET_FILE='./test/.secret' node ./node_modules/mocha/bin/mocha --sort"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turnerlabs/shipit-api.git"
+  },
+  "keywords": [
+    "shipit",
+    "harbor"
+  ],
+  "author": {
+    "name": "Wilson Wise",
+    "email": "wilson.wise@turner.com"
+  },
+  "contributors": [
+    {
+      "name": "Josh Kurz",
+      "email": "josh.kurz@turner.com"
+    },
+    {
+      "name": "Jason Tolsma",
+      "email": "jason.tolsma@turner.com"
+    }
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/turnerlabs/shipit-api/issues"
+  },
+  "homepage": "https://github.com/turnerlabs/shipit-api#readme",
+  "engines": {
+    "node": "6.10.3",
+    "npm": "3.10.10"
+  },
+  "dependencies": {
+    "body-parser": "1.17.1",
+    "cors": "2.8.1",
+    "crypto": "0.0.3",
+    "express": "4.15.2",
+    "jsondiffpatch": "^0.2.4",
+    "morgan": "1.8.1",
+    "node-cryptojs-aes": "0.4.0",
+    "pg": "6.1.3",
+    "pg-hstore": "2.3.2",
+    "randomstring": "1.1.5",
+    "sequelize": "3.30.2",
+    "winston": "2.3.1"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "mocha": "3.2.0",
+    "nock": "9.0.9",
+    "sequelize-cli": "2.5.1",
+    "supertest": "3.0.0"
+  }
+}

@@ -1,0 +1,57 @@
+machine:
+  node:
+    version: 6.10.3
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+    # Start Postgres 9.6 since the default is 9.5.
+    - sudo service postgresql stop
+    - sudo mv /usr/lib/postgresql-9.6/9.6 /usr/lib/postgresql/9.6
+    - sudo mv /etc/postgresql-9.6/9.6 /etc/postgresql/9.6
+    - sudo service postgresql start 9.6
+
+    # Add a password to the `ubuntu` user, since Postgres is configured to
+    # always ask for a password, and without out it will fail.
+    - sudo -u postgres psql -p 5433 -c "create user ubuntu with password 'ubuntu';"
+    - sudo -u postgres psql -p 5433 -c "alter user ubuntu with superuser;"
+
+    # Create a new test database.
+    - sudo -u postgres psql -p 5433 -c "create database test;"
+  services:
+    - docker
+  environment:
+    # Add the Postgres 9.6 binaries to the path.
+    PATH: /usr/lib/postgresql/9.6/bin/:$PATH
+
+
+dependencies:
+  pre:
+    - npm install
+    - export PGPORT=5433; npm test
+  override:
+    - docker version
+    - docker info
+    - docker login -e="${DOCKER_EMAIL}" -u="${DOCKER_USER}" -p="${DOCKER_PASSWORD}" quay.io
+    - docker run -v $(pwd):/data quay.io/turner/harbor-deploy set_build_values \
+      -s "mss-shipit-api" \
+      -t "${SHIPMENT_BUILD_TOKEN}" \
+      -e "dev" \
+      -b "${CIRCLE_BRANCH}" \
+      -n "${CIRCLE_BUILD_NUM}" > props;
+    - source props; docker build -t "${IMAGE}" .
+    - source props; docker push "${IMAGE}"
+    - source props; docker run -it --env-file props quay.io/turner/harbor-deploy catalog
+
+test:
+  override:
+    - echo "Already Ran Tests!!!"
+
+deployment:
+  staging:
+    branch: [develop]
+    commands:
+      - source props; docker run -it --env-file props quay.io/turner/harbor-deploy deploy
+    branch: [master]
+    commands:
+      - source props; docker run -it --env-file props quay.io/turner/harbor-deploy deploy
+      - source props; docker tag "${IMAGE}" "${LATEST}"
+      - source props; docker push "${LATEST}"
