@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+const models = require('../models');
+
+console.log('Starting to reset database...');
+models.sequelize.sync({force: true}).then(_ => {
+    console.log('...finish resetting database.');
+});
