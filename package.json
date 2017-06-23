@@ -9,7 +9,8 @@
     "reset": "DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test\" SECRET_FILE='./test/.secret' ./bin/reset",
     "build": "docker build -t \"shipit-api:$(jq -r .version < package.json)\" .",
     "local": "v=$(jq -r .version < package.json); s=$(cat ./test/.secret); docker run -p 7077:7077 -e PORT='7077' -e DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:5432/test\" -e LOCAL_SECRET=\"${s}\" \"shipit-api:${v}\"",
-    "test": "DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test\" SECRET_FILE='./test/.secret' ./bin/reset && ./bin/migrate up && node ./node_modules/mocha/bin/mocha --sort"
+    "vars":  "echo \"export DATABASE_URL='postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test'\"; echo \"export SECRET_FILE='./test/.secret'\"; echo",
+    "test": "./bin/reset && ./bin/migrate up && node ./node_modules/mocha/bin/mocha --sort"
   },
   "repository": {
     "type": "git",
