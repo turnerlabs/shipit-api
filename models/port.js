@@ -32,9 +32,6 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     min: 1,
                     max: 65535
-                },
-                get() {
-                    return this.getDataValue('public_port') || this.getDataValue('value');
                 }
             },
             protocol: {
@@ -67,12 +64,10 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: false
             },
             ssl_management_type: {
-                type: DataTypes.STRING,
-                defaultValue: ""
+                type: DataTypes.STRING
             },
             ssl_arn: {
                 type: DataTypes.TEXT,
-                defaultValue: "",
                 set(val) {
                     this.setDataValue('ssl_arn', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -83,7 +78,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             private_key: {
                 type: DataTypes.BLOB,
-                defaultValue: "",
                 set(val) {
                     this.setDataValue('private_key', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -94,7 +88,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             public_key_certificate: {
                 type: DataTypes.BLOB,
-                defaultValue: "",
                 set(val) {
                     this.setDataValue('public_key_certificate', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -105,7 +98,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             certificate_chain: {
                 type: DataTypes.BLOB,
-                defaultValue: "",
                 set(val) {
                     this.setDataValue('certificate_chain', val ? crypto.encrypt(val.toString()) : val);
                 },
