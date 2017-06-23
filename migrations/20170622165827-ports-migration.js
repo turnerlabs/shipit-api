@@ -1,5 +1,5 @@
 module.exports = {
-    up: function (queryInterface, Sequelize) {
+    up: function (queryInterface, DataTypes) {
         let changes = [];
 
         // public_port
@@ -8,7 +8,7 @@ module.exports = {
                 'Ports',
                 'public_port',
                 {
-                    type: Sequelize.INTEGER,
+                    type: DataTypes.INTEGER,
                     field: "public_port",
                     validate: {
                         min: 1,
@@ -27,8 +27,8 @@ module.exports = {
                 'Ports',
                 'ssl_management_type',
                 {
-                    type: Sequelize.STRING,
-                    defaultValue: ''
+                    type: DataTypes.STRING,
+                    defaultValue: ""
                 }
             )
         );
@@ -39,7 +39,7 @@ module.exports = {
                 'Ports',
                 'ssl_arn',
                 {
-                    type: Sequelize.TEXT,
+                    type: DataTypes.TEXT,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('ssl_arn', val ? crypto.encrypt(val.toString()) : val);
@@ -58,7 +58,7 @@ module.exports = {
                 'Ports',
                 'private_key',
                 {
-                    type: Sequelize.BLOB,
+                    type: DataTypes.BLOB,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('private_key', val ? crypto.encrypt(val.toString()) : val);
@@ -77,7 +77,7 @@ module.exports = {
                 'Ports',
                 'public_key_certificate',
                 {
-                    type: Sequelize.BLOB,
+                    type: DataTypes.BLOB,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('public_key_certificate', val ? crypto.encrypt(val.toString()) : val);
@@ -96,7 +96,7 @@ module.exports = {
                 'Ports',
                 'certificate_chain',
                 {
-                    type: Sequelize.BLOB,
+                    type: DataTypes.BLOB,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('certificate_chain', val ? crypto.encrypt(val.toString()) : val);
@@ -112,7 +112,7 @@ module.exports = {
         return Promise.all(changes);
     },
 
-    down: function (queryInterface, Sequelize) {
+    down: function (queryInterface, DataTypes) {
         let changes = [];
 
         // public_port
@@ -137,7 +137,7 @@ module.exports = {
                 'Ports',
                 'ssl_management_type',
                 {
-                    type: Sequelize.STRING
+                    type: DataTypes.STRING
                 }
             )
         );
@@ -210,7 +210,7 @@ module.exports = {
                         let val = this.getDataValue('certificate_chain');
                         return val ? crypto.decrypt(val) : val;
                     }
-
+                }
             )
         );
 

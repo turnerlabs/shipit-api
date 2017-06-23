@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     min: 1,
                     max: 65535
+                },
+                get() {
+                    return this.getDataValue('public_port') || this.getDataValue('value');
                 }
             },
             protocol: {
