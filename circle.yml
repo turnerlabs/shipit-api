@@ -26,7 +26,7 @@ machine:
 dependencies:
   pre:
     - npm install
-    - export PGPORT=5433; export DATABASE_URL="postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test"; export='./test/.secret'; npm test
+    - export PGPORT=5433; export DATABASE_URL="postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test"; export SECRET_FILE='./test/.secret'; npm test
   override:
     - docker version
     - docker info
