@@ -2,7 +2,14 @@
 
 const models = require('../models');
 
-console.log('Starting to reset database...');
-models.sequelize.sync({force: true}).then(_ => {
-    console.log('...finish resetting database.');
-});
+console.log('Starting to reset database:');
+models.sequelize.sync({force: true})
+    .then(() => {
+        console.log('> Dropping migrate table');
+        return models.sequelize.query('DROP TABLE IF EXISTS "SequelizeMeta"')
+    })
+    .then(() => {
+        console.log('> Finished resetting database');
+
+        process.exit(0);
+    });
