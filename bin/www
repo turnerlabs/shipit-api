@@ -3,40 +3,52 @@
 const app = require('../app'),
     http = require('http'),
     models = require('../models'),
+    migration = require('../lib/migration')
     port = normalizePort(process.env.PORT || 6055);
 
 let server = http.createServer(app);
-models.sequelize.sync().then(_ => {
-    server.listen(port, _ => {
-        console.log('ShipIt API starting');
-    });
-    server.on('error', error => {
-        if (error.syscall !== 'listen') {
-           throw error;
+models.sequelize.sync()
+    .then(() => {
+        // check migration status
+        return migration.status();
+    })
+    .then(status => {
+        if (status.pending.length > 0) {
+            return migration.migrate();
         }
+        return Promise.resolve();
+    })
+    .then(() => {
+        server.listen(port, () => {
+            console.log('ShipIt API starting');
+        });
+        server.on('error', error => {
+            if (error.syscall !== 'listen') {
+               throw error;
+            }
 
-        let bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+            let bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
-        switch (error.code) {
-        case 'EACCES':
-            console.error(`${bind} requires elevated privileges`);
-            process.exit(1);
-            break;
-        case 'EADDRINUSE':
-            console.error(`${bind} is already in use`);
-            process.exit(1);
-            break;
-        default:
-            throw error;
-        }
+            switch (error.code) {
+            case 'EACCES':
+                console.error(`${bind} requires elevated privileges`);
+                process.exit(1);
+                break;
+            case 'EADDRINUSE':
+                console.error(`${bind} is already in use`);
+                process.exit(1);
+                break;
+            default:
+                throw error;
+            }
+        });
+        server.on('listening', () => {
+            let addr = server.address(),
+                bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+
+            console.log(`Listening on ${bind}`)
+        });
     });
-    server.on('listening', _ => {
-        let addr = server.address(),
-            bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-
-        console.log(`Listening on ${bind}`)
-    });
-});
 
 process.on('SIGTERM', () => closeServer('SIGTERM'));
 process.on('SIGINT', () => closeServer('SIGINT'));

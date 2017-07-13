@@ -474,8 +474,8 @@ describe('Bulk', function () {
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
-                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
-                    expect(body.buildToken, 'body.buildToken').to.not.equal(data.buildToken);
+                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(5);
+                    expect(body.buildToken, 'body.buildToken').to.equal(data.buildToken);
 
                     done();
                 });
@@ -503,7 +503,7 @@ describe('Bulk', function () {
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
-                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
+                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(5);
 
                     done();
                 });

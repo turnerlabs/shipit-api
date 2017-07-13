@@ -33,7 +33,7 @@ describe('Shipments', function () {
     describe('Create', function () {
         before(function () {
             // drop all tables before running the first tests
-            return models.sequelize.sync({force: true});
+            return models.sequelize.sync();
         });
 
         it('should create Shipment with atomic model', function (done) {
