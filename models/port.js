@@ -67,7 +67,8 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: false
             },
             ssl_management_type: {
-                type: DataTypes.STRING
+                type: DataTypes.STRING,
+                defaultValue: 'iam'
             },
             ssl_arn: {
                 type: DataTypes.TEXT,

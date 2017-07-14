@@ -207,9 +207,9 @@ describe('Port', function () {
 
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port',
-                            'enable_proxy_protocol', 'healthcheck_timeout' ],
-                        excludes = ['composite', 'containerId', 'ssl_management_type', 'ssl_arn', 'private_key',
-                            'public_key_certificate', 'certificate_chain'];
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn' ],
+                        excludes = ['composite', 'containerId', 'private_key', 'public_key_certificate',
+                            'certificate_chain' ];
 
                     expect(data.containers, 'data.containers').to.have.lengthOf(1);
                     expect(data.containers[0], 'data.containers[0]').to.be.instanceOf(Object);
@@ -248,8 +248,8 @@ describe('Port', function () {
 
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port',
-                            'enable_proxy_protocol', 'healthcheck_timeout' ],
-                        excludes = ['composite', 'containerId', 'ssl_management_type', 'ssl_arn', 'private_key',
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn' ],
+                        excludes = ['composite', 'containerId', 'private_key',
                             'public_key_certificate', 'certificate_chain'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -264,6 +264,8 @@ describe('Port', function () {
                     expect(data.public_port, 'data.public_port').to.equal(5000);
                     expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
                     expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.ssl_arn, 'data.ssl_arn').to.equal('');
+                    expect(data.ssl_management_type, 'data.ssl_management_type').to.equal('iam');
 
                     done();
                 });
