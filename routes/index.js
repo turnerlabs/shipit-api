@@ -105,6 +105,7 @@ function authenticate(req, res, next) {
                 if (value.success) {
                     req.authenticated = true;
                     req.authedUser = user;
+                    req.tokenType = value.type;
 
                     return next();
                 } else {
@@ -197,23 +198,29 @@ function authorize(req, res, next) {
     let user = req.authedUser,
         groups = req.groups || [];
 
-    // Filter groups to only groups with write permissions
-    groups = groups.filter(can.write).map(group => group.name);
+    if (req.tokenType === 'service') {
+        req.authorized = true;
+        return next();
+    }
+    else {
+        // Filter groups to only groups with write permissions
+        groups = groups.filter(can.write).map(group => group.name);
 
-    auth.getGroups(user)
-        .then(result => {
-            // result is an array of groups the user is in
-            // check each of these groups to see if they are
-            // in the filtered groups
-            result.forEach(group => {
-                // as soon as we find one that is fine, move on
-                if (groups.includes(group)) {
-                    req.authorized = true;
-                }
-            });
-            return next();
-        })
-        .catch(e => next(e));
+        auth.getGroups(user)
+            .then(result => {
+                // result is an array of groups the user is in
+                // check each of these groups to see if they are
+                // in the filtered groups
+                result.forEach(group => {
+                    // as soon as we find one that is fine, move on
+                    if (groups.includes(group)) {
+                        req.authorized = true;
+                    }
+                });
+                return next();
+            })
+            .catch(e => next(e));
+    }
 }
 
 /**
