@@ -937,6 +937,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
+                    expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
 
                     done();
                 });
@@ -1123,6 +1124,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
+                    expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
 
                     done();
                 });
