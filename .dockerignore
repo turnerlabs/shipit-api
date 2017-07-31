@@ -8,4 +8,3 @@ Dockerfile
 LICENSE
 circle.yml
 test
-bin/reset
