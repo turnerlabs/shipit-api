@@ -143,21 +143,6 @@ describe('Port', function () {
                 });
         });
 
-        it('should fail to create when name is not uppercase', function (done) {
-            let port = {
-                    name: "primary_1",
-                    value: 5000
-                };
-
-            request(server)
-                .post(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/container/${testContainer.name}/ports`)
-                .set('x-username', authUser)
-                .set('x-token', authToken)
-                .send(port)
-                .expect('Content-Type', /json/)
-                .expect(422, done);
-        });
-
         it('should fail if a dash is in the name', function (done) {
             let port = {
                     name: "PORT-1",
