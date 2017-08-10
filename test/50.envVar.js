@@ -297,7 +297,7 @@ describe('EnvVar', function () {
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .expect('Content-Type', /json/)
-                .expect(404, done);
+                .expect(422, done);
         });
 
         it('should remove the Shipment EnvVar', function (done) {

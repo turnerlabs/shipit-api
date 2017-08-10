@@ -244,10 +244,12 @@ function bulk(req, res, next) {
                     environment.composite = baseComposite;
                     environment.shipmentId = `${shipment.name}`;
 
+                    // During the migration, we will allow buildToken to be passed in if it exists regardless of
+                    // whether the Shipment is new or not
                     if (originalShipment) {
-                        environment.buildToken = originalShipment.environments[0].buildToken || helpers.generateToken();
+                        environment.buildToken = shipment.environments[0].buildToken || originalShipment.environments[0].buildToken || helpers.generateToken();
                     } else {
-                        environment.buildToken = helpers.generateToken();
+                        environment.buildToken = shipment.environments[0].buildToken || helpers.generateToken();
                     }
 
                     let promise = models.Environment.upsert(environment, {

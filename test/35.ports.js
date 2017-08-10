@@ -66,26 +66,27 @@ describe('Port', function () {
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'enable_proxy_protocol',
                             'ssl_management_type', 'ssl_arn', 'private_key', 'public_key_certificate', 'certificate_chain',
-                            'healthcheck_timeout' ],
+                            'healthcheck_timeout', 'lbtype' ],
                         excludes = ['composite', 'containerId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
 
-                    expect(data.name).to.equal('PORT_MIN');
-                    expect(data.value).to.equal(5000);
-                    expect(data.healthcheck).to.equal('');
-                    expect(data.external).to.be.true;
-                    expect(data.primary).to.be.true;
-                    expect(data.public_vip).to.be.false;
-                    expect(data.public_port).to.be.null;
-                    expect(data.enable_proxy_protocol).to.be.false;
-                    expect(data.ssl_management_type).to.be.null;
-                    expect(data.ssl_arn).to.be.null;
-                    expect(data.private_key).to.be.null;
-                    expect(data.public_key_certificate).to.be.null;
-                    expect(data.certificate_chain).to.be.null;
-                    expect(data.healthcheck_timeout).to.equal(1);
+                    expect(data.name, 'data.name').to.equal('PORT_MIN');
+                    expect(data.value, 'data.value').to.equal(5000);
+                    expect(data.healthcheck, 'data.healthcheck').to.equal('');
+                    expect(data.external, 'data.external').to.be.true;
+                    expect(data.primary, 'data.primary').to.be.true;
+                    expect(data.public_vip, 'data.public_vip').to.be.false;
+                    expect(data.public_port, 'data.public_port').to.equal(5000);
+                    expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
+                    expect(data.ssl_management_type, 'data.ssl_management_type').to.be.a('string');
+                    expect(data.ssl_arn, 'data.ssl_arn').to.be.a('string');
+                    expect(data.private_key, 'data.private_key').to.be.a('string');
+                    expect(data.public_key_certificate, 'data.public_key_certificate').to.be.a('string');
+                    expect(data.certificate_chain, 'data.certificate_chain').to.be.a('string');
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
                 });
@@ -116,44 +117,30 @@ describe('Port', function () {
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'enable_proxy_protocol',
                             'ssl_management_type', 'ssl_arn', 'private_key', 'public_key_certificate', 'certificate_chain',
-                            'healthcheck_timeout' ],
+                            'healthcheck_timeout', 'lbtype' ],
                         excludes = ['composite', 'containerId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
 
-                    expect(data.name).to.equal('PORT');
-                    expect(data.value).to.equal(17290);
-                    expect(data.healthcheck).to.equal('/_');
-                    expect(data.external).to.be.true;
-                    expect(data.primary).to.be.true;
-                    expect(data.public_vip).to.be.false;
-                    expect(data.public_port).to.equal(80);
-                    expect(data.enable_proxy_protocol).to.be.false;
-                    expect(data.ssl_management_type).to.equal('acm');
-                    expect(data.ssl_arn).to.equal('foo');
-                    expect(data.private_key).to.be.null;
-                    expect(data.public_key_certificate).to.be.null;
-                    expect(data.certificate_chain).to.be.null;
-                    expect(data.healthcheck_timeout).to.equal(5);
+                    expect(data.name, 'data.name').to.equal('PORT');
+                    expect(data.value, 'data.value').to.equal(17290);
+                    expect(data.healthcheck, 'data.healthcheck').to.equal('/_');
+                    expect(data.external, 'data.external').to.be.true;
+                    expect(data.primary, 'data.primary').to.be.true;
+                    expect(data.public_vip, 'data.public_vip').to.be.false;
+                    expect(data.public_port, 'data.public_port').to.equal(80);
+                    expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
+                    expect(data.ssl_management_type, 'data.ssl_management_type').to.equal('acm');
+                    expect(data.ssl_arn, 'data.ssl_arn').to.equal('foo');
+                    expect(data.private_key, 'data.private_key').to.be.a('string');
+                    expect(data.public_key_certificate, 'data.public_key_certificate').to.be.a('string');
+                    expect(data.certificate_chain, 'data.certificate_chain').to.be.a('string');
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(5);
+                    expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
                 });
-        });
-
-        it('should fail to create when name is not uppercase', function (done) {
-            let port = {
-                    name: "primary_1",
-                    value: 5000
-                };
-
-            request(server)
-                .post(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/container/${testContainer.name}/ports`)
-                .set('x-username', authUser)
-                .set('x-token', authToken)
-                .send(port)
-                .expect('Content-Type', /json/)
-                .expect(422, done);
         });
 
         it('should fail if a dash is in the name', function (done) {
@@ -206,15 +193,15 @@ describe('Port', function () {
                     }
 
                     let data = res.body,
-                        props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port',
-                            'enable_proxy_protocol', 'healthcheck_timeout' ],
-                        excludes = ['composite', 'containerId', 'ssl_management_type', 'ssl_arn', 'private_key',
-                            'public_key_certificate', 'certificate_chain'];
+                        props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'lbtype',
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn' ],
+                        excludes = ['composite', 'containerId', 'private_key', 'public_key_certificate',
+                            'certificate_chain' ];
 
-                    expect(data.containers).to.have.lengthOf(1);
-                    expect(data.containers[0]).to.be.instanceOf(Object);
-                    expect(data.containers[0].ports).to.be.instanceOf(Array);
-                    expect(data.containers[0].ports).to.have.lengthOf(2);
+                    expect(data.containers, 'data.containers').to.have.lengthOf(1);
+                    expect(data.containers[0], 'data.containers[0]').to.be.instanceOf(Object);
+                    expect(data.containers[0].ports, 'data.containers[0].ports').to.be.instanceOf(Array);
+                    expect(data.containers[0].ports, 'data.containers[0].ports').to.have.lengthOf(2);
 
                     data.containers.forEach(container => {
                         container.ports.forEach(port => {
@@ -224,11 +211,11 @@ describe('Port', function () {
 
                             switch (port.name) {
                                 case 'PORT':
-                                    expect(port.value).to.equal(17290);
+                                    expect(port.value, 'port.value').to.equal(17290);
                                     break;
 
                                 case 'PORT_MIN':
-                                    expect(port.value).to.equal(5000);
+                                    expect(port.value, 'port.value').to.equal(5000);
                                     break;
                             }
                         });
@@ -247,23 +234,26 @@ describe('Port', function () {
                     }
 
                     let data = res.body,
-                        props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port',
-                            'enable_proxy_protocol', 'healthcheck_timeout' ],
-                        excludes = ['composite', 'containerId', 'ssl_management_type', 'ssl_arn', 'private_key',
+                        props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'lbtype',
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn' ],
+                        excludes = ['composite', 'containerId', 'private_key',
                             'public_key_certificate', 'certificate_chain'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
 
-                    expect(data.name).to.equal('PORT_MIN');
-                    expect(data.value).to.equal(5000);
-                    expect(data.healthcheck).to.equal('');
-                    expect(data.external).to.be.true;
-                    expect(data.primary).to.be.true;
-                    expect(data.public_vip).to.be.false;
-                    expect(data.public_port).to.be.null;
-                    expect(data.enable_proxy_protocol).to.be.false;
-                    expect(data.healthcheck_timeout).to.equal(1);
+                    expect(data.name, 'data.name').to.equal('PORT_MIN');
+                    expect(data.value, 'data.value').to.equal(5000);
+                    expect(data.healthcheck, 'data.healthcheck').to.equal('');
+                    expect(data.external, 'data.external').to.be.true;
+                    expect(data.primary, 'data.primary').to.be.true;
+                    expect(data.public_vip, 'data.public_vip').to.be.false;
+                    expect(data.public_port, 'data.public_port').to.equal(5000);
+                    expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.ssl_arn, 'data.ssl_arn').to.equal('');
+                    expect(data.ssl_management_type, 'data.ssl_management_type').to.equal('iam');
+                    expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
                 });
@@ -280,7 +270,7 @@ describe('Port', function () {
                     }
 
                     let data = res.body,
-                        props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port',
+                        props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'lbtype',
                             'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn', 'private_key',
                                 'public_key_certificate', 'certificate_chain' ],
                         excludes = ['composite', 'containerId'];
@@ -288,15 +278,16 @@ describe('Port', function () {
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
 
-                    expect(data.name).to.equal('PORT_MIN');
-                    expect(data.value).to.equal(5000);
-                    expect(data.healthcheck).to.equal('');
-                    expect(data.external).to.be.true;
-                    expect(data.primary).to.be.true;
-                    expect(data.public_vip).to.be.false;
-                    expect(data.public_port).to.be.null;
-                    expect(data.enable_proxy_protocol).to.be.false;
-                    expect(data.healthcheck_timeout).to.equal(1);
+                    expect(data.name, 'data.name').to.equal('PORT_MIN');
+                    expect(data.value, 'data.value').to.equal(5000);
+                    expect(data.healthcheck, 'data.healthcheck').to.equal('');
+                    expect(data.external, 'data.external').to.be.true;
+                    expect(data.primary, 'data.primary').to.be.true;
+                    expect(data.public_vip, 'data.public_vip').to.be.false;
+                    expect(data.public_port, 'data.public_port').to.equal(5000);
+                    expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
                 });
@@ -315,7 +306,7 @@ describe('Port', function () {
                 .put(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/container/${testContainer.name}/port/${minimumPort.name}`)
                 .set('x-username', authUser)
                 .set('x-token', authToken)
-                .send({value: 7000})
+                .send({value: 7000, lbtype: 'alb'})
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
                     if (err) {
@@ -323,12 +314,13 @@ describe('Port', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'value'];
+                        props = ['name', 'value', 'lbtype'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
 
-                    expect(data.name).to.equal('PORT_MIN');
-                    expect(data.value).to.equal(7000);
+                    expect(data.name, 'data.name').to.equal('PORT_MIN');
+                    expect(data.value, 'data.value').to.equal(7000);
+                    expect(data.lbtype, 'data.lbtype').to.equal('alb');
 
                     done();
                 });
@@ -371,7 +363,7 @@ describe('Port', function () {
 
                     let data = res.body;
 
-                    expect(data.status).to.equal('ok');
+                    expect(data.status, 'data.status').to.equal('ok');
 
                     done();
                 });
@@ -390,7 +382,7 @@ describe('Port', function () {
 
                     let data = res.body;
 
-                    expect(data.status).to.equal('ok');
+                    expect(data.status, 'data.status').to.equal('ok');
 
                     done();
                 });

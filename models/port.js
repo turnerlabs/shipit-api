@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isUppercase: true,
                     notContains: '-'
                 }
             },
@@ -32,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     min: 1,
                     max: 65535
+                },
+                get() {
+                    return this.getDataValue('public_port') || this.getDataValue('value');
                 }
             },
             protocol: {
@@ -65,11 +67,10 @@ module.exports = (sequelize, DataTypes) => {
             },
             ssl_management_type: {
                 type: DataTypes.STRING,
-                defaultValue: null
+                defaultValue: 'iam'
             },
             ssl_arn: {
                 type: DataTypes.TEXT,
-                defaultValue: null,
                 set(val) {
                     this.setDataValue('ssl_arn', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -80,7 +81,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             private_key: {
                 type: DataTypes.BLOB,
-                defaultValue: null,
                 set(val) {
                     this.setDataValue('private_key', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -91,7 +91,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             public_key_certificate: {
                 type: DataTypes.BLOB,
-                defaultValue: null,
                 set(val) {
                     this.setDataValue('public_key_certificate', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -102,7 +101,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             certificate_chain: {
                 type: DataTypes.BLOB,
-                defaultValue: null,
                 set(val) {
                     this.setDataValue('certificate_chain', val ? crypto.encrypt(val.toString()) : val);
                 },
@@ -119,6 +117,11 @@ module.exports = (sequelize, DataTypes) => {
                     min: 1,
                     max: 3600
                 }
+            },
+            lbtype: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: 'default'
             }
         },
         {

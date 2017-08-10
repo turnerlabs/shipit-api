@@ -474,8 +474,8 @@ describe('Bulk', function () {
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
-                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
-                    expect(body.buildToken, 'body.buildToken').to.not.equal(data.buildToken);
+                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(5);
+                    expect(body.buildToken, 'body.buildToken').to.equal(data.buildToken);
 
                     done();
                 });
@@ -503,7 +503,7 @@ describe('Bulk', function () {
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
-                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
+                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(5);
 
                     done();
                 });
@@ -546,7 +546,7 @@ describe('Bulk', function () {
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol',
-                                'healthcheck_timeout'],
+                                'healthcheck_timeout', 'ssl_management_type', 'ssl_arn'],
                             envVar: ['name', 'value', 'type']
                         },
                         excludes = {
@@ -554,7 +554,7 @@ describe('Bulk', function () {
                             parentShipment: ['composite'],
                             container: ['composite', 'environmentId'],
                             provider: ['composite', 'environmentId'],
-                            port: ['composite', 'containerId', 'ssl_management_type', 'ssl_arn', 'private_key',
+                            port: ['composite', 'containerId', 'private_key',
                                 'public_key_certificate', 'certificate_chain' ],
                             envVars: ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId']
                         };
@@ -937,6 +937,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
+                    expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
 
                     done();
                 });
@@ -1123,6 +1124,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
+                    expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
 
                     done();
                 });
