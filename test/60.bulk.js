@@ -546,7 +546,7 @@ describe('Bulk', function () {
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol',
-                                'healthcheck_timeout'],
+                                'healthcheck_timeout', 'ssl_management_type', 'ssl_arn'],
                             envVar: ['name', 'value', 'type']
                         },
                         excludes = {
@@ -554,7 +554,7 @@ describe('Bulk', function () {
                             parentShipment: ['composite'],
                             container: ['composite', 'environmentId'],
                             provider: ['composite', 'environmentId'],
-                            port: ['composite', 'containerId', 'ssl_management_type', 'ssl_arn', 'private_key',
+                            port: ['composite', 'containerId', 'private_key',
                                 'public_key_certificate', 'certificate_chain' ],
                             envVars: ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId']
                         };
@@ -937,6 +937,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
+                    expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
 
                     done();
                 });
@@ -1123,6 +1124,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
+                    expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
 
                     done();
                 });
