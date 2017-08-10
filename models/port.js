@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    isUppercase: true,
                     notContains: '-'
                 }
             },
@@ -118,6 +117,11 @@ module.exports = (sequelize, DataTypes) => {
                     min: 1,
                     max: 3600
                 }
+            },
+            lbtype: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: 'default'
             }
         },
         {

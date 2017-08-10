@@ -161,7 +161,8 @@ function deleteIt (req, res, next) {
     models.EnvVar.findOne(options)
         .then(envVar => {
             if (!envVar) {
-                return next({ statusCode: 404, message: `Cannot delete, envVar query ${options.where.composite} not found.`});
+                let msg = `Cannot delete, envVar query ${options.where.composite} not found.`;
+                return next({ statusCode: 422, message: msg, error: msg });
             }
 
             models.EnvVar.destroy(options)

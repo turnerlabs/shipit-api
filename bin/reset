@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-const models = require('../models');
+const models = require('../models'),
+    queries = Object.keys(models).filter(k => k.toLowerCase() !== 'sequelize' ).map(k => `DROP TABLE IF EXISTS "${k}s" CASCADE`);
 
 console.log('Starting to reset database:');
-models.sequelize.sync({force: true})
+models.sequelize.query('DROP TABLE IF EXISTS "SequelizeMeta"')
     .then(() => {
-        console.log('> Dropping migrate table');
-        return models.sequelize.query('DROP TABLE IF EXISTS "SequelizeMeta"')
+        return Promise.all(queries.map(q => models.sequelize.query(q)));
     })
     .then(() => {
         console.log('> Finished resetting database');

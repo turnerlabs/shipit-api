@@ -34,7 +34,7 @@
             "name": "HEALTHCHECK"
         },
         {
-            "type": "basic",
+            "type": "notype",
             "value": "54321",
             "name": "PORT"
         }
