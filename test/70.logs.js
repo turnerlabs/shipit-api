@@ -138,17 +138,17 @@ describe('Logs', function () {
                     let message = {
                             shipment: shipment,
                             environment: environment,
-                            group: 'test',
                             hidden: false,
                             user: 'trigger',
                             updated: (new Date()).getTime(),
-                            diff: "Message",
-                            buildToken: res.body.buildToken
+                            diff: "Message"
                         };
 
 
                     request(server)
                         .post('/v1/logs')
+                        .set('x-username', authUser)
+                        .set('x-token', authToken)
                         .send(message)
                         .expect('Content-Type', /json/)
                         .expect(201, (err, res) => {
