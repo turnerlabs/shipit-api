@@ -550,7 +550,7 @@ describe('Bulk', function () {
                             envVar: ['name', 'value', 'type']
                         },
                         excludes = {
-                            environment: ['composite', 'shipmentId', 'buildTOken'],
+                            environment: ['composite', 'shipmentId', 'buildToken'],
                             parentShipment: ['composite'],
                             container: ['composite', 'environmentId'],
                             provider: ['composite', 'environmentId'],
