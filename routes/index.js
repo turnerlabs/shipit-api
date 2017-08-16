@@ -94,7 +94,8 @@ function authenticate(req, res, next) {
 
     // for backward compatability
     let user = req.body.username || req.get('x-username'),
-        token = req.body.token || req.get('x-token');
+        token = req.body.token || req.get('x-token'),
+        buildToken = req.body.buildToken || null;
 
     req.username = user;
 
@@ -110,6 +111,23 @@ function authenticate(req, res, next) {
                     return next();
                 } else {
                     let err = new Error('Authentication failed');
+                    err.statusCode = 401;
+
+                    return next(err);
+                }
+            })
+            .catch(e => next(e));
+    } else if (buildToken) {
+        auth.checkBuildToken(req, buildToken)
+            .then(value => {
+                if (value.success) {
+                    req.authenticated = true;
+                    req.authedUser = 'buildToken';
+                    req.tokenType = 'service';
+
+                    return next();
+                } else {
+                    let err = new Error('Build token authentication failed')
                     err.statusCode = 401;
 
                     return next(err);
