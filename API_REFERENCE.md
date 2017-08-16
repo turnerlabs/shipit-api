@@ -142,12 +142,6 @@ name
 - description: Name of the environment
 - requirement: Must be a string using only [A-Za-z0-9_-]
 
-dockercfg
-- type:        String
-- required:    false
-- description: The docker cfg value
-- requirement: Must be base64 encoded and be a valid docker config file
-
 enableMonitoring
 - type:        Boolean
 - required:    false
@@ -677,12 +671,6 @@ x-token
 #### Fields
 
 ```
-dockercfg
-- type:        String
-- required:    false
-- description: The docker cfg value
-- requirement: Must be base64 encoded and be a valid docker config file
-
 enableMonitoring
 - type:        Boolean
 - required:    false
