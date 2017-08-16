@@ -123,18 +123,6 @@ describe('EnvVar', function () {
                 .expect(422, done);
         });
 
-        it('should fail when name is not uppercase', function (done) {
-            let failVar = {name: "failure", value: "foobar"};
-
-            request(server)
-                .post(`/v1/shipment/${testShipment.name}/envVars`)
-                .set('x-username', authUser)
-                .set('x-token', authToken)
-                .send(failVar)
-                .expect('Content-Type', /json/)
-                .expect(422, done);
-        });
-
         it('should fail when name has a dash', function (done) {
             let failVar = {name: "FAIL-1", value: "foobar"};
 

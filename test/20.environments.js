@@ -52,7 +52,7 @@ describe('Environment', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'enableMonitoring', 'buildToken', 'dockercfg'],
+                        props = ['name', 'enableMonitoring', 'buildToken'],
                         excludes = ['composite', 'shipmentId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -112,7 +112,7 @@ describe('Environment', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'enableMonitoring', 'buildToken', 'buildToken', 'dockercfg'],
+                        props = ['name', 'enableMonitoring', 'buildToken', 'buildToken'],
                         excludes = ['composite', 'shipmentId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -251,7 +251,7 @@ describe('Environment', function () {
 
                     let data = res.body,
                         props = ['name', 'enableMonitoring', 'parentShipment', 'envVars'],
-                        excludes = ['composite', 'shipmentId', 'buildToken', 'dockercfg', 'createdAt', 'updatedAt', 'deletedAt'];
+                        excludes = ['composite', 'shipmentId', 'buildToken', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
