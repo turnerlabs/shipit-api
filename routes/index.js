@@ -72,11 +72,13 @@ function errorHandler(err, req, res, next) {
  *
  */
 function setParams(req, res, next) {
-  let values = req.originalUrl.split('/');
-  if (values.length > 3) {
-      req.shipment = values[3];
-  }
-  next()
+    let values = req.originalUrl.split('/');
+
+    if (values.length > 3) {
+        req.shipment = values[3];
+    }
+
+    next()
 }
 
 /**
@@ -148,8 +150,7 @@ function authenticate(req, res, next) {
  *
  */
 function setGroups(req, res, next) {
-
-    let name = req.params.shipment || req.shipment || req.body.name;
+    let name = req.params.shipment || req.shipment || req.body.name || req.body.shipment;
 
     if (req.body.parentShipment) {
         name = req.body.parentShipment.name;
@@ -161,7 +162,7 @@ function setGroups(req, res, next) {
     if (!req.authenticated) {
         return next();
     } else if (!name) {
-        return next({statusCode: 422, message: 'Unknown shipment.'});
+        return next({statusCode: 422, message: `No shipment name ${name}.`});
     }
 
     models.Shipment.findOne({ where: { name } })
