@@ -77,6 +77,9 @@ function setParams(req, res, next) {
     if (values.length > 3) {
         req.shipment = values[3];
     }
+    if (values.length > 5) {
+        req.environment = values[5];
+    }
 
     next()
 }
