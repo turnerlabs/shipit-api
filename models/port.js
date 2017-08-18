@@ -86,7 +86,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 get() {
                     let val = this.getDataValue('private_key');
-                    return val ? crypto.decrypt(val) : val;
+                    return val ? crypto.decrypt(val) : "";
                 }
             },
             public_key_certificate: {
@@ -96,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 get() {
                     let val = this.getDataValue('public_key_certificate');
-                    return val ? crypto.decrypt(val) : val;
+                    return val ? crypto.decrypt(val) : "";
                 }
             },
             certificate_chain: {
@@ -106,7 +106,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 get() {
                     let val = this.getDataValue('certificate_chain');
-                    return val ? crypto.decrypt(val) : val;
+                    return val ? crypto.decrypt(val) : "";
                 }
             },
             healthcheck_timeout: {

@@ -53,6 +53,16 @@ function get(req, res, next) {
                                   envVar.value = helpers.hideValue();
                               }
                               return envVar;
+                          },
+                          portFieldDel = (port, authz) => {
+                              // these fields are not being excluded correctly
+                              let fields = ['private_key', 'public_key_certificate', 'certificate_chain'];
+
+                              if (!authz) {
+                                  fields.forEach(field => delete port[field])
+                              }
+
+                              return port;
                           };
 
                       if (result.envVars) {
@@ -65,6 +75,9 @@ function get(req, res, next) {
                           result.containers = result.containers.map(container => {
                               if (container.envVars) {
                                   container.envVars = container.envVars.map(envVar => hide(envVar, authz));
+                              }
+                              if (container.ports) {
+                                  container.ports = container.ports.map(port => portFieldDel(port, authz));
                               }
                               return container;
                           });

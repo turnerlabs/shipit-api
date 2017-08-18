@@ -20,8 +20,9 @@ module.exports = router;
  *
  */
 function get(req, res, next) {
-    let query = {
-            attributes: { exclude: helpers.excludes.port(req.authorized || null) },
+    let excludes = helpers.excludes.port(req.authorized || null),
+        query = {
+            attributes: { exclude: excludes },
             where: { composite: getComposite(req.params) }
         };
 
@@ -30,7 +31,12 @@ function get(req, res, next) {
             if (!port) {
               return null;
             }
-            return port.toJSON();
+
+            // It's not exlcuding the values correctly
+            port = port.toJSON();
+            excludes.forEach(field => delete port[field])
+
+            return port;
         })
         .then(handler.fetched(res, next, `Port '${req.params.port}' not found for Query: '${query.where.composite}'.`))
         .catch(reason => next(reason));
