@@ -58,7 +58,7 @@ module.exports = {
                 'Ports',
                 'private_key',
                 {
-                    type: DataTypes.BLOB,
+                    type: DataTypes.TEXT,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('private_key', val ? crypto.encrypt(val.toString()) : val);
@@ -77,7 +77,7 @@ module.exports = {
                 'Ports',
                 'public_key_certificate',
                 {
-                    type: DataTypes.BLOB,
+                    type: DataTypes.TEXT,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('public_key_certificate', val ? crypto.encrypt(val.toString()) : val);
@@ -96,7 +96,7 @@ module.exports = {
                 'Ports',
                 'certificate_chain',
                 {
-                    type: DataTypes.BLOB,
+                    type: DataTypes.TEXT,
                     defaultValue: "",
                     set(val) {
                         this.setDataValue('certificate_chain', val ? crypto.encrypt(val.toString()) : val);
