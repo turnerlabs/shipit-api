@@ -56,15 +56,21 @@ function get(req, res, next) {
                           };
 
                       if (result.envVars) {
-                          result.envVars = result.envVars.map(envVar => hide(envVar, authz));
+                          result.envVars = result.envVars
+                          .map(envVar => hide(envVar, authz))
+                          .sort(helpers.sortByName);
                       }
                       if (result.parentShipment && result.parentShipment.envVars) {
-                          result.parentShipment.envVars = result.parentShipment.envVars.map(envVar => hide(envVar, authz))
+                          result.parentShipment.envVars = result.parentShipment.envVars
+                          .map(envVar => hide(envVar, authz))
+                          .sort(helpers.sortByName);
                       }
                       if (result.containers) {
                           result.containers = result.containers.map(container => {
                               if (container.envVars) {
-                                  container.envVars = container.envVars.map(envVar => hide(envVar, authz));
+                                  container.envVars = container.envVars
+                                  .map(envVar => hide(envVar, authz))
+                                  .sort(helpers.sortByName);
                               }
                               return container;
                           });
@@ -72,7 +78,9 @@ function get(req, res, next) {
                       if (result.providers) {
                           result.providers = result.providers.map(provider => {
                               if (provider.envVars) {
-                                  provider.envVars = provider.envVars.map(envVar => hide(envVar, authz));
+                                  provider.envVars = provider.envVars
+                                  .map(envVar => hide(envVar, authz))
+                                  .sort(helpers.sortByName);
                               }
                               return provider;
                           });
