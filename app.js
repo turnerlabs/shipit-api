@@ -17,7 +17,7 @@ app.use(cors());
 
 app.get('/_hc', middleware.health);
 
-app.use(morgan('common'));
+app.use(morgan('short'));
 
 const routes = require('./routes'),
     shipment = require('./routes/shipment'),
