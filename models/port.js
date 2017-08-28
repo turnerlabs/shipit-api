@@ -80,33 +80,102 @@ module.exports = (sequelize, DataTypes) => {
                 }
             },
             private_key: {
-                type: DataTypes.BLOB,
+                type: DataTypes.TEXT,
                 set(val) {
-                    this.setDataValue('private_key', val ? crypto.encrypt(val.toString()) : val);
+                    if (val) {
+                        try {
+                            val = crypto.encrypt(val)
+                        }
+                        catch (e) {
+                            val = ""
+                        }
+                    }
+                    else {
+                        val = ""
+                    }
+                    this.setDataValue('private_key', val);
                 },
                 get() {
                     let val = this.getDataValue('private_key');
-                    return val ? crypto.decrypt(val) : val;
+                    if (val) {
+                        try {
+                            val = crypto.decrypt(val);
+                        }
+                        catch (e) {
+                            val = ""
+                        }
+                    }
+                    else {
+                        val = "";
+                    }
+
+                    return val;
                 }
             },
             public_key_certificate: {
-                type: DataTypes.BLOB,
+                type: DataTypes.TEXT,
                 set(val) {
-                    this.setDataValue('public_key_certificate', val ? crypto.encrypt(val.toString()) : val);
+                    if (val) {
+                        try {
+                            val = crypto.encrypt(val)
+                        }
+                        catch (e) {
+                            val = ""
+                        }
+                    }
+                    else {
+                        val = ""
+                    }
+                    this.setDataValue('public_key_certificate', val);
                 },
                 get() {
                     let val = this.getDataValue('public_key_certificate');
-                    return val ? crypto.decrypt(val) : val;
+                    if (val) {
+                        try {
+                            val = crypto.decrypt(val);
+                        }
+                        catch (e) {
+                            val = ""
+                        }
+                    }
+                    else {
+                        val = "";
+                    }
+
+                    return val;
                 }
             },
             certificate_chain: {
-                type: DataTypes.BLOB,
+                type: DataTypes.TEXT,
                 set(val) {
-                    this.setDataValue('certificate_chain', val ? crypto.encrypt(val.toString()) : val);
+                    if (val) {
+                        try {
+                            val = crypto.encrypt(val)
+                        }
+                        catch (e) {
+                            val = ""
+                        }
+                    }
+                    else {
+                        val = ""
+                    }
+                    this.setDataValue('certificate_chain', val);
                 },
                 get() {
                     let val = this.getDataValue('certificate_chain');
-                    return val ? crypto.decrypt(val) : val;
+                    if (val) {
+                        try {
+                            val = crypto.decrypt(val);
+                        }
+                        catch (e) {
+                            val = ""
+                        }
+                    }
+                    else {
+                        val = "";
+                    }
+
+                    return val;
                 }
             },
             healthcheck_timeout: {
