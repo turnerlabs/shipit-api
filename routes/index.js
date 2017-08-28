@@ -72,11 +72,16 @@ function errorHandler(err, req, res, next) {
  *
  */
 function setParams(req, res, next) {
-  let values = req.originalUrl.split('/');
-  if (values.length > 3) {
-      req.shipment = values[3];
-  }
-  next()
+    let values = req.originalUrl.split('/');
+
+    if (values.length > 3) {
+        req.shipment = values[3];
+    }
+    if (values.length > 5) {
+        req.environment = values[5];
+    }
+
+    next()
 }
 
 /**
@@ -94,7 +99,8 @@ function authenticate(req, res, next) {
 
     // for backward compatability
     let user = req.body.username || req.get('x-username'),
-        token = req.body.token || req.get('x-token');
+        token = req.body.token || req.get('x-token'),
+        buildToken = req.body.buildToken || null;
 
     req.username = user;
 
@@ -116,6 +122,23 @@ function authenticate(req, res, next) {
                 }
             })
             .catch(e => next(e));
+    } else if (buildToken) {
+        auth.checkBuildToken(req, buildToken)
+            .then(value => {
+                if (value.success) {
+                    req.authenticated = true;
+                    req.authedUser = 'buildToken';
+                    req.tokenType = 'service';
+
+                    return next();
+                } else {
+                    let err = new Error('Build token authentication failed')
+                    err.statusCode = 401;
+
+                    return next(err);
+                }
+            })
+            .catch(e => next(e));
     } else {
         // No attempt to auth, keep going
         return next();
@@ -130,8 +153,7 @@ function authenticate(req, res, next) {
  *
  */
 function setGroups(req, res, next) {
-
-    let name = req.params.shipment || req.shipment || req.body.name;
+    let name = req.params.shipment || req.shipment || req.body.name || req.body.shipment;
 
     if (req.body.parentShipment) {
         name = req.body.parentShipment.name;
@@ -143,7 +165,7 @@ function setGroups(req, res, next) {
     if (!req.authenticated) {
         return next();
     } else if (!name) {
-        return next({statusCode: 422, message: 'Unknown shipment.'});
+        return next({statusCode: 422, message: `No shipment name ${name}.`});
     }
 
     models.Shipment.findOne({ where: { name } })

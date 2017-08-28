@@ -25,17 +25,6 @@ module.exports = (sequelize, DataTypes) => {
                     return val ? crypto.decrypt(val) : val;
                 }
             },
-            dockercfg: {
-                type: DataTypes.TEXT,
-                allowNull: true,
-                set(val) {
-                    this.setDataValue('dockercfg', val ? crypto.encrypt(val.toString()) : val);
-                },
-                get() {
-                    let val = this.getDataValue('dockercfg');
-                    return val ? crypto.decrypt(val) : val;
-                }
-            },
             enableMonitoring: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,
