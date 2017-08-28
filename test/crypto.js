@@ -11,7 +11,7 @@ describe('Crypto', function () {
         decrypted,
         json;
 
-    it('should correctly encrypt a value', function () {
+    it('should encrypt a value', function () {
         encrypted = crypto.encrypt(value);
         json = JSON.parse(encrypted);
 
@@ -19,16 +19,31 @@ describe('Crypto', function () {
         props.forEach(prop => expect(json).to.have.property(prop));
     });
 
-    it('should correctly decrypt a value', function () {
+    it('should decrypt a value', function () {
         decrypted = crypto.decrypt(encrypted);
 
         expect(decrypted).to.equal(value);
     });
 
-    it('should correcly sha256 a value', function () {
+    it('should sha256 a value', function () {
         let sha1 = crypto.sha(value),
             sha2 = crypto.sha(value);
 
         expect(sha1).to.equal(sha2);
+    });
+
+    it('should return raw value if decrypt fails', function () {
+        let decrypted = crypto.decrypt(value);
+
+        expect(decrypted).to.equal(value);
+    });
+
+    it('should handle the falsy values (null, undefined, false, zero, and empty string)', function () {
+        let values = [null, undefined, false, 0, ''],
+            encrypted = values.map(crypto.encrypt),
+            decrypted = encrypted.map(crypto.decrypt);
+
+        // we wanted the decrypted values to equal their value
+        decrypted.forEach((value, idx) => expect(value, `value is '${value}'`).to.equal(values[idx]));
     });
 });
