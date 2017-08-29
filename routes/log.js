@@ -2,6 +2,7 @@ const models = require('../models'),
     mapper = require('../lib/mappers'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
+    crypto = require('../lib/crypto'),
     router = require('express').Router();
 
 // Shipment EnvVars
@@ -26,7 +27,8 @@ function get(req, res, next) {
         where: getWhereClause(req.params),
         order: '"timestamp" DESC',
         include: []
-    };
+    },
+    authz = req.authorized || null;
 
     models.Log.findAll(query)
         .then(logs => {
@@ -37,6 +39,10 @@ function get(req, res, next) {
             return logs.map(log => {
                 log = log.toJSON();
                 log.updated = new Date(log.timestamp).getTime();
+                log.diff = crypto.decrypt(log.diff)
+                if (!authz) {
+                    log.diff = helpers.hideValue();
+                }
                 return log;
             });
         })
