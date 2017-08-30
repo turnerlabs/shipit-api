@@ -6,8 +6,7 @@ const expect = require('chai').expect,
     models = require('../models'),
     helpers = require('./helpers'),
     server = require('../app'),
-    compare = require('./value_equals').compare,
-    sortByName = helpers.sortByName;
+    compare = require('./value_equals').compare;
 
 let authUser = 'test_user',
     authToken = 'foobar_token',
@@ -843,28 +842,20 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    body.parentShipment.envVars.sort(sortByName);
-                    data.parentShipment.envVars.sort(sortByName);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(2);
-                    body.envVars.sort(sortByName);
-                    data.envVars.sort(sortByName);
                     expect(compare(body.envVars, data.envVars), 'compare(body.envVars, data.envVars)').to.be.true;
 
                     expect(body.providers, 'body.providers').to.have.lengthOf(1);
                     expect(body.providers[0].replicas, 'body.providers[0].replicas').to.equal(2);
                     expect(body.providers[0].barge, 'body.providers[0].barge').to.equal('test');
                     expect(body.providers[0].name, 'body.providers[0].name').to.equal('aws:us-east-1');
-                    body.providers[0].envVars.sort(sortByName);
-                    data.providers[0].envVars.sort(sortByName);
                     expect(compare(body.providers[0].envVars, data.providers[0].envVars), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
 
                     expect(body.containers, 'body.containers').to.have.lengthOf(1);
                     expect(body.containers[0].image, 'body.containers[0].image').to.equal('registry.services.dmtio.net/hello-world:0.1.0');
                     expect(body.containers[0].name, 'body.containers[0].name').to.equal('hello-world-app');
-                    body.containers[0].envVars.sort(sortByName);
-                    data.containers[0].envVars.sort(sortByName);
                     expect(compare(body.containers[0].envVars, data.containers[0].envVars), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
                     expect(body.containers[0].ports[0].protocol, 'body.containers[0].ports[0].protocol').to.equal('http');
                     expect(body.containers[0].ports[0].healthcheck, 'body.containers[0].ports[0].healthcheck').to.equal('/_hc');
@@ -903,28 +894,20 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    body.parentShipment.envVars.sort(sortByName);
-                    data.parentShipment.envVars.sort(sortByName);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(2);
-                    body.envVars.sort(sortByName);
-                    data.envVars.sort(sortByName);
                     expect(compare(body.envVars, data.envVars), 'compare(body.envVars, data.envVars)').to.be.true;
 
                     expect(body.providers, 'body.providers').to.have.lengthOf(1);
                     expect(body.providers[0].replicas, 'body.providers[0].replicas').to.equal(2);
                     expect(body.providers[0].barge, 'body.providers[0].barge').to.equal('test');
                     expect(body.providers[0].name, 'body.providers[0].name').to.equal('aws:us-east-1');
-                    body.providers[0].envVars.sort(sortByName);
-                    data.providers[0].envVars.sort(sortByName);
                     expect(compare(body.providers[0].envVars, data.providers[0].envVars), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
 
                     expect(body.containers, 'body.containers').to.have.lengthOf(1);
                     expect(body.containers[0].image, 'body.containers[0].image').to.equal('registry.services.dmtio.net/hello-world:0.1.0');
                     expect(body.containers[0].name, 'body.containers[0].name').to.equal('hello-world-app');
-                    body.containers[0].envVars.sort(sortByName);
-                    data.containers[0].envVars.sort(sortByName);
                     expect(compare(body.containers[0].envVars, data.containers[0].envVars), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
                     expect(body.containers[0].ports[0].protocol, 'body.containers[0].ports[0].protocol').to.equal('http');
                     expect(body.containers[0].ports[0].healthcheck, 'body.containers[0].ports[0].healthcheck').to.equal('/_hc');
@@ -964,8 +947,6 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    body.parentShipment.envVars.sort(sortByName);
-                    data.parentShipment.envVars.sort(sortByName);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
                     expect(body.providers, 'body.providers').to.have.lengthOf(0);
@@ -997,8 +978,6 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    body.parentShipment.envVars.sort(sortByName);
-                    data.parentShipment.envVars.sort(sortByName);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
                     expect(body.providers, 'body.providers').to.have.lengthOf(0);
@@ -1030,28 +1009,20 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    body.parentShipment.envVars.sort(sortByName);
-                    data.parentShipment.envVars.sort(sortByName);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(2);
-                    body.envVars.sort(sortByName);
-                    data.envVars.sort(sortByName);
                     expect(compare(body.envVars, data.envVars), 'compare(body.envVars, data.envVars)').to.be.true;
 
                     expect(body.providers, 'body.providers').to.have.lengthOf(1);
                     expect(body.providers[0].replicas, 'body.providers[0].replicas').to.equal(2);
                     expect(body.providers[0].barge, 'body.providers[0].barge').to.equal('test');
                     expect(body.providers[0].name, 'body.providers[0].name').to.equal('aws:us-east-1');
-                    body.providers[0].envVars.sort(sortByName);
-                    data.providers[0].envVars.sort(sortByName);
                     expect(compare(body.providers[0].envVars, data.providers[0].envVars), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
 
                     expect(body.containers, 'body.containers').to.have.lengthOf(1);
                     expect(body.containers[0].image, 'body.containers[0].image').to.equal('registry.services.dmtio.net/hello-world:0.1.0');
                     expect(body.containers[0].name, 'body.containers[0].name').to.equal('hello-world-app');
-                    body.containers[0].envVars.sort(sortByName);
-                    data.containers[0].envVars.sort(sortByName);
                     expect(compare(body.containers[0].envVars, data.containers[0].envVars), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
                     expect(body.containers[0].ports[0].protocol, 'body.containers[0].ports[0].protocol').to.equal('http');
                     expect(body.containers[0].ports[0].healthcheck, 'body.containers[0].ports[0].healthcheck').to.equal('/_hc');
@@ -1090,28 +1061,20 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    body.parentShipment.envVars.sort(sortByName);
-                    data.parentShipment.envVars.sort(sortByName);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(2);
-                    body.envVars.sort(sortByName);
-                    data.envVars.sort(sortByName);
                     expect(compare(body.envVars, data.envVars), 'compare(body.envVars, data.envVars)').to.be.true;
 
                     expect(body.providers, 'body.providers').to.have.lengthOf(1);
                     expect(body.providers[0].replicas, 'body.providers[0].replicas').to.equal(2);
                     expect(body.providers[0].barge, 'body.providers[0].barge').to.equal('test');
                     expect(body.providers[0].name, 'body.providers[0].name').to.equal('aws:us-east-1');
-                    body.providers[0].envVars.sort(sortByName);
-                    data.providers[0].envVars.sort(sortByName);
                     expect(compare(body.providers[0].envVars, data.providers[0].envVars), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
 
                     expect(body.containers, 'body.containers').to.have.lengthOf(1);
                     expect(body.containers[0].image, 'body.containers[0].image').to.equal('registry.services.dmtio.net/hello-world:0.1.0');
                     expect(body.containers[0].name, 'body.containers[0].name').to.equal('hello-world-app');
-                    body.containers[0].envVars.sort(sortByName);
-                    data.containers[0].envVars.sort(sortByName);
                     expect(compare(body.containers[0].envVars, data.containers[0].envVars), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
                     expect(body.containers[0].ports[0].protocol, 'body.containers[0].ports[0].protocol').to.equal('http');
                     expect(body.containers[0].ports[0].healthcheck, 'body.containers[0].ports[0].healthcheck').to.equal('/_hc');

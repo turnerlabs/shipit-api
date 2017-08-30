@@ -19,14 +19,14 @@
   },
   "envVars": [
     {
-      "name": "NODE_ENV",
-      "value": "development",
-      "type": "basic"
-    },
-    {
       "name": "MY_SECRET",
       "value": "private",
       "type": "hidden"
+    },
+    {
+      "name": "NODE_ENV",
+      "value": "development",
+      "type": "basic"
     }
   ],
   "providers": [

@@ -17,10 +17,6 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.TEXT,
                 set(val) {
                     this.setDataValue('diff', val ? crypto.encrypt(val.toString()) : val);
-                },
-                get() {
-                    let val = this.getDataValue('diff');
-                    return val ? crypto.decrypt(val) : val;
                 }
             },
             user: {
