@@ -8,6 +8,5 @@ const config = {
 module.exports = {
     getMockData: name => `${__dirname}/mocks/${name}.json`,
     getUrl: name => config[name],
-    sortByName: (a, b) => a.name > b.name ? 1 : -1,
     fetchMockData: name => JSON.parse(read(`${__dirname}/mocks/${name}.json`, {encoding: "utf8"}))
 };
