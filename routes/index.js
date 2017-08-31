@@ -3,6 +3,10 @@ const pkg = require('../package.json'),
     handler = require('../lib/handler'),
     models = require('../models');
 
+const noAuthzPaths = [
+    '/v1/shipments'
+];
+
 let showErrorStack = process.env.SHOW_ERROR_STACK || true;
 
 let can = {
@@ -157,6 +161,11 @@ function setGroups(req, res, next) {
 
     if (req.body.parentShipment) {
         name = req.body.parentShipment.name;
+    }
+
+    // only set groups if we can have a group
+    if (req.method === 'GET' && noAuthzPaths.includes(req.path)) {
+        return next();
     }
 
     // only get groups if we are authenticated

@@ -162,6 +162,42 @@ describe('Shipments', function () {
                 });
         });
 
+        it('should return a list of shipments', function (done) {
+            request(server)
+                .get('/v1/shipments')
+                .expect('Content-Type', /json/)
+                .expect(200, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let data = res.body;
+
+                    expect(data).to.have.lengthOf(1);
+
+                    done();
+                });
+        });
+
+        it('should return a list of shipments while authenticated', function (done) {
+            request(server)
+                .get('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .expect('Content-Type', /json/)
+                .expect(200, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let data = res.body;
+
+                    expect(data).to.have.lengthOf(1);
+
+                    done();
+                });
+        });
+
         it('should error when fetching non-existent Shipment', function (done) {
             request(server)
                 .get('/v1/shipment/not-real')
