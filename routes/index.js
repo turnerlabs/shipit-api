@@ -80,6 +80,14 @@ function setParams(req, res, next) {
     if (values.length > 5) {
         req.environment = values[5];
     }
+    if (values[2] === 'logs') {
+        if (values[4]) {
+            req.shipment = values[4];
+        }
+        if (values[6]) {
+            req.environment = values[6]
+        }
+    }
 
     next()
 }

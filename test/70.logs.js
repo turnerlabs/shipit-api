@@ -81,8 +81,6 @@ describe('Logs', function () {
         it('should show a listing of logged events for bulk changes of a Shipment', function (done) {
             request(server)
                 .get('/v1/logs/shipment/bulk-shipment-app')
-                .set('x-username', authUser)
-                .set('x-token', authToken)
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
                     if (err) {
@@ -92,6 +90,7 @@ describe('Logs', function () {
                     let body = res.body;
 
                     expect(body).to.be.instanceOf(Array);
+                    expect(body[0].diff).to.equal("*******")
                     expect(body.length).to.equal(9);
 
                     return done();
@@ -112,6 +111,7 @@ describe('Logs', function () {
                     let body = res.body;
 
                     expect(body).to.be.instanceOf(Array);
+                    expect(body[0].diff).not.to.equal("*******")
                     expect(body.length).to.equal(3);
 
                     return done();
