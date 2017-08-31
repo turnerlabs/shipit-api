@@ -180,8 +180,17 @@ module.exports = (sequelize, DataTypes) => {
             },
             healthcheck_timeout: {
                 type: DataTypes.INTEGER,
-                defaultValue: 1,
+                defaultValue: 3,
                 field: "healthcheck_timeout",
+                validate: {
+                    min: 1,
+                    max: 3600
+                }
+            },
+            healthcheck_interval: {
+                type: DataTypes.INTEGER,
+                defaultValue: 10,
+                field: "healthcheck_interval",
                 validate: {
                     min: 1,
                     max: 3600

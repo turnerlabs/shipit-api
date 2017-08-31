@@ -66,7 +66,7 @@ describe('Port', function () {
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'enable_proxy_protocol',
                             'ssl_management_type', 'ssl_arn', 'private_key', 'public_key_certificate', 'certificate_chain',
-                            'healthcheck_timeout', 'lbtype' ],
+                            'healthcheck_timeout', 'healthcheck_interval', 'lbtype' ],
                         excludes = ['composite', 'containerId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -85,7 +85,8 @@ describe('Port', function () {
                     expect(data.private_key, 'data.private_key').to.be.a('string');
                     expect(data.public_key_certificate, 'data.public_key_certificate').to.be.a('string');
                     expect(data.certificate_chain, 'data.certificate_chain').to.be.a('string');
-                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(3);
+                    expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
@@ -117,7 +118,7 @@ describe('Port', function () {
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'enable_proxy_protocol',
                             'ssl_management_type', 'ssl_arn', 'private_key', 'public_key_certificate', 'certificate_chain',
-                            'healthcheck_timeout', 'lbtype' ],
+                            'healthcheck_timeout', 'healthcheck_interval', 'lbtype' ],
                         excludes = ['composite', 'containerId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -137,6 +138,7 @@ describe('Port', function () {
                     expect(data.public_key_certificate, 'data.public_key_certificate').to.be.a('string');
                     expect(data.certificate_chain, 'data.certificate_chain').to.be.a('string');
                     expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(5);
+                    expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
@@ -194,7 +196,7 @@ describe('Port', function () {
 
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'lbtype',
-                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn' ],
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'healthcheck_interval', 'ssl_management_type', 'ssl_arn' ],
                         excludes = ['composite', 'containerId', 'private_key', 'public_key_certificate',
                             'certificate_chain' ];
 
@@ -235,7 +237,7 @@ describe('Port', function () {
 
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'lbtype',
-                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn' ],
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'healthcheck_interval', 'ssl_management_type', 'ssl_arn' ],
                         excludes = ['composite', 'containerId', 'private_key',
                             'public_key_certificate', 'certificate_chain'];
 
@@ -250,7 +252,8 @@ describe('Port', function () {
                     expect(data.public_vip, 'data.public_vip').to.be.false;
                     expect(data.public_port, 'data.public_port').to.equal(5000);
                     expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
-                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(3);
+                    expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.ssl_arn, 'data.ssl_arn').to.equal('');
                     expect(data.ssl_management_type, 'data.ssl_management_type').to.equal('iam');
                     expect(data.lbtype, 'data.lbtype').to.equal('default');
@@ -271,7 +274,7 @@ describe('Port', function () {
 
                     let data = res.body,
                         props = [ 'name', 'healthcheck', 'external', 'primary', 'public_vip', 'public_port', 'lbtype',
-                            'enable_proxy_protocol', 'healthcheck_timeout', 'ssl_management_type', 'ssl_arn', 'private_key',
+                            'enable_proxy_protocol', 'healthcheck_timeout', 'healthcheck_interval', 'ssl_management_type', 'ssl_arn', 'private_key',
                                 'public_key_certificate', 'certificate_chain' ],
                         excludes = ['composite', 'containerId'];
 
@@ -286,7 +289,8 @@ describe('Port', function () {
                     expect(data.public_vip, 'data.public_vip').to.be.false;
                     expect(data.public_port, 'data.public_port').to.equal(5000);
                     expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
-                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(3);
+                    expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.lbtype, 'data.lbtype').to.equal('default');
 
                     done();
