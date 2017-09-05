@@ -2,6 +2,7 @@ const models = require('../models'),
     mapper = require('../lib/mappers'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
+    crypto = require('../lib/crypto'),
     checkAuth = require('.').checkAuth,
     router = require('express').Router(),
     Promise = require('bluebird');
@@ -84,7 +85,9 @@ function post(req, res, next) {
         envVar = helpers.getWhereClause(req.params, body.name);
 
     envVar.value = body.value;
-    envVar.type = body.type;
+    envVar.type = body.type || 'basic';
+    envVar = helpers.prepEnvVar(envVar);
+
     models.EnvVar.create(envVar)
         .then(result => {
             if (result) {
@@ -126,6 +129,9 @@ function put(req, res, next) {
             if (!envVar) {
                 return next({ statusCode: 404, message: `Cannot update, EnvVar query ${options.where.composite} not found.` });
             }
+
+            data.value = data.value || envVar.value;
+            data = helpers.prepEnvVar(data);
 
             models.EnvVar.update(data, options)
                 .then(result => {
@@ -190,12 +196,12 @@ function deleteIt (req, res, next) {
  *
  */
 function search (req, res, next) {
-    let query = {where: { environmentId: { $not: null }}},
+    let query = { where: { environmentId: { $not: null } } },
         authz = req.authorized || null;
 
-    for (var key in req.query) {
+    for (let key in req.query) {
         query.where.name = key;
-        query.where.value = req.query[key];
+        query.where.shaValue = crypto.sha(req.query[key]);
     }
 
     models.EnvVar.findAll(query)
@@ -206,7 +212,7 @@ function search (req, res, next) {
 
                     return models.Shipment.find({
                       where: { name: names[0] },
-                      attributes: { exclude: ['createdAt', 'updatedAt'] },
+                      attributes: { exclude: helpers.excludes.shipment(authz) },
                       include: [
                           {
                               model: models.Environment,
@@ -232,4 +238,5 @@ function search (req, res, next) {
         })
         .then(result => res.json(result))
         .catch(reason => next(reason));
+
 }
