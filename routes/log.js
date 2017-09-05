@@ -78,7 +78,7 @@ function post(req, res, next) {
  * @returns {Object} The where clause object
  */
 function getWhereClause(params) {
-    let where = {$and: {shipment: params.shipment}};
+    let where = {$and: {$or: {shipment: params.shipment, name: params.shipment}}};
 
     if (params.shipment && params.environment) {
         where.$and.environment = params.environment;
