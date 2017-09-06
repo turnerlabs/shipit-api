@@ -50,6 +50,7 @@
           "ssl_arn": "",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "public_port": 80,
           "value": 15080,
           "name": "PORT"
@@ -71,6 +72,7 @@
           "ssl_arn": "",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "value": 7878,
           "name": "PORT_SIDECAR"
         }

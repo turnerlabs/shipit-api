@@ -42,6 +42,7 @@
           "ssl_arn": "",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 1,
           "public_port": 80,
           "name": "PORT"
         },
@@ -55,6 +56,7 @@
           "ssl_arn": "foobar",
           "ssl_management_type": "acm",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 1,
           "public_port": 443,
           "value": 15443,
           "name": "PORT_HTTPS"
