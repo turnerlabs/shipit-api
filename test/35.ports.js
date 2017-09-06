@@ -85,7 +85,7 @@ describe('Port', function () {
                     expect(data.private_key, 'data.private_key').to.be.a('string');
                     expect(data.public_key_certificate, 'data.public_key_certificate').to.be.a('string');
                     expect(data.certificate_chain, 'data.certificate_chain').to.be.a('string');
-                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(3);
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
                     expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.lbtype, 'data.lbtype').to.equal('default');
 
@@ -252,7 +252,7 @@ describe('Port', function () {
                     expect(data.public_vip, 'data.public_vip').to.be.false;
                     expect(data.public_port, 'data.public_port').to.equal(5000);
                     expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
-                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(3);
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
                     expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.ssl_arn, 'data.ssl_arn').to.equal('');
                     expect(data.ssl_management_type, 'data.ssl_management_type').to.equal('iam');
@@ -289,7 +289,7 @@ describe('Port', function () {
                     expect(data.public_vip, 'data.public_vip').to.be.false;
                     expect(data.public_port, 'data.public_port').to.equal(5000);
                     expect(data.enable_proxy_protocol, 'data.enable_proxy_protocol').to.be.false;
-                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(3);
+                    expect(data.healthcheck_timeout, 'data.healthcheck_timeout').to.equal(1);
                     expect(data.healthcheck_interval, 'data.healthcheck_interval').to.equal(10);
                     expect(data.lbtype, 'data.lbtype').to.equal('default');
 

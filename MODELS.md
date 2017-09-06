@@ -71,7 +71,7 @@ There are several types of objects that are related to a Shipment in ShipIt.
     "enable_proxy_protocol":  "Boolean. Should the load balancer forward client IP information via Proxy Protocol scheme (only applies when protocol is tcp); defaults false.",
     "ssl_arn":                "String. ARN for an AWS ACM SSL Certificate or manually upload IAM server certificate",
     "ssl_management_type":    "String. SSL management type, currently supporting 'iam' or 'acm'",
-    "healthcheck_timeout":    "Integer. Number of seconds the health check should wait before considering the service to have timed out. Defaults to 3.",
+    "healthcheck_timeout":    "Integer. Number of seconds the health check should wait before considering the service to have timed out. Defaults to 1.",
     "healthcheck_interval":    "Integer. Number of seconds the health check should wait between healthcheck runs. Defaults to 10.",
     "lbtype":                 "String. Type of load balancer to create. Defaults to 'default'."
 }

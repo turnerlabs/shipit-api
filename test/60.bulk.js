@@ -864,7 +864,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_vip, 'body.containers[0].ports[0].public_vip').to.be.false;
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
-                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(3);
+                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
                     expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
@@ -917,7 +917,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_vip, 'body.containers[0].ports[0].public_vip').to.be.false;
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
-                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(3);
+                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
                     expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
@@ -1033,7 +1033,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_vip, 'body.containers[0].ports[0].public_vip').to.be.false;
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
-                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(3);
+                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
                     expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
@@ -1086,7 +1086,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].public_vip, 'body.containers[0].ports[0].public_vip').to.be.false;
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
-                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(3);
+                    expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
                     expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
