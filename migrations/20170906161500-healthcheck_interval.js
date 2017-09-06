@@ -4,7 +4,7 @@ module.exports = {
 
         // healthcheck_interval
         changes.push(
-            queryInterface.addColumn(
+            queryInterface.changeColumn(
                 'Ports',
                 'healthcheck_interval',
                 {
@@ -30,7 +30,7 @@ module.exports = {
 
         // healthcheck_interval
         changes.push(
-            queryInterface.addColumn(
+            queryInterface.changeColumn(
                 'Ports',
                 'healthcheck_interval',
                 {
