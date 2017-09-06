@@ -61,12 +61,7 @@ function get(req, res, next) {
  */
 function post(req, res, next) {
     let log = req.body;
-    let authz = req.authorized || null;
     log.name = log.shipment;
-
-    if (!authz) {
-        log.diff = helpers.hideValue();
-    }
 
     models.Log.create(log)
         .then(result => result.toJSON())
