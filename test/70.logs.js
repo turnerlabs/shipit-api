@@ -165,5 +165,81 @@ describe('Logs', function () {
                         });
                 });
         });
+
+        it('should accept a new log entry with buildToken', function (done) {
+            // Need to get the buildToken to start
+            let shipment = 'bulk-shipment-app',
+                environment = 'test6';
+
+            request(server)
+                .get(`/v1/shipment/${shipment}/environment/${environment}`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .expect('Content-Type', /json/)
+                .expect(200, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let message = {
+                        shipment: shipment,
+                        environment: environment,
+                        hidden: false,
+                        user: 'trigger',
+                        updated: (new Date()).getTime(),
+                        buildToken: res.body.buildToken,
+                        diff: "Message"
+                    };
+
+
+                    request(server)
+                        .post('/v1/logs')
+                        .send(message)
+                        .expect('Content-Type', /json/)
+                        .expect(201, (err, res) => {
+                            if (err) {
+                                return done(err);
+                            }
+
+                            let body = res.body,
+                                props = ['diff', 'id', 'shipment', 'environment', 'hidden', 'user', 'name', 'timestamp'];
+
+                            props.forEach(prop => expect(body).to.have.property(prop));
+
+                            done();
+                        });
+                });
+        });
+
+        it('should not accept a new log entry without a buildToken', function (done) {
+            // Need to get the buildToken to start
+            let shipment = 'bulk-shipment-app',
+                environment = 'test6';
+
+
+                let message = {
+                    shipment: shipment,
+                    environment: environment,
+                    hidden: false,
+                    user: 'trigger',
+                    updated: (new Date()).getTime(),
+                    diff: "Message"
+                };
+
+
+                request(server)
+                    .post('/v1/logs')
+                    .send(message)
+                    .expect('Content-Type', /json/)
+                    .expect(401, (err, res) => {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        expect(res.body.message).to.equal("Authorization failure");
+
+                        done();
+                    });
+        });
     });
 });
