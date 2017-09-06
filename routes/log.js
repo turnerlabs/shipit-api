@@ -3,10 +3,11 @@ const models = require('../models'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
     crypto = require('../lib/crypto'),
+    checkAuth = require('.').checkAuth,
     router = require('express').Router();
 
 // Shipment EnvVars
-router.post('/logs', post);
+router.post('/logs', checkAuth, post);
 router.get('/logs/shipment/:shipment/environment/:environment', get);
 router.get('/logs/shipment/:shipment', get);
 
@@ -60,8 +61,12 @@ function get(req, res, next) {
  */
 function post(req, res, next) {
     let log = req.body;
-
+    let authz = req.authorized || null;
     log.name = log.shipment;
+
+    if (!authz) {
+        log.diff = helpers.hideValue();
+    }
 
     models.Log.create(log)
         .then(result => result.toJSON())

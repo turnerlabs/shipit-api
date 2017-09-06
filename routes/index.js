@@ -63,6 +63,7 @@ function errorHandler(err, req, res, next) {
             message: err.message || err.toString() || err
         };
 
+    console.log('ERROR => ', err);
     res.status(code);
     res.json(body);
 }
@@ -229,37 +230,40 @@ function authorize(req, res, next) {
     req.authorized = false;
 
     // only authz if we are authenticated
-    // if no groups, just move on
-    if (!req.authenticated || !req.groups) {
+    if (!req.authenticated) {
+        return next();
+    }
+
+    // if service then authz
+    if (req.tokenType === 'service') {
+        req.authorized = true;
+        return next();
+    }
+
+    // if no groups then not authorized
+    if (!req.groups) {
         return next();
     }
 
     let user = req.authedUser,
         groups = req.groups || [];
+    // Filter groups to only groups with write permissions
+    groups = groups.filter(can.write).map(group => group.name);
 
-    if (req.tokenType === 'service') {
-        req.authorized = true;
-        return next();
-    }
-    else {
-        // Filter groups to only groups with write permissions
-        groups = groups.filter(can.write).map(group => group.name);
-
-        auth.getGroups(user)
-            .then(result => {
-                // result is an array of groups the user is in
-                // check each of these groups to see if they are
-                // in the filtered groups
-                result.forEach(group => {
-                    // as soon as we find one that is fine, move on
-                    if (groups.includes(group)) {
-                        req.authorized = true;
-                    }
-                });
-                return next();
-            })
-            .catch(e => next(e));
-    }
+    auth.getGroups(user)
+        .then(result => {
+            // result is an array of groups the user is in
+            // check each of these groups to see if they are
+            // in the filtered groups
+            result.forEach(group => {
+                // as soon as we find one that is fine, move on
+                if (groups.includes(group)) {
+                    req.authorized = true;
+                }
+            });
+            return next();
+        })
+        .catch(e => next(e));
 }
 
 /**
