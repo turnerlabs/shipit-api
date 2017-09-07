@@ -6,7 +6,7 @@ module.exports = {
             if (!attributes.hasOwnProperty('shaValue')) {
                 changes.push(
                     queryInterface.addColumn(
-                        'Ports',
+                        'EnvVars',
                         'shaValue',
                         {
                             type: DataTypes.STRING,
