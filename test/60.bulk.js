@@ -53,7 +53,7 @@ describe('Bulk', function () {
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
-                            port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol', 'healthcheck_timeout'],
+                            port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol', 'healthcheck_timeout', 'healthcheck_interval'],
                             envVar: ['name', 'value', 'type']
                         },
                         excludes = {
@@ -545,7 +545,7 @@ describe('Bulk', function () {
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol',
-                                'healthcheck_timeout', 'ssl_management_type', 'ssl_arn'],
+                                'healthcheck_timeout', 'healthcheck_interval', 'ssl_management_type', 'ssl_arn'],
                             envVar: ['name', 'value', 'type']
                         },
                         excludes = {
@@ -624,7 +624,7 @@ describe('Bulk', function () {
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol',
                                 'ssl_management_type', 'ssl_arn', 'private_key', 'public_key_certificate',
-                                'certificate_chain', 'healthcheck_timeout'],
+                                'certificate_chain', 'healthcheck_timeout', 'healthcheck_interval'],
                             envVar: ['name', 'value', 'type']
                         },
                         excludes = {
@@ -865,6 +865,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
                     expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
+                    expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
@@ -917,6 +918,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
                     expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
+                    expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
@@ -1032,6 +1034,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
                     expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
+                    expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
@@ -1084,6 +1087,7 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].enable_proxy_protocol, 'body.containers[0].ports[0].enable_proxy_protocol').to.be.false;
                     expect(body.containers[0].ports[0].ssl_management_type, 'body.containers[0].ports[0].ssl_management_type').to.equal('iam');
                     expect(body.containers[0].ports[0].healthcheck_timeout, 'body.containers[0].ports[0].healthcheck_timeout').to.equal(1);
+                    expect(body.containers[0].ports[0].healthcheck_interval, 'body.containers[0].ports[0].healthcheck_interval').to.equal(10);
                     expect(body.containers[0].ports[0].public_port, 'body.containers[0].ports[0].public_port').to.equal(80);
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');

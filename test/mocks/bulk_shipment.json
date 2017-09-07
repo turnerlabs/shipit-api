@@ -74,6 +74,7 @@
           "ssl_arn": "",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "value": 80,
           "name": "PORT"
       },{
@@ -86,6 +87,7 @@
           "ssl_arn": "foooooooooo",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "value": 443,
           "name": "PORT_SSL"
       }]

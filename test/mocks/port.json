@@ -8,6 +8,7 @@
   "ssl_arn": "foo",
   "ssl_management_type": "acm",
   "healthcheck_timeout": 5,
+  "healthcheck_interval": 10,
   "public_port": 80,
   "value": 17290,
   "lbtype": "default",

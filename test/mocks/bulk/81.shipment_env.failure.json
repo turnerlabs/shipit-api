@@ -69,6 +69,7 @@
                     "ssl_arn": "",
                     "ssl_management_type": "iam",
                     "healthcheck_timeout": 1,
+                    "healthcheck_interval": 10,
                     "enable_sticky_sessions": true,
                     "public_port": 80,
                     "value": 3000,
