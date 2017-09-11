@@ -358,6 +358,12 @@ healthcheck_timeout
 - description: The timeout value for the healthcheck for container monitoring
 - requirement: Must be 0 or positive Integer
 
+healthcheck_interval
+- type:        Number
+- required:    false
+- description: The interval value for the healthcheck for container monitoring
+- requirement: Must be 0 or positive Integer
+
 ```
 
 
@@ -873,6 +879,12 @@ healthcheck_timeout
 - type:        Number
 - required:    false
 - description: The timeout value for the healthcheck for container monitoring
+- requirement: Must be 0 or positive Integer
+
+healthcheck_interval
+- type:        Number
+- required:    false
+- description: The interval value for the healthcheck for container monitoring
 - requirement: Must be 0 or positive Integer
 
 ```

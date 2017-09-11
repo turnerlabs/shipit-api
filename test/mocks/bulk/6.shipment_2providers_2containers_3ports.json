@@ -87,6 +87,7 @@
           "ssl_arn": "",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "public_port": 80,
           "value": 15080,
           "name": "PORT"
@@ -101,6 +102,7 @@
           "ssl_arn": "foobar",
           "ssl_management_type": "acm",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "public_port": 443,
           "value": 15443,
           "name": "PORT_HTTPS"
@@ -122,6 +124,7 @@
           "ssl_arn": "",
           "ssl_management_type": "iam",
           "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
           "value": 7878,
           "name": "PORT_SIDECAR"
         }
