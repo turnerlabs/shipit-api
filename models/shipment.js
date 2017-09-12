@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 validate: {
                     isValidEmail: val => {
-                        let regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+                        let regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/
                         if (!regexp.test(val)) {
-                            throw new Error('Email must be a valid')
+                            throw new Error('contact_email must be a valid email address')
                         }
                     }
                 }
