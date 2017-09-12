@@ -49,7 +49,7 @@ describe('Shipments', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'group'],
+                        props = ['name', 'group', 'contact_email'],
                         excludes = ['createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -57,6 +57,7 @@ describe('Shipments', function () {
 
                     expect(data.name).to.equal(testShipment.name);
                     expect(data.group).to.equal(testShipment.group);
+                    expect(data.contact_email).to.equal(testShipment.contact_email);
 
                     done();
                 });
@@ -73,7 +74,7 @@ describe('Shipments', function () {
         });
 
         it('should fail when missing required group field', function (done) {
-            let failShipment = {"name": "fail-shipment"};
+            let failShipment = {"name": "fail-shipment", "contact_email": "test@turner.com"};
 
             request(server)
                 .post('/v1/shipments')
@@ -85,7 +86,7 @@ describe('Shipments', function () {
         });
 
         it('should fail when missing required name field', function (done) {
-            let failShipment = {"group": "test"};
+            let failShipment = {"group": "test", "contact_email": "test@turner.com"};
 
             request(server)
                 .post('/v1/shipments')
@@ -94,6 +95,18 @@ describe('Shipments', function () {
                 .send(failShipment)
                 .expect('Content-Type', /json/)
                 .expect(422, done);
+        });
+
+        it('should fail when missing required contact_email field', function (done) {
+            let failShipment = {"name": "fail-shipment", "group": "test"};
+
+            request(server)
+                .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failShipment)
+                .expect('Content-Type', /json/)
+                .expect(500, done);
         });
     });
 
@@ -111,7 +124,7 @@ describe('Shipments', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'group'],
+                        props = ['name', 'group', 'contact_email'],
                         excludes = ['createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -119,6 +132,7 @@ describe('Shipments', function () {
 
                     expect(data.name).to.equal(testShipment.name);
                     expect(data.group).not.to.equal(testShipment.group);
+                    expect(data.contact_email).to.equal(testShipment.contact_email);
                     expect(data.group).to.equal('test-group');
 
                     done();
@@ -147,7 +161,7 @@ describe('Shipments', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'group', 'environments', 'envVars'],
+                        props = ['name', 'group', 'contact_email', 'environments', 'envVars'],
                         excludes = ['createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -155,6 +169,7 @@ describe('Shipments', function () {
 
                     expect(data.name).to.equal(testShipment.name);
                     expect(data.group).to.equal('test-group');
+                    expect(data.contact_email).to.equal('test@turner.com');
                     expect(data.environments).to.have.lengthOf(0);
                     expect(data.envVars).to.have.lengthOf(0);
 

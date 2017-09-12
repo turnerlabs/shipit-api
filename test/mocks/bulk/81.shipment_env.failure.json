@@ -4,6 +4,7 @@
     "parentShipment": {
         "name": "tester-test",
         "group": "test",
+        "contact_email": "test@turner.com",
         "envVars": [
             {
                 "type": "basic",
