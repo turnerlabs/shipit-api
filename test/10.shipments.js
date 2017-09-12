@@ -108,6 +108,18 @@ describe('Shipments', function () {
                 .expect('Content-Type', /json/)
                 .expect(500, done);
         });
+
+        it('should fail when contact_email field is invalid', function (done) {
+            let failShipment = {"name": "fail-shipment", "group": "test", "contact_email": "test@turnercom"};
+
+            request(server)
+                .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failShipment)
+                .expect('Content-Type', /json/)
+                .expect(500, done);
+        });
     });
 
     describe('Update', function () {
