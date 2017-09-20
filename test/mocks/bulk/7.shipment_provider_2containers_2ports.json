@@ -1,5 +1,6 @@
 {
   "enableMonitoring": false,
+  "iamRole": "arn:partition:service:region:account:resource",
   "name": "test6",
   "buildToken": "faker",
   "parentShipment": {

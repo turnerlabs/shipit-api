@@ -148,6 +148,12 @@ enableMonitoring
 - description: Boolean, if true then monitoring of this Shipment Environment will be setup.
 - requirement: must be a valid boolean
 
+iamRole
+- type:        String
+- required:    false
+- description: IAM ARN to be assumed by the container for permissions to cloud resources
+- requirement: must be a valid ARN
+
 ```
 
 
@@ -682,6 +688,12 @@ enableMonitoring
 - required:    false
 - description: Boolean, if true then monitoring of this Shipment Environment will be setup.
 - requirement: must be a valid boolean
+
+iamRole
+- type:        String
+- required:    false
+- description: IAM ARN to be assumed by the container for permissions to cloud resources
+- requirement: must be a valid ARN
 
 ```
 

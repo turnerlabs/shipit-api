@@ -1,5 +1,6 @@
 {
   "enableMonitoring": false,
+  "iamRole": "arn:partition:service:region:account:resource",
   "name": "test2",
   "parentShipment": {
     "name": "bulk-shipment-app",

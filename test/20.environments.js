@@ -52,7 +52,7 @@ describe('Environment', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'enableMonitoring', 'buildToken'],
+                        props = ['name', 'enableMonitoring', 'iamRole', 'buildToken'],
                         excludes = ['composite', 'shipmentId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
@@ -60,6 +60,7 @@ describe('Environment', function () {
 
                     expect(data.name).to.equal('test-env');
                     expect(data.enableMonitoring).to.equal(true);
+                    expect(data.iamRole).to.not.be.null;
                     expect(data.buildToken).to.not.be.null;
                     expect(data.buildToken).to.have.lengthOf(50);
 
@@ -105,6 +106,7 @@ describe('Environment', function () {
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send({"enableMonitoring": "false"})
+                .send({"iamRole": "arn:partition:service:region:account:resource"})
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
                     if (err) {
@@ -112,13 +114,14 @@ describe('Environment', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'enableMonitoring', 'buildToken', 'buildToken'],
+                        props = ['name', 'enableMonitoring', 'iamRole', 'buildToken', 'buildToken'],
                         excludes = ['composite', 'shipmentId', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
 
                     expect(data.enableMonitoring).to.equal(false);
+                    expect(data.iamRole).to.equal("arn:partition:service:region:account:resource");
                     expect(data.buildToken).to.not.be.null;
                     expect(data.buildToken).to.be.lengthOf(50);
 
@@ -189,6 +192,7 @@ describe('Environment', function () {
                         .set('x-username', authUser)
                         .set('x-token', authToken)
                         .send({"enableMonitoring": "false"})
+                        .send({"iamRole": "arn:partition:service:region:account:resource"})
                         .expect('Content-Type', /json/)
                         .expect(200, (err, res) => {
                             if (err) {
@@ -198,6 +202,7 @@ describe('Environment', function () {
                             let data = res.body;
 
                             expect(data.buildToken).to.not.be.null;
+                            expect(data.iamRole).to.equal("arn:partition:service:region:account:resource");
                             expect(data.buildToken).to.be.lengthOf(50);
                             expect(data.buildToken).to.not.equal(content.buildToken);
 
@@ -250,7 +255,7 @@ describe('Environment', function () {
                     }
 
                     let data = res.body,
-                        props = ['name', 'enableMonitoring', 'parentShipment', 'envVars'],
+                        props = ['name', 'enableMonitoring', 'iamRole', 'parentShipment', 'envVars'],
                         excludes = ['composite', 'shipmentId', 'buildToken', 'createdAt', 'updatedAt', 'deletedAt'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
