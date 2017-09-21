@@ -259,6 +259,7 @@ describe('Environment', function () {
                     expect(data.name).to.equal(testEnvironment.name);
                     expect(data.parentShipment.group).to.equal(testShipment.group);
                     expect(data.parentShipment.name).to.equal(testShipment.name);
+                    expect(data.parentShipment.contact_email).to.equal(testShipment.contact_email);
                     expect(data.envVars).to.have.lengthOf(0);
 
                     done();

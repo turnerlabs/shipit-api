@@ -7,10 +7,11 @@ There are several types of objects that are related to a Shipment in ShipIt.
 
 ```json
 {
-    "name":         "String. Name of Shipment.",
-    "group":        "String. Group who has authorization for the Shipment.",
-    "envVars":      "Array. Env Var objects.",
-    "environments": "Array. Environment objects."
+    "name":          "String. Name of Shipment.",
+    "group":         "String. Group who has authorization for the Shipment.",
+    "contact_email": "String. Email address for contact information.",
+    "envVars":       "Array. Env Var objects.",
+    "environments":  "Array. Environment objects."
 }
 ```
 

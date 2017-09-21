@@ -1,4 +1,5 @@
 {
   "name": "test-shipment",
-  "group": "test"
+  "group": "test",
+  "contact_email": "test@turner.com"
 }
