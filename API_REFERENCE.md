@@ -61,12 +61,6 @@ group
 - description: The group that owns this shipment
 - requirement: Must be a valid group from argonaut.turner.com that the user belongs to
 
-contact_email
-- type:        String
-- required:    true
-- description: The email that should be used for contact purposes
-- requirement: Must be a valid email address
-
 ```
 
 
@@ -613,12 +607,6 @@ group
 - required:    false
 - description: The group that owns this shipment
 - requirement: Must be a valid group from argonaut.turner.com that the user belongs to
-
-contact_email
-- type:        String
-- required:    true
-- description: The email that should be used for contact purposes
-- requirement: Must be a valid email address
 
 ```
 

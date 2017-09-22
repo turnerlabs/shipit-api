@@ -50,7 +50,7 @@ describe('Bulk', function () {
 
                     let props = {
                             environment: ['name', 'enableMonitoring', 'buildToken', 'envVars', 'containers', 'providers'],
-                            parentShipment: ['name', 'group', 'contact_email', 'envVars'],
+                            parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol', 'healthcheck_timeout', 'healthcheck_interval'],
@@ -139,7 +139,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
                     expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
@@ -167,7 +166,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
@@ -196,7 +194,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
@@ -225,7 +222,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
                     expect(compare(body.containers, data.containers), 'compare(body.containers, data.containers)').to.be.true;
@@ -255,7 +251,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
                     expect(compare(body.containers, data.containers), 'compare(body.containers, data.containers)').to.be.true;
@@ -285,7 +280,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
                     expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
@@ -330,7 +324,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
@@ -478,7 +471,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
                     expect(body.buildToken, 'body.buildToken').to.have.lengthOf(5);
@@ -508,7 +500,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal(data.name);
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal(data.parentShipment.contact_email);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
                     expect(body.buildToken, 'body.buildToken').to.have.lengthOf(5);
@@ -550,7 +541,7 @@ describe('Bulk', function () {
                     let body = res.body;
                         props = {
                             environment: ['name', 'enableMonitoring', 'envVars', 'containers', 'providers'],
-                            parentShipment: ['name', 'group', 'contact_email', 'envVars'],
+                            parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol',
@@ -628,7 +619,7 @@ describe('Bulk', function () {
                     let body = res.body;
                         props = {
                             environment: ['name', 'enableMonitoring', 'buildToken', 'envVars', 'containers', 'providers'],
-                            parentShipment: ['name', 'group', 'contact_email', 'envVars'],
+                            parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
                             port: ['name', 'healthcheck', 'external', 'primary', 'public_vip', 'enable_proxy_protocol',
@@ -705,7 +696,7 @@ describe('Bulk', function () {
 
                     let body = res.body;
                         props = {
-                            shipment: ['name', 'group', 'contact_email', 'envVars', 'environments'],
+                            shipment: ['name', 'group', 'envVars', 'environments'],
                             environment: ['name'],
                             envVar: ['name', 'value', 'type']
                         },
@@ -850,7 +841,6 @@ describe('Bulk', function () {
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal('test@turner.com');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
@@ -904,7 +894,6 @@ describe('Bulk', function () {
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal('test@turner.com');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
@@ -959,7 +948,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal('test');
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal('test@turner.com');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
@@ -991,7 +979,6 @@ describe('Bulk', function () {
                     expect(body.name, 'body.name').to.equal('test');
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal('test@turner.com');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
@@ -1023,7 +1010,6 @@ describe('Bulk', function () {
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal('test@turner.com');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
@@ -1077,7 +1063,6 @@ describe('Bulk', function () {
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
-                    expect(body.parentShipment.contact_email, 'body.parentShipment.contact_email').to.equal('test@turner.com');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
