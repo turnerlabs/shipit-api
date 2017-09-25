@@ -8,7 +8,7 @@ if (!process.env.DATABASE_URL) {
 }
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  logging: false
+  logging: process.env.SQL_LOGGING || false
 });
 
 let db = {};
