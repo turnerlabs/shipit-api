@@ -32,7 +32,7 @@ endpoints that should hopefully provide insight into how to use ShipIt.
 curl -sSXPOST -H'Content-Type: application/json' \
     -H"x-username: ${USER}" -H"x-token: ${TOKEN}" \
     http://shipit.services.dmtio.net/v1/shipments \
-    --data-binary '{"group": "mss", "name": "mss-hello-world-app"}'
+    --data-binary '{"group": "mss", "name": "mss-hello-world-app", "contact_email": "your-email@turner.com"}'
 
 # Add an Env Var to the Shipment
 curl -sSXPOST -H'Content-Type: application/json' \

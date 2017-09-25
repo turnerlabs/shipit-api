@@ -95,6 +95,7 @@
   "parentShipment": {
     "name": "foo",
     "group": "test",
+    "contact_email": "test@turner.com",
     "envVars": [
       {
         "name": "PORT",
