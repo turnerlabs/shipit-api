@@ -24,7 +24,7 @@ main() {
     fi
 
     # make the calls
-    call 'POST' '/v1/shipments' '{"name": "foo", "group": "test", "contact_email": "test@turner.com"}'
+    call 'POST' '/v1/shipments' '{"name": "foo", "group": "test"}'
     call 'POST' '/v1/shipment/foo/envVars' '{"name": "PORT", "value": 8080, "type": "basic"}'
     call 'POST' '/v1/shipment/foo/envVars' '{"name": "PORT_2", "value": 8080, "type": "basic"}'
     call 'POST' '/v1/shipment/foo/environments' '{"name": "bar"}'

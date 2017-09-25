@@ -11,19 +11,6 @@ module.exports = (sequelize, DataTypes) => {
             group: {
                 type: DataTypes.STRING,
                 allowNull: false
-            },
-            contact_email: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    isValidEmail: val => {
-                        let regexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/
-                        if (!regexp.test(val)) {
-                            throw new Error('contact_email must be a valid email address')
-                        }
-                    }
-                }
-
             }
         },
         {
