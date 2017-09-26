@@ -13,7 +13,7 @@ module.exports = {
                         type: DataTypes.STRING,
                         field: "iamRole",
                         get() {
-                            return this.getDataValue('healthcheck_interval') || this.getDataValue('value');
+                            return this.getDataValue('iamRole') || this.getDataValue('value');
                         }
                     }
                 )
