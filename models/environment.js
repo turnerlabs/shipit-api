@@ -29,7 +29,12 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,
                 allowNull: true
-            }
+            },
+            iamRole: {
+                type: DataTypes.STRING,
+                defaultValue: "",
+                allowNull: true
+            },
         },
         {
             timestamps: false,
