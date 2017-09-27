@@ -2,6 +2,7 @@
   "name": "back",
   "buildToken": null,
   "enableMonitoring": true,
+  "iamRole": "arn:partition:service:region:account:resource",
   "envVars": [
     {
       "name": "PORT",

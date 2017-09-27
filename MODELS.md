@@ -22,6 +22,7 @@ There are several types of objects that are related to a Shipment in ShipIt.
     "name":             "String. Name of the environment.",
     "buildToken":       "String. Long lived auth token.",
     "enableMonitoring": "Boolean. Whether alerts should be sent to DOC when Shipment is failing; defaults to true.",
+    "iamRole":          "String. IAM Role ARN that the container will assume for permissions to cloud resources",
     "envVars":          "Array. Env Var objects.",
     "containers":       "Array. Container objects.",
     "ports":            "Array. Port objects.",
