@@ -42,3 +42,6 @@ node_modules
 # Harbor Compose
 docker-compose.yml
 harbor-compose.yml
+
+# Local testing files
+futurama
