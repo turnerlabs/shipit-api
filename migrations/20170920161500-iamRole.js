@@ -12,6 +12,7 @@ module.exports = {
                     {
                         type: DataTypes.STRING,
                         field: "iamRole",
+                        defaultValue: "",
                         get() {
                             return this.getDataValue('iamRole') || this.getDataValue('value');
                         }
