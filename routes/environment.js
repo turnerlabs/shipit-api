@@ -43,6 +43,11 @@ function get(req, res, next) {
 
                   payload.parentShipment = shipment.toJSON();
                   delete payload.parentShipment.id;
+                
+                  // if user is not authed, hide iam role
+                  if (!authz) {
+                      payload.iamRole = helpers.hideValue();
+                  }
 
                   return payload;
               })
