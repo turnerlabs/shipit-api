@@ -51,7 +51,7 @@ describe('Logs', function () {
                     let body = res.body;
 
                     expect(body).to.be.instanceOf(Array);
-                    expect(body.length).to.equal(27);
+                    expect(body.length).to.equal(28);
 
                     return done();
                 });
@@ -72,7 +72,7 @@ describe('Logs', function () {
                     let body = res.body;
 
                     expect(body).to.be.instanceOf(Array);
-                    expect(body.length).to.equal(20);
+                    expect(body.length).to.equal(21);
 
                     return done();
                 });

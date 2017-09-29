@@ -56,7 +56,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -84,7 +84,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -152,7 +152,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -186,7 +186,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -228,7 +228,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -255,7 +255,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
