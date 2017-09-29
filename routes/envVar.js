@@ -206,35 +206,67 @@ function search (req, res, next) {
 
     models.EnvVar.findAll(query)
         .then(envVars => {
-            let promises = envVars.map((envVar) => {
-                    let names = envVar.composite.split('-'),
-                        subQuery = {composite: names[0] + '-' + names[1]};
-
-                    return models.Shipment.find({
-                      where: { name: names[0] },
-                      attributes: { exclude: helpers.excludes.shipment(authz) },
-                      include: [
-                          {
-                              model: models.Environment,
-                              where: subQuery,
-                              as: "environments",
-                              include: [{
-                                  attributes: { exclude: helpers.excludes.envVar(authz) },
-                                  model: models.EnvVar,
-                                  as: 'envVars'
-                              }],
-                              attributes: ['name']
-                          },
-                          {
-                              model: models.EnvVar,
-                              as: "envVars",
-                              attributes: { exclude: helpers.excludes.envVar(authz) }
-                          }
-                      ]
-                    });
+            let promises = envVars.map(envVar => {
+                // Each envVar has a environmentId that we can use to look up the the correct Shipment
+                // Shipment.name = Environment.shipmentId, where Environment.composite = EnvVar.environmentId
+                return models.Environment.find({
+                    where: {
+                        composite: envVar.environmentId
+                    }
+                })
             });
 
             return Promise.all(promises);
+        })
+        .then(environments => {
+            let promises = environments.map(env => {
+                return models.Shipment.find({
+                    where: { name: env.shipmentId },
+                    attributes: { exclude: helpers.excludes.shipment(authz) },
+                    include: [
+                        {
+                            model: models.Environment,
+                            where: {
+                                name: env.name
+                            },
+                            as: "environments",
+                            include: [{
+                                attributes: { exclude: helpers.excludes.envVar(authz) },
+                                model: models.EnvVar,
+                                as: 'envVars'
+                            }],
+                            attributes: ['name']
+                        },
+                        {
+                            model: models.EnvVar,
+                            as: "envVars",
+                            attributes: { exclude: helpers.excludes.envVar(authz) }
+                        }
+                    ]
+                })
+            });
+
+            return Promise.all(promises);
+        })
+        .then(objects => {
+            const results = objects
+                .sort(helpers.sortByName)
+                .reduce((item, val) => {
+                    let index = helpers.findIndex(item, val.name);
+
+                    if (index !== -1) {
+                        // this is a new environment to add to an existing shipment
+                        item[index].environments.push(val.environments[0]);
+                        item[index].environments.sort(helpers.sortByName);
+                    }
+                    else {
+                        item.push(val);
+                    }
+
+                    return item;
+                }, []);
+
+            return results;
         })
         .then(result => res.json(result))
         .catch(reason => next(reason));

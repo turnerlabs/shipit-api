@@ -44,7 +44,23 @@ describe('Search', function () {
 
                     let data = res.body;
 
-                    expect(data).to.have.length(6);
+                    expect(data).to.have.length(2);
+
+                    data.forEach(ele => {
+                        expect(ele).to.be.an('object');
+                    });
+
+                    expect(data[0].environments).to.have.length(5);
+
+                    data[0].environments.forEach(ele => {
+                        expect(ele).to.be.an('object');
+                    });
+
+                    expect(data[1].environments).to.have.length(1);
+
+                    data[1].environments.forEach(ele => {
+                        expect(ele).to.be.an('object');
+                    });
 
                     done();
                 })
