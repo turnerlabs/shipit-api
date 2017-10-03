@@ -52,6 +52,7 @@ function get(req, res, next) {
                               if (!authz && envVar.type === 'hidden') {
                                   envVar.value = helpers.hideValue();
                               }
+                              delete envVar.shaValue;
                               return envVar;
                           },
                           portFieldDel = (port, authz) => {
@@ -67,20 +68,20 @@ function get(req, res, next) {
 
                       if (result.envVars) {
                           result.envVars = result.envVars
-                          .map(envVar => hide(envVar, authz))
-                          .sort(helpers.sortByName);
+                              .map(envVar => hide(envVar, authz))
+                              .sort(helpers.sortByName);
                       }
                       if (result.parentShipment && result.parentShipment.envVars) {
                           result.parentShipment.envVars = result.parentShipment.envVars
-                          .map(envVar => hide(envVar, authz))
-                          .sort(helpers.sortByName);
+                              .map(envVar => hide(envVar, authz))
+                              .sort(helpers.sortByName);
                       }
                       if (result.containers) {
                           result.containers = result.containers.map(container => {
                               if (container.envVars) {
                                   container.envVars = container.envVars
-                                  .map(envVar => hide(envVar, authz))
-                                  .sort(helpers.sortByName);
+                                      .map(envVar => hide(envVar, authz))
+                                      .sort(helpers.sortByName);
                               }
                               if (container.ports) {
                                   container.ports = container.ports.map(port => portFieldDel(port, authz));
@@ -92,8 +93,8 @@ function get(req, res, next) {
                           result.providers = result.providers.map(provider => {
                               if (provider.envVars) {
                                   provider.envVars = provider.envVars
-                                  .map(envVar => hide(envVar, authz))
-                                  .sort(helpers.sortByName);
+                                      .map(envVar => hide(envVar, authz))
+                                      .sort(helpers.sortByName);
                               }
                               return provider;
                           });
