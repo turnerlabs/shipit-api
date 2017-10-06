@@ -196,7 +196,7 @@ function deleteIt (req, res, next) {
  *
  */
 function search (req, res, next) {
-    let query = { where: { environmentId: { $not: null } } },
+    let query = { where: { } },
         authz = req.authorized || null;
 
     for (let key in req.query) {
@@ -207,18 +207,74 @@ function search (req, res, next) {
     models.EnvVar.findAll(query)
         .then(envVars => {
             let promises = envVars.map(envVar => {
-                // Each envVar has a environmentId that we can use to look up the the correct Shipment
-                // Shipment.name = Environment.shipmentId, where Environment.composite = EnvVar.environmentId
-                return models.Environment.find({
-                    where: {
-                        composite: envVar.environmentId
-                    }
-                })
+                // An envVar has either a shipmentId, environmentId, providerId, or containerId
+                // Look for the correct item
+                if (envVar.shipmentId) {
+                    return models.Shipment.find({
+                        where: {
+                            name: envVar.shipmentId
+                        }
+                    });
+                }
+                else if (envVar.environmentId) {
+                    return models.Environment.find({
+                        where: {
+                            composite: envVar.environmentId
+                        }
+                    });
+                }
+                else if (envVar.providerId) {
+                    return models.Provider.find({
+                        where: {
+                            composite: envVar.providerId
+                        }
+                    });
+                }
+                else if (envVar.containerId) {
+                    return models.Container.find({
+                        where: {
+                            composite: envVar.containerId
+                        }
+                    });
+                }
             });
 
             return Promise.all(promises);
         })
+        .then(objects => {
+            let promises = objects.map(obj => {
+                let name = obj['$modelOptions'].name.singular;
+
+                if (name === 'Provider' || name === 'Container') {
+                    return models.Environment.find({
+                        where: {
+                            composite: obj.environmentId
+                        }
+                    })
+                }
+                else if (name === 'Shipment') {
+                    return models.Environment.findAll({
+                        where: {
+                            shipmentId: obj.name
+                        }
+                    })
+                }
+                else {
+                    return obj;
+                }
+
+                return obj
+            });
+            // flatten array
+            promises = helpers.flatten(promises);
+
+            return Promise.all(promises);
+        })
         .then(environments => {
+
+            // need to flatten the array again
+            environments = helpers.flatten(environments);
+
             let promises = environments.map(env => {
                 return models.Shipment.find({
                     where: { name: env.shipmentId },
@@ -230,11 +286,42 @@ function search (req, res, next) {
                                 name: env.name
                             },
                             as: "environments",
-                            include: [{
-                                attributes: { exclude: helpers.excludes.envVar(authz) },
-                                model: models.EnvVar,
-                                as: 'envVars'
-                            }],
+                            include: [
+                                {
+                                    model: models.EnvVar,
+                                    as: 'envVars',
+                                    attributes: { exclude: helpers.excludes.envVar(authz) }
+                                },
+                                {
+                                    model: models.Container,
+                                    as: 'containers',
+                                    attributes: { exclude: helpers.excludes.container(authz) },
+                                    include: [
+                                        {
+                                            model: models.EnvVar,
+                                            as: 'envVars',
+                                            attributes: { exclude: helpers.excludes.envVar(authz) }
+                                        },
+                                        {
+                                            model: models.Port,
+                                            as: 'ports',
+                                            attributes: { exclude: helpers.excludes.port(authz) }
+                                        }
+                                    ]
+                                },
+                                {
+                                    model: models.Provider,
+                                    as: 'providers',
+                                    attributes: { exclude: helpers.excludes.provider(authz) },
+                                    include: [
+                                        {
+                                            model: models.EnvVar,
+                                            as: 'envVars',
+                                            attributes: { exclude: helpers.excludes.envVar(authz) }
+                                        }
+                                    ]
+                                }
+                            ],
                             attributes: ['name']
                         },
                         {
@@ -243,7 +330,7 @@ function search (req, res, next) {
                             attributes: { exclude: helpers.excludes.envVar(authz) }
                         }
                     ]
-                })
+                });
             });
 
             return Promise.all(promises);

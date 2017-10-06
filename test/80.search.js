@@ -44,22 +44,24 @@ describe('Search', function () {
 
                     let data = res.body;
 
-                    expect(data).to.have.length(2);
-
+                    expect(data, 'data').to.have.length(3);
                     data.forEach(ele => {
-                        expect(ele).to.be.an('object');
+                        expect(ele, 'data[][ele]').to.be.an('object');
                     });
 
-                    expect(data[0].environments).to.have.length(5);
-
+                    expect(data[0].environments, 'data[0].environments').to.have.length(4);
                     data[0].environments.forEach(ele => {
-                        expect(ele).to.be.an('object');
+                        expect(ele, 'data[0].environments[][ele]').to.be.an('object');
                     });
 
-                    expect(data[1].environments).to.have.length(1);
-
+                    expect(data[1].environments, 'data[1].environments').to.have.length(1);
                     data[1].environments.forEach(ele => {
-                        expect(ele).to.be.an('object');
+                        expect(ele, 'data[1].environments[][ele]').to.be.an('object');
+                    });
+
+                    expect(data[2].environments, 'data[2].environments').to.have.length(1);
+                    data[2].environments.forEach(ele => {
+                        expect(ele, 'data[2].environments[][ele]').to.be.an('object');
                     });
 
                     done();
