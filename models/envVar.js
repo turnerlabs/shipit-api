@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    notContains: '-'
+                    not: ["(?:(^([0-9])|[a-zA-Z0-9]*[- ][a-zA-Z0-9]*)+)",'i']
                 }
             },
             composite: {

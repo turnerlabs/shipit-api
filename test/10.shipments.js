@@ -95,6 +95,42 @@ describe('Shipments', function () {
                 .expect('Content-Type', /json/)
                 .expect(422, done);
         });
+
+        it('should fail when name has underscore', function (done) {
+            let failShipment = {"group": "test", "name": "tester_foo"};
+
+            request(server)
+                .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failShipment)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail when name starts with numbers', function (done) {
+            let failShipment = {"group": "test", "name": "9999foooo"};
+
+            request(server)
+                .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failShipment)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail if name has space', function (done) {
+            let failShipment = {"group": "test", "name": "foo oo"};
+
+            request(server)
+                .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failShipment)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
     });
 
     describe('Update', function () {
