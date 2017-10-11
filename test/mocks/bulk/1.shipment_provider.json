@@ -13,13 +13,7 @@
       }
     ]
   },
-  "envVars": [
-    {
-      "name": "NODE_ENV",
-      "value": "development",
-      "type": "basic"
-    }
-  ],
+  "envVars": [],
   "providers": [
     {
       "replicas": 2,
@@ -29,6 +23,11 @@
         {
           "name": "LOCATION",
           "value": "ec2",
+          "type": "basic"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "development",
           "type": "basic"
         }
       ]

@@ -2,6 +2,7 @@ const models = require('../models'),
     mapper = require('../lib/mappers'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
+    crypto = require('../lib/crypto'),
     checkAuth = require('.').checkAuth,
     router = require('express').Router(),
     Promise = require('bluebird');
@@ -84,7 +85,9 @@ function post(req, res, next) {
         envVar = helpers.getWhereClause(req.params, body.name);
 
     envVar.value = body.value;
-    envVar.type = body.type;
+    envVar.type = body.type || 'basic';
+    envVar = helpers.prepEnvVar(envVar);
+
     models.EnvVar.create(envVar)
         .then(result => {
             if (result) {
@@ -126,6 +129,9 @@ function put(req, res, next) {
             if (!envVar) {
                 return next({ statusCode: 404, message: `Cannot update, EnvVar query ${options.where.composite} not found.` });
             }
+
+            data.value = data.value || envVar.value;
+            data = helpers.prepEnvVar(data);
 
             models.EnvVar.update(data, options)
                 .then(result => {
@@ -190,46 +196,166 @@ function deleteIt (req, res, next) {
  *
  */
 function search (req, res, next) {
-    let query = {where: { environmentId: { $not: null }}},
+    let query = { where: { } },
         authz = req.authorized || null;
 
-    for (var key in req.query) {
+    for (let key in req.query) {
         query.where.name = key;
-        query.where.value = req.query[key];
+        query.where.shaValue = crypto.sha(req.query[key]);
     }
 
     models.EnvVar.findAll(query)
         .then(envVars => {
-            let promises = envVars.map((envVar) => {
-                    let names = envVar.composite.split('-'),
-                        subQuery = {composite: names[0] + '-' + names[1]};
-
+            let promises = envVars.map(envVar => {
+                // An envVar has either a shipmentId, environmentId, providerId, or containerId
+                // Look for the correct item
+                if (envVar.shipmentId) {
                     return models.Shipment.find({
-                      where: { name: names[0] },
-                      attributes: { exclude: ['createdAt', 'updatedAt'] },
-                      include: [
-                          {
-                              model: models.Environment,
-                              where: subQuery,
-                              as: "environments",
-                              include: [{
-                                  attributes: { exclude: helpers.excludes.envVar(authz) },
-                                  model: models.EnvVar,
-                                  as: 'envVars'
-                              }],
-                              attributes: ['name']
-                          },
-                          {
-                              model: models.EnvVar,
-                              as: "envVars",
-                              attributes: { exclude: helpers.excludes.envVar(authz) }
-                          }
-                      ]
+                        where: {
+                            name: envVar.shipmentId
+                        }
                     });
+                }
+                else if (envVar.environmentId) {
+                    return models.Environment.find({
+                        where: {
+                            composite: envVar.environmentId
+                        }
+                    });
+                }
+                else if (envVar.providerId) {
+                    return models.Provider.find({
+                        where: {
+                            composite: envVar.providerId
+                        }
+                    });
+                }
+                else if (envVar.containerId) {
+                    return models.Container.find({
+                        where: {
+                            composite: envVar.containerId
+                        }
+                    });
+                }
             });
 
             return Promise.all(promises);
         })
+        .then(objects => {
+            let promises = objects.map(obj => {
+                let name = obj['$modelOptions'].name.singular;
+
+                if (name === 'Provider' || name === 'Container') {
+                    return models.Environment.find({
+                        where: {
+                            composite: obj.environmentId
+                        }
+                    })
+                }
+                else if (name === 'Shipment') {
+                    return models.Environment.findAll({
+                        where: {
+                            shipmentId: obj.name
+                        }
+                    })
+                }
+                else {
+                    return obj;
+                }
+
+                return obj
+            });
+            // flatten array
+            promises = helpers.flatten(promises);
+
+            return Promise.all(promises);
+        })
+        .then(environments => {
+
+            // need to flatten the array again
+            environments = helpers.flatten(environments);
+
+            let promises = environments.map(env => {
+                return models.Shipment.find({
+                    where: { name: env.shipmentId },
+                    attributes: { exclude: helpers.excludes.shipment(authz) },
+                    include: [
+                        {
+                            model: models.Environment,
+                            where: {
+                                name: env.name
+                            },
+                            as: "environments",
+                            include: [
+                                {
+                                    model: models.EnvVar,
+                                    as: 'envVars',
+                                    attributes: { exclude: helpers.excludes.envVar(authz) }
+                                },
+                                {
+                                    model: models.Container,
+                                    as: 'containers',
+                                    attributes: { exclude: helpers.excludes.container(authz) },
+                                    include: [
+                                        {
+                                            model: models.EnvVar,
+                                            as: 'envVars',
+                                            attributes: { exclude: helpers.excludes.envVar(authz) }
+                                        },
+                                        {
+                                            model: models.Port,
+                                            as: 'ports',
+                                            attributes: { exclude: helpers.excludes.port(authz) }
+                                        }
+                                    ]
+                                },
+                                {
+                                    model: models.Provider,
+                                    as: 'providers',
+                                    attributes: { exclude: helpers.excludes.provider(authz) },
+                                    include: [
+                                        {
+                                            model: models.EnvVar,
+                                            as: 'envVars',
+                                            attributes: { exclude: helpers.excludes.envVar(authz) }
+                                        }
+                                    ]
+                                }
+                            ],
+                            attributes: ['name']
+                        },
+                        {
+                            model: models.EnvVar,
+                            as: "envVars",
+                            attributes: { exclude: helpers.excludes.envVar(authz) }
+                        }
+                    ]
+                });
+            });
+
+            return Promise.all(promises);
+        })
+        .then(objects => {
+            const results = objects
+                .sort(helpers.sortByName)
+                .reduce((item, val) => {
+                    let index = helpers.findIndex(item, val.name);
+
+                    if (index !== -1) {
+                        // this is a new environment to add to an existing shipment
+                        item[index].environments.push(val.environments[0]);
+                        item[index].environments.sort(helpers.sortByName);
+                    }
+                    else {
+                        item.push(val);
+                    }
+
+                    return item;
+                }, []);
+
+            return results;
+        })
         .then(result => res.json(result))
         .catch(reason => next(reason));
+
 }

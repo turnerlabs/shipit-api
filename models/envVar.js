@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     isIn: [['basic', 'discover', 'hidden']]
                 }
+            },
+            shaValue: {
+                type: DataTypes.STRING,
+                allowNull: true
             }
         },
         {

@@ -84,15 +84,15 @@ describe('Bulk', function () {
                     });
 
                     result = compare(data.envVars, body.envVars);
-                    expect(result, 'result').to.be.true;
+                    expect(result, 'compare(data.envVars, body.envVars)').to.be.true;
 
                     result = compare(data.providers, body.providers);
-                    expect(result, 'result').to.be.true;
+                    expect(result, 'compare(data.providers, body.providers)').to.be.true;
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
 
                     result = compare(data.parentShipment.envVars, body.parentShipment.envVars);
-                    expect(result, 'result').to.be.true;
+                    expect(result, 'compare(data.parentShipment.envVars, body.parentShipment.envVars)').to.be.true;
 
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
                     expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
@@ -102,7 +102,7 @@ describe('Bulk', function () {
                         let bodyContainer = body.containers[i];
 
                         result = compare(container.envVars, body.containers[i].envVars);
-                        expect(result, 'result').to.be.true;
+                        expect(result, 'compare(container.envVars, body.containers[i].envVars)').to.be.true;
                         expect(bodyContainer.name, 'bodyContainer.name').to.equal(container.name);
                         expect(bodyContainer.image, 'bodyContainer.image').to.equal(container.image);
 
@@ -491,7 +491,6 @@ describe('Bulk', function () {
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
                     if (err) {
-                        console.log('err?', err);
                         return done(err);
                     }
 
@@ -975,8 +974,6 @@ describe('Bulk', function () {
                     }
 
                     let body = res.body;
-
-                    console.log('body.envVars', body.envVars);
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.true;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
