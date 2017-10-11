@@ -230,6 +230,30 @@ describe('EnvVar', function () {
                 .expect('Content-Type', /json/)
                 .expect(422, done);
         });
+
+        it('should fail with empty value', function (done) {
+            let failVar = {name: "TEST", value: ""};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail with empty values', function (done) {
+            let failVar = {name: "TEST", value: "   "};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
     });
 
     describe('Update', function () {

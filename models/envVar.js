@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
             value: {
                 type: DataTypes.TEXT,
                 allowNull: false,
+                validate: {
+                    not: ["^[\s]*$"]
+                },
                 set(val) {
+                    if (!val) return val;
+                    val = val.trim();
                     this.setDataValue('value', val ? crypto.encrypt(val.toString()) : val);
                 },
                 get() {
