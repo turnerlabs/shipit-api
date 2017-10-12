@@ -106,6 +106,10 @@
         "name": "PORT_3",
         "value": "8082",
         "type": "basic"
+      },
+      {
+        "name": "NODE_ENV",
+        "value": "development"
       }
     ]
   }

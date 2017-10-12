@@ -45,3 +45,5 @@ harbor-compose.yml
 
 # Local testing files
 futurama
+
+hidden.env

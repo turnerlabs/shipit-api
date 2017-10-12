@@ -13,13 +13,7 @@
       }
     ]
   },
-  "envVars": [
-    {
-      "name": "NODE_ENV",
-      "value": "development",
-      "type": "basic"
-    }
-  ],
+  "envVars": [],
   "providers": [
     {
       "replicas": 2,

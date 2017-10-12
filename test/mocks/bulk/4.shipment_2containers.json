@@ -13,13 +13,7 @@
       }
     ]
   },
-  "envVars": [
-    {
-      "name": "NODE_ENV",
-      "value": "development",
-      "type": "basic"
-    }
-  ],
+  "envVars": [],
   "providers": [],
   "containers": [
     {
@@ -29,6 +23,11 @@
         {
           "name": "HEALTHCHECK",
           "value": "/",
+          "type": "basic"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "development",
           "type": "basic"
         }
       ],

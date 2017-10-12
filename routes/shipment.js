@@ -217,6 +217,7 @@ function bulk(req, res, next) {
                     promises = envVars.map((envVar) => {
                         envVar.composite = `${shipment.name}-${envVar.name}`;
                         envVar.shipmentId = shipment.name;
+                        envVar = helpers.prepEnvVar(envVar);
 
                         return models.EnvVar.upsert(envVar, {
                             transaction: taction,
@@ -264,6 +265,7 @@ function bulk(req, res, next) {
                         environment.envVars.map((envVar) => {
                             envVar.composite = `${environment.composite}-${envVar.name}`;
                             envVar.environmentId = `${environment.composite}`;
+                            envVar = helpers.prepEnvVar(envVar);
 
                             let promise = models.EnvVar.upsert(envVar, {
                                 transaction: taction,
@@ -450,6 +452,10 @@ function getUpserts(model, incoming, composite, foriegnKeyId, taction) {
 
         inc.composite = `${composite}-${inc.name}`;
         inc[foriegnKeyId] = composite;
+        if (model === 'EnvVar') {
+            // we need to make sure that Env Vars have their shaValue set
+            inc = helpers.prepEnvVar(inc);
+        }
         nowObjects.push({model: model, method: 'upsert', values: inc, options: options});
 
         if (model === 'Container') {
