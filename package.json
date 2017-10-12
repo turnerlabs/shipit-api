@@ -1,6 +1,6 @@
 {
   "name": "shipit-api",
-  "version": "2.15.2",
+  "version": "2.16.0",
   "description": "An API for Shipments in Harbor",
   "main": "app.js",
   "private": true,
