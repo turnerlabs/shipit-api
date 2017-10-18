@@ -22,6 +22,7 @@ app.use(morgan('short'));
 const routes = require('./routes'),
     shipment = require('./routes/shipment'),
     environment = require('./routes/environment'),
+    annotation = require('./routes/annotation'),
     provider = require('./routes/provider'),
     container = require('./routes/container'),
     port = require('./routes/port'),
@@ -34,6 +35,7 @@ app.use(routes.setGroups);
 app.use(routes.authorize);
 app.use('/v1', shipment);
 app.use('/v1', environment);
+app.use('/v1', annotation);
 app.use('/v1', provider);
 app.use('/v1', container);
 app.use('/v1', port);
