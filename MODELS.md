@@ -24,6 +24,7 @@ There are several types of objects that are related to a Shipment in ShipIt.
     "enableMonitoring": "Boolean. Whether alerts should be sent to DOC when Shipment is failing; defaults to true.",
     "iamRole":          "String. IAM Role ARN that the container will assume for permissions to cloud resources",
     "envVars":          "Array. Env Var objects.",
+    "annotations":      "Array. Annotation objects.",
     "containers":       "Array. Container objects.",
     "ports":            "Array. Port objects.",
     "providers":        "Array. Provider objects."
@@ -38,6 +39,16 @@ There are several types of objects that are related to a Shipment in ShipIt.
     "name":  "String. The name, or key of the Env Var",
     "value": "String. Value of the Env Var, or value that to use in Discover.",
     "type":  "String. Either basic, discover, or hidden; defaults to basic."
+}
+```
+
+
+## Annotation
+
+```json
+{
+    "key":  "String. The key, or name, of the Annotation.",
+    "value": "String. Value of the Annotation."
 }
 ```
 

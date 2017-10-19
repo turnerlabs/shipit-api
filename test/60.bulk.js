@@ -97,6 +97,9 @@ describe('Bulk', function () {
                     expect(body.buildToken, 'body.buildToken').to.not.be.null;
                     expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
 
+                    result = compare(data.annotations, body.annotations);
+                    expect(result, 'compare(data.annotations, body.annotations)').to.be.true;
+
                     // Containers are tough, since Ports will likely not match
                     data.containers.forEach((container, i) => {
                         let bodyContainer = body.containers[i];

@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: "",
                 allowNull: true
             },
+            annotations: {
+                type: DataTypes.JSONB,
+                field: "annotations",
+                defaultValue: []
+            }
         },
         {
             timestamps: false,
