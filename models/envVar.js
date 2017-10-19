@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    notContains: '-'
+                    not: ["(?:(^([0-9])|[a-zA-Z0-9]*[- ][a-zA-Z0-9]*)+)",'i']
                 }
             },
             composite: {
@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
             value: {
                 type: DataTypes.TEXT,
                 allowNull: false,
+                validate: {
+                    not: ["^[\s]*$"]
+                },
                 set(val) {
+                    if (!val) return val;
+                    val = val.trim();
                     this.setDataValue('value', val ? crypto.encrypt(val.toString()) : val);
                 },
                 get() {

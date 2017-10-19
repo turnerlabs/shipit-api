@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         {
             name: {
                 type: DataTypes.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    not: ["(?:(^([0-9])|[A-Z0-9]*[_ ][A-Z0-9]*)+)"]
+                }
             },
             composite: {
                 type: DataTypes.STRING,

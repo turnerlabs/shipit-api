@@ -116,6 +116,36 @@ describe('Environment', function () {
                 .expect(422, done);
         });
 
+        it('should fail if name contains underscore', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "foo_bar"})
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail if name contains space', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "foo bar"})
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail if name starts with number', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "999foobar"})
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
         it('should fail auth if shipment is missing', function (done) {
             request(server)
                 .post(`/v1/shipment/foobar/environments`)
