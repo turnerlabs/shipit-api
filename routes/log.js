@@ -4,15 +4,65 @@ const models = require('../models'),
     helpers = require('../lib/helpers'),
     crypto = require('../lib/crypto'),
     checkAuth = require('.').checkAuth,
+    moment = require('moment'),
     router = require('express').Router();
 
 // Shipment EnvVars
 router.post('/logs', checkAuth, post);
 router.get('/logs/shipment/:shipment/environment/:environment', get);
 router.get('/logs/shipment/:shipment', get);
+router.get('/logs/', getByDate);
 
 
 module.exports = router;
+
+/**
+ * getByDate - search all audit logs by some dateTimeStamp difference. This will allow for users
+ * to search for all changes that occured in Harbor over some time period.
+ * 
+ * @param req The express request object
+ * @param res The express response object
+ * @param next The next function to perform in the expres middleware chain
+ * 
+ */
+function getByDate(req, res, next) {
+    let start = moment(req.query.start),
+        end = moment(req.query.end),
+        authz = req.authorized || null;
+
+    if (!start.isValid() || !end.isValid()) {
+        res.status(400).json({ code: 400, message: "Must Pass in ?start=YYYYMMDDThhmmss&end=YYYYMMDDThhmmss" });
+        return false;
+    }
+
+    let query = {
+        where: {
+            timestamp: {
+                $gt: start.toDate(),
+                $lt: end.toDate()
+            }
+        }
+    };
+
+    models.Log.findAll(query)
+        .then(logs => {
+            if (!logs) {
+              return [];
+            }
+
+            return logs.map(log => {
+                log = log.toJSON();
+                log.updated = new Date(log.timestamp).getTime();
+                log.diff = crypto.decrypt(log.diff)
+                // if (!authz) {
+                //     log.diff = helpers.hideValue();
+                // }
+                return log;
+            });
+        })
+        .then(handler.fetched(res, `Logs not found for query ?start=${req.query.start}&end=${req.query.end}`))
+        .catch(reason => next(reason));
+}
 
 /**
  * get - get either logs for an environment or logs for all environments in a shipment
