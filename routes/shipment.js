@@ -132,7 +132,7 @@ function get(req, res, next) {
         options = {
             where: { name: req.params.shipment },
             include: [
-                { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'iamRole', 'shipmentId'] } },
+                { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'iamRole', 'dns', 'shipmentId'] } },
                 { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }
             ]
         };

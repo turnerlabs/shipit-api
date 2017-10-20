@@ -42,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.JSONB,
                 field: "annotations",
                 defaultValue: []
+            },
+            dns: {
+                type: DataTypes.STRING,
+                defaultValue: "host",
+                allowNull: false
             }
         },
         {
