@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: "",
                 allowNull: true
             },
+            cnames: {
+                type: DataTypes.STRING,
+                defaultValue: "",
+                allowNull: true
+            },
         },
         {
             timestamps: false,
