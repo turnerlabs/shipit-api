@@ -169,7 +169,7 @@ iamRole
 dns
 - type:        String
 - required:    false
-- description: What type of DNS server to use foamr a Shipment.
+- description: What type of DNS server to use for a Shipment.
 - requirement: must either be 'host' or 'cluster'
 
 ```
@@ -756,7 +756,7 @@ iamRole
 dns
 - type:        String
 - required:    false
-- description: What type of DNS server to use foamr a Shipment.
+- description: What type of DNS server to use for a Shipment.
 - requirement: must either be 'host' or 'cluster'
 
 ```
