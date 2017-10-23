@@ -54,7 +54,6 @@ function getByDate(req, res, next) {
                 log = log.toJSON();
                 log.updated = new Date(log.timestamp).getTime();
                 log.diff = crypto.decrypt(log.diff)
-                console.log('authed', authz)
                 if (!authz) {
                     log.diff = helpers.hideValue();
                 }
