@@ -166,6 +166,12 @@ iamRole
 - description: IAM ARN to be assumed by the container for permissions to cloud resources
 - requirement: must be a valid ARN
 
+dns
+- type:        String
+- required:    false
+- description: What type of DNS server to use foamr a Shipment.
+- requirement: must either be 'host' or 'cluster'
+
 ```
 
 
@@ -746,6 +752,12 @@ iamRole
 - required:    false
 - description: IAM ARN to be assumed by the container for permissions to cloud resources
 - requirement: must be a valid ARN
+
+dns
+- type:        String
+- required:    false
+- description: What type of DNS server to use foamr a Shipment.
+- requirement: must either be 'host' or 'cluster'
 
 ```
 

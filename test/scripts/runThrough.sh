@@ -40,7 +40,7 @@ main() {
     call 'POST' '/v1/shipment/foo/environment/baz/container/webapp/ports' "@test/mocks/models/port.json"
     call 'PUT' '/v1/shipment/foo/environment/baz/container/webapp/port/PORT' '{"public_port": 8080, "ssl_arn": "bar"}'
     call 'POST' '/v1/bulk/shipments' "@test/mocks/models/bulk_shipment.json"
-    call 'PUT' '/v1/shipment/foo/environment/back' '{"enableMonitoring": "false", "iamRole": "arn:partition:service:region:account:resource"}'
+    call 'PUT' '/v1/shipment/foo/environment/back' '{"enableMonitoring": "false", "iamRole": "arn:partition:service:region:account:resource", "dns": "host"}'
     call 'PUT' '/v1/shipment/foo/environment/back' '{"enableMonitoring": "true"}'
     echo 'Done!'
 }

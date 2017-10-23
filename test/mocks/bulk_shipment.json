@@ -3,6 +3,7 @@
   "buildToken": null,
   "enableMonitoring": true,
   "iamRole": "arn:partition:service:region:account:resource",
+  "dns": "host",
   "envVars": [
     {
       "name": "PORT",

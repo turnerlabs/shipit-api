@@ -49,7 +49,7 @@ describe('Bulk', function () {
                         result;
 
                     let props = {
-                            environment: ['name', 'enableMonitoring', 'iamRole', 'buildToken', 'envVars', 'containers', 'providers'],
+                            environment: ['name', 'enableMonitoring', 'iamRole', 'dns', 'buildToken', 'envVars', 'containers', 'providers'],
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
@@ -542,7 +542,7 @@ describe('Bulk', function () {
 
                     let body = res.body;
                         props = {
-                            environment: ['name', 'enableMonitoring', 'iamRole', 'envVars', 'containers', 'providers'],
+                            environment: ['name', 'enableMonitoring', 'iamRole', 'dns', 'envVars', 'containers', 'providers'],
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
@@ -620,7 +620,7 @@ describe('Bulk', function () {
 
                     let body = res.body;
                         props = {
-                            environment: ['name', 'enableMonitoring', 'iamRole', 'buildToken', 'envVars', 'containers', 'providers'],
+                            environment: ['name', 'enableMonitoring', 'iamRole', 'dns', 'buildToken', 'envVars', 'containers', 'providers'],
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
@@ -704,7 +704,7 @@ describe('Bulk', function () {
                         },
                         excludes = {
                             shipment: ['composite'],
-                            environment: ['composite', 'shipmentId', 'enableMonitoring', 'iamRole', 'buildToken', 'envVars', 'containers', 'providers'],
+                            environment: ['composite', 'shipmentId', 'enableMonitoring', 'iamRole', 'dns', 'buildToken', 'envVars', 'containers', 'providers'],
                             envVar: ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId']
                         };
 
@@ -840,6 +840,7 @@ describe('Bulk', function () {
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.false;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
+                    expect(body.dns, 'body.dns').to.equal('host');
                     expect(body.name, 'body.name').to.equal('test');
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
@@ -894,6 +895,7 @@ describe('Bulk', function () {
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.false;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
+                    expect(body.dns, 'body.dns').to.equal('host');
                     expect(body.name, 'body.name').to.equal('test');
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
@@ -950,6 +952,7 @@ describe('Bulk', function () {
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.true;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
+                    expect(body.dns, 'body.dns').to.equal('host');
                     expect(body.name, 'body.name').to.equal('test');
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
@@ -980,6 +983,7 @@ describe('Bulk', function () {
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.true;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
+                    expect(body.dns, 'body.dns').to.equal('host');
                     expect(body.name, 'body.name').to.equal('test');
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
@@ -1011,6 +1015,7 @@ describe('Bulk', function () {
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.false;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
+                    expect(body.dns, 'body.dns').to.equal('host');
                     expect(body.name, 'body.name').to.equal('test');
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
@@ -1065,6 +1070,7 @@ describe('Bulk', function () {
 
                     expect(body.enableMonitoring, 'body.enableMonitoring').to.be.false;
                     expect(body.iamRole, 'body.iamRole').to.equal('arn:partition:service:region:account:resource');
+                    expect(body.dns, 'body.dns').to.equal('host');
                     expect(body.name, 'body.name').to.equal('test');
 
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');

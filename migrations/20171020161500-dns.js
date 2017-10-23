@@ -4,7 +4,7 @@ module.exports = {
 
         queryInterface.describeTable('Environments').then(attributes => {
           if (!attributes.hasOwnProperty('dns')) {
-            // iamRole
+            // dns
             changes.push(
                 queryInterface.addColumn(
                     'Environments',
