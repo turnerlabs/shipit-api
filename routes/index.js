@@ -182,6 +182,8 @@ function setGroups(req, res, next) {
     // if either one of these fail, just continue
     if (!req.authenticated) {
         return next();
+    } else if (req.tokenType === 'service' && !name) {
+        return next();
     } else if (!name) {
         return next({statusCode: 422, message: `No shipment name ${name}.`});
     }
