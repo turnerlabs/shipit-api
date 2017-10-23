@@ -46,7 +46,10 @@ module.exports = (sequelize, DataTypes) => {
             dns: {
                 type: DataTypes.STRING,
                 defaultValue: "host",
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    isIn: [['host', 'cluster']]
+                }
             }
         },
         {
