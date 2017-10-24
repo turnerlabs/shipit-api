@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 primaryKey: true,
+                validate: {
+                    not: ["(?:(^([0-9])|[A-Z0-9]*[_ ][A-Z0-9]*)+)"]
+                },
                 unique: true
             },
             group: {

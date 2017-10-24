@@ -20,6 +20,12 @@
       "type": "hidden"
     }
   ],
+  "annotations": [
+    {
+      "key": "foobar",
+      "value": "a note"
+    }
+  ],
   "providers": [
     {
       "name": "east-1",

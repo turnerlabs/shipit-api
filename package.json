@@ -1,6 +1,6 @@
 {
   "name": "shipit-api",
-  "version": "2.16.0",
+  "version": "2.17.0",
   "description": "An API for Shipments in Harbor",
   "main": "app.js",
   "private": true,
@@ -9,7 +9,7 @@
     "reset": "DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test\" SECRET_FILE='./test/.secret' ./bin/reset",
     "build": "docker build -f Dockerfile_local -t \"shipit-api:$(jq -r .version < package.json)\" .",
     "local": "v=$(jq -r .version < package.json); s=$(cat ./test/.secret); docker run -p 7077:7077 -e PORT='7077' -e DATABASE_URL=\"postgresql://ubuntu:ubuntu@localhost:5432/test\" -e LOCAL_SECRET=\"${s}\" \"shipit-api:${v}\"",
-    "vars":  "echo \"export DATABASE_URL='postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test'\"; echo \"export SECRET_FILE='./test/.secret'\"; echo",
+    "vars": "echo \"export DATABASE_URL='postgresql://ubuntu:ubuntu@localhost:${PGPORT:-5432}/test'\"; echo \"export SECRET_FILE='./test/.secret'\"; echo",
     "test": "./bin/reset && ./bin/migrate up && node ./node_modules/mocha/bin/mocha --sort"
   },
   "repository": {
@@ -49,6 +49,7 @@
     "crypto": "0.0.3",
     "express": "4.15.2",
     "jsondiffpatch": "^0.2.4",
+    "moment": "^2.18.1",
     "morgan": "1.8.1",
     "node-cryptojs-aes": "0.4.0",
     "pg": "6.1.3",

@@ -61,6 +61,11 @@ describe('Search', function () {
 
                     expect(data[2].environments, 'data[2].environments').to.have.length(1);
                     data[2].environments.forEach(ele => {
+                        ele.envVars.forEach((envVar) => {
+                            if (envVar.type === 'hidden') {
+                                expect(envVar.value).to.equal('*******');
+                            }
+                        });
                         expect(ele, 'data[2].environments[][ele]').to.be.an('object');
                     });
 

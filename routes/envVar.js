@@ -242,6 +242,7 @@ function search (req, res, next) {
             return Promise.all(promises);
         })
         .then(objects => {
+
             let promises = objects.map(obj => {
                 let name = obj['$modelOptions'].name.singular;
 
@@ -354,6 +355,21 @@ function search (req, res, next) {
                 }, []);
 
             return results;
+        })
+        .then((objects) => {
+            return objects.map((object) => {
+                object.envVars = object.envVars.map((envVar) => helpers.toHideValue(envVar, authz))
+                object.environments =  object.environments.map((environment) => {
+                    environment.envVars = environment.envVars.map((envVar) => helpers.toHideValue(envVar, authz))
+                    environment.providers = environment.providers.map((provider) => {
+                        provider.envVars.map((envVar) => helpers.toHideValue(envVar, authz)) 
+                    });
+                    environment.containers = environment.containers.map((container) => {
+                        container.envVars.map((envVar) => helpers.toHideValue(envVar, authz)) 
+                    });
+                });
+                return object;
+            })
         })
         .then(result => res.json(result))
         .catch(reason => next(reason));
