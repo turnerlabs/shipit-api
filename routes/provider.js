@@ -24,6 +24,10 @@ function get(req, res, next) {
         query = {
             attributes: { exclude: helpers.excludes.provider(authz) },
             where: { composite: getComposite(req.params) },
+            order: [
+                ['composite', 'ASC'],
+                [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
+            ],
             include: [
               { model: models.EnvVar, as: "envVars", attributes: { exclude: helpers.excludes.envVar(authz) } }
             ]

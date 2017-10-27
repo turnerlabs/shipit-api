@@ -362,10 +362,10 @@ function search (req, res, next) {
                 object.environments =  object.environments.map((environment) => {
                     environment.envVars = environment.envVars.map((envVar) => helpers.toHideValue(envVar, authz))
                     environment.providers = environment.providers.map((provider) => {
-                        provider.envVars.map((envVar) => helpers.toHideValue(envVar, authz)) 
+                        provider.envVars.map((envVar) => helpers.toHideValue(envVar, authz))
                     });
                     environment.containers = environment.containers.map((container) => {
-                        container.envVars.map((envVar) => helpers.toHideValue(envVar, authz)) 
+                        container.envVars.map((envVar) => helpers.toHideValue(envVar, authz))
                     });
                 });
                 return object;
