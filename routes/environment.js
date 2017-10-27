@@ -43,7 +43,7 @@ function get(req, res, next) {
 
                   payload.parentShipment = shipment.toJSON();
                   delete payload.parentShipment.id;
-                
+
                   // if user is not authed, hide iam role
                   if (!authz) {
                       payload.iamRole = helpers.hideValue();
@@ -286,6 +286,10 @@ function _get(req, type, ship, env) {
         query = {
             shipment: {
                 where: { name: ship },
+                order: [
+                    ['name', 'ASC'],
+                    [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
+                ],
                 include: [
                     { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }
                 ]
@@ -293,6 +297,15 @@ function _get(req, type, ship, env) {
             environment: {
                 attributes: { exclude: helpers.excludes.environment(authz) },
                 where: { composite: `${ship}-${env}` },
+                order: [
+                    ['name', 'ASC'],
+                    [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC'],
+                    [{ model: models.Provider, as: 'providers' }, 'composite', 'ASC'],
+                    [{ model: models.Provider, as: 'providers' }, { model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC'],
+                    [{ model: models.Container, as: 'containers'}, 'composite', 'ASC'],
+                    [{ model: models.Container, as: 'containers'}, { model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC'],
+                    [{ model: models.Container, as: 'containers'}, { model: models.Port, as: 'ports' }, 'composite', 'ASC'],
+                ],
                 include: [
                     { model: models.EnvVar, as: "envVars", attributes: { exclude: helpers.excludes.envVar(authz) } },
                     { model: models.Provider, as: "providers", attributes: { exclude: helpers.excludes.provider(authz) }, include: [

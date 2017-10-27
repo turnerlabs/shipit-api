@@ -93,7 +93,7 @@ function post(req, res, next) {
                     arr.push(obj.key);
                     return arr;
                 }, []).join(',');
-                environment.annotations = body;
+                environment.annotations = body.sort(orderBy);
             }
             else {
                 let temp = environment.annotations || []
@@ -116,7 +116,7 @@ function post(req, res, next) {
                 }
 
                 req.params.name = body.key;
-                environment.annotations = temp;
+                environment.annotations = temp.sort(orderBy);
             }
 
             helpers.updateAuditLog(was, environment.annotations, req);
@@ -157,7 +157,7 @@ function put(req, res, next) {
             }
 
             // setting all annotations
-            environment.annotations = temp;
+            environment.annotations = temp.sort(orderBy);
 
             req.params.name = req.params.annotation;
             helpers.updateAuditLog(was, environment.annotations, req);
@@ -197,3 +197,21 @@ function deleteIt(req, res, next) {
         .then(handler.updated(res, `Annotations not updated. Query ${query.where.composite} failed.`))
         .catch(reason => next(reason));
 }
+
+
+/**
+ * orderBy
+ *
+ * Order by key
+ */
+ function orderBy(a, b) {
+     if (a.key > b.key) {
+         return 1;
+     }
+     else if (a.key < b.key) {
+         return -1;
+     }
+     else {
+         return 0;
+     }
+ }
