@@ -111,6 +111,16 @@ describe('Annotation', function () {
                 .expect('Content-Type', /json/)
                 .expect(400, done);
         });
+
+        it('should fail if sending empty objects', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/annotations`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send([{}, {"key": "annotation.test.key.2", "value": "this is two"}])
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
     });
 
     describe('Read', function () {

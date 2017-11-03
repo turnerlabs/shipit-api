@@ -354,6 +354,36 @@ describe('Bulk', function () {
                 });
         });
 
+        it('should create Shipment, but not include empty annotations', function (done) {
+            request(server)
+                .post('/v1/bulk/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(helpers.fetchMockData('bulk/12.shipment_annotations.failure'))
+                .expect('Content-Type', /json/)
+                .expect(201, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    request(server)
+                        .get('/v1/shipment/bulk-shipment-app/environment/test12')
+                        .expect('Content-Type', /json/)
+                        .expect(200, (err, res) => {
+                            if (err) {
+                                return done(err);
+                            }
+
+                            let body = res.body;
+
+                            expect(body.annotations).to.be.an('array').with.lengthOf(1);
+                            expect(body.annotations[0]).to.deep.equal({"key": "foobar", "value": "foobar value"});
+
+                            done();
+                        });
+                });
+        });
+
         it('should fail when creating Shipment Environment if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')

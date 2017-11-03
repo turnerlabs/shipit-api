@@ -253,6 +253,17 @@ function bulk(req, res, next) {
                         environment.buildToken = shipment.environments[0].buildToken || helpers.generateToken();
                     }
 
+                    // Annotations
+                    if (environment.annotations && environment.annotations.length) {
+                        environment.annotations = environment.annotations.reduce((acc, val) => {
+                            if (typeof val.key !== 'undefined' && typeof val.value !== 'undefined') {
+                                acc.push(val);
+                            }
+
+                            return acc;
+                        }, []);
+                    }
+
                     let promise = models.Environment.upsert(environment, {
                         transaction: taction,
                         include: _include(shipName, envName, 'environments').include
