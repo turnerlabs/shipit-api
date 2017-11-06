@@ -12,7 +12,7 @@ const app = express();
 app.set('x-powered-by', false);
 app.set('etag', false);
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '3mb'}));
 app.use(cors());
 
 app.get('/_hc', middleware.health);
