@@ -150,34 +150,6 @@ describe('Bulk', function () {
                 });
         });
 
-        it('should create a Shipment with a Provider', function (done) {
-            let data = helpers.fetchMockData('bulk/1.shipment_provider');
-
-            request(server)
-                .post('/v1/bulk/shipments')
-                .set('x-username', authUser)
-                .set('x-token', authToken)
-                .send(data)
-                .expect('Content-Type', /json/)
-                .expect(201, (err, res) => {
-                    if (err) {
-                        return done(err);
-                    }
-
-                    let body = res.body;
-
-                    expect(body.name, 'body.name').to.equal(data.name);
-                    expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
-                    expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
-                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
-                    expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
-                    expect(body.buildToken, 'body.buildToken').to.not.be.null;
-                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
-
-                    done();
-                });
-        });
-
         it('should create a Shipment with two Providers', function (done) {
             let data = helpers.fetchMockData('bulk/2.shipment_2providers');
 
@@ -206,8 +178,36 @@ describe('Bulk', function () {
                 });
         });
 
-        it('should create a Shipment with a Provider and a Container', function (done) {
-            let data = helpers.fetchMockData('bulk/3.shipment_provider_container');
+        it('should create a Shipment with a Provider', function (done) {
+            let data = helpers.fetchMockData('bulk/1.shipment_provider');
+
+            request(server)
+                .post('/v1/bulk/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(201, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let body = res.body;
+
+                    expect(body.name, 'body.name').to.equal(data.name);
+                    expect(body.parentShipment.name, 'body.parentShipment.name').to.equal(data.parentShipment.name);
+                    expect(body.parentShipment.group, 'body.parentShipment.group').to.equal(data.parentShipment.group);
+                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
+                    expect(compare(body.providers, data.providers), 'compare(body.providers, data.providers)').to.be.true;
+                    expect(body.buildToken, 'body.buildToken').to.not.be.null;
+                    expect(body.buildToken, 'body.buildToken').to.have.lengthOf(50);
+
+                    done();
+                });
+        });
+
+        it('should create a Shipment with two Containers', function (done) {
+            let data = helpers.fetchMockData('bulk/4.shipment_2containers');
 
             request(server)
                 .post('/v1/bulk/shipments')
@@ -235,8 +235,8 @@ describe('Bulk', function () {
                 });
         });
 
-        it('should create a Shipment with two Containers', function (done) {
-            let data = helpers.fetchMockData('bulk/4.shipment_2containers');
+        it('should create a Shipment with a Provider and a Container', function (done) {
+            let data = helpers.fetchMockData('bulk/3.shipment_provider_container');
 
             request(server)
                 .post('/v1/bulk/shipments')
@@ -899,21 +899,21 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
+                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars.sort(helpers.byName)), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(2);
-                    expect(compare(body.envVars, data.envVars), 'compare(body.envVars, data.envVars)').to.be.true;
+                    expect(compare(body.envVars, data.envVars.sort(helpers.byName)), 'compare(body.envVars, data.envVars)').to.be.true;
 
                     expect(body.providers, 'body.providers').to.have.lengthOf(1);
                     expect(body.providers[0].replicas, 'body.providers[0].replicas').to.equal(2);
                     expect(body.providers[0].barge, 'body.providers[0].barge').to.equal('test');
                     expect(body.providers[0].name, 'body.providers[0].name').to.equal('aws:us-east-1');
-                    expect(compare(body.providers[0].envVars, data.providers[0].envVars), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
+                    expect(compare(body.providers[0].envVars, data.providers[0].envVars.sort(helpers.byName)), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
 
                     expect(body.containers, 'body.containers').to.have.lengthOf(1);
                     expect(body.containers[0].image, 'body.containers[0].image').to.equal('registry.services.dmtio.net/hello-world:0.1.0');
                     expect(body.containers[0].name, 'body.containers[0].name').to.equal('hello-world-app');
-                    expect(compare(body.containers[0].envVars, data.containers[0].envVars), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
+                    expect(compare(body.containers[0].envVars, data.containers[0].envVars.sort(helpers.byName)), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
                     expect(body.containers[0].ports[0].protocol, 'body.containers[0].ports[0].protocol').to.equal('http');
                     expect(body.containers[0].ports[0].healthcheck, 'body.containers[0].ports[0].healthcheck').to.equal('/_hc');
                     expect(body.containers[0].ports[0].external, 'body.containers[0].ports[0].external').to.be.true;
@@ -927,6 +927,9 @@ describe('Bulk', function () {
                     expect(body.containers[0].ports[0].value, 'body.containers[0].ports[0].value').to.equal(15080);
                     expect(body.containers[0].ports[0].name, 'body.containers[0].ports[0].name').to.equal('PORT');
                     expect(body.containers[0].ports[0].lbtype, 'body.containers[0].ports[0].lbtype').to.equal('default');
+
+                    expect(body.annotations, 'body.annotations').to.have.lengthOf(2);
+                    expect(compare(body.annotations, data.annotations.sort(helpers.byKey)), 'compare(body.annotations, data.annotations)').to.be.true;
 
                     done();
                 });
@@ -984,7 +987,7 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
+                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars.sort(helpers.byName)), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
                     expect(body.providers, 'body.providers').to.have.lengthOf(0);
                     expect(body.containers, 'body.containers').to.have.lengthOf(0);
@@ -1070,21 +1073,21 @@ describe('Bulk', function () {
                     expect(body.parentShipment.name, 'body.parentShipment.name').to.equal('bulk-test-app');
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
-                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
+                    expect(compare(body.parentShipment.envVars, data.parentShipment.envVars.sort(helpers.byName)), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
 
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(2);
-                    expect(compare(body.envVars, data.envVars), 'compare(body.envVars, data.envVars)').to.be.true;
+                    expect(compare(body.envVars, data.envVars.sort(helpers.byName)), 'compare(body.envVars, data.envVars)').to.be.true;
 
                     expect(body.providers, 'body.providers').to.have.lengthOf(1);
                     expect(body.providers[0].replicas, 'body.providers[0].replicas').to.equal(2);
                     expect(body.providers[0].barge, 'body.providers[0].barge').to.equal('test');
                     expect(body.providers[0].name, 'body.providers[0].name').to.equal('aws:us-east-1');
-                    expect(compare(body.providers[0].envVars, data.providers[0].envVars), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
+                    expect(compare(body.providers[0].envVars, data.providers[0].envVars.sort(helpers.byName)), 'compare(body.providers[0].envVars, data.providers[0].envVars)').to.be.true;
 
                     expect(body.containers, 'body.containers').to.have.lengthOf(1);
                     expect(body.containers[0].image, 'body.containers[0].image').to.equal('registry.services.dmtio.net/hello-world:0.1.0');
                     expect(body.containers[0].name, 'body.containers[0].name').to.equal('hello-world-app');
-                    expect(compare(body.containers[0].envVars, data.containers[0].envVars), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
+                    expect(compare(body.containers[0].envVars, data.containers[0].envVars.sort(helpers.byName)), 'compare(body.containers[0].envVars, data.containers[0].envVars)').to.be.true;
                     expect(body.containers[0].ports[0].protocol, 'body.containers[0].ports[0].protocol').to.equal('http');
                     expect(body.containers[0].ports[0].healthcheck, 'body.containers[0].ports[0].healthcheck').to.equal('/_hc');
                     expect(body.containers[0].ports[0].external, 'body.containers[0].ports[0].external').to.be.true;

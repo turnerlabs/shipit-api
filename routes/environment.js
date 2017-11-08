@@ -104,6 +104,9 @@ function get(req, res, next) {
                               return provider;
                           });
                       }
+                      if (result.annotations) {
+                          result.annotations = result.annotations.sort(helpers.sortByKey)
+                      }
                   }
                   return result;
               })

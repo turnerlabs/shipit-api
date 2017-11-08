@@ -8,7 +8,7 @@ const expect = require('chai').expect,
     server = require('../app');
 
 describe('Order', function () {
-    // Shipment
+    // Shipments from bulk tests, env are added out of order
     it('should be enforced on Shipments', function (done) {
         request(server)
             .get('/v1/shipments')
@@ -38,6 +38,7 @@ describe('Order', function () {
             });
     });
 
+    // /test/mocks/bulk_shipment.json
     it('should be enforced on a Shipment', function (done) {
         request(server)
             .get('/v1/shipment/foo')
@@ -58,7 +59,8 @@ describe('Order', function () {
             });
     });
 
-    // Environment
+    // Environment providers
+    // /test/mocks/bulk/2.shipment_2providers.json
     it('should be enforced on Environment (providers)', function (done) {
         request(server)
             .get('/v1/shipment/bulk-shipment-app/environment/test2')
@@ -80,6 +82,8 @@ describe('Order', function () {
 
     });
 
+    // Environment containers
+    // /test/mocks/bulk/4.shipment_2containers.json
     it('should be enforced on Environment (containers)', function (done) {
         request(server)
             .get('/v1/shipment/bulk-shipment-app/environment/test4')
@@ -101,6 +105,7 @@ describe('Order', function () {
     });
 
     // Ports
+    // /test/mocks/bulk_shipment.json
     it('should be enforced on Ports', function (done) {
         //  PORT PORT_SSL
         request(server)
@@ -124,6 +129,7 @@ describe('Order', function () {
 
 
     // EnvVars
+    // test/mocks/bulk/9a.shipment.json
     it('should be enforced on EnvVars', function (done) {
         request(server)
             .get('/v1/shipment/bulk-test-app/environment/test')
@@ -157,6 +163,28 @@ describe('Order', function () {
                     expect(ele.name, 'provider envVar name == ele[i]').to.equal(envVars.provider[i])
                 });
 
+
+                done();
+            });
+    });
+
+    // Annotations
+    // test/mocks/bulk/9a.shipment.json
+    it('should be enforced on Annotations', function (done) {
+        request(server)
+            .get('/v1/shipment/bulk-test-app/environment/test')
+            .expect('Content-Type', /json/)
+            .expect(200, (err, res) => {
+                if (err) {
+                    return done(err);
+                }
+
+                let data = res.body,
+                    keys = ['abba', 'zz top'];
+
+                data.annotations.forEach((ele, i) => {
+                    expect(ele.key, `annotation key(${ele.key}) == ele[i](${keys[i]})`).to.equal(keys[i])
+                });
 
                 done();
             });
