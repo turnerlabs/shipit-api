@@ -26,6 +26,10 @@ module.exports = router;
 function getAll(req, res, next) {
     let query = {
             attributes: { exclude: ['composite'] },
+            order: [
+                ['name', 'ASC'],
+                [{ model: models.Environment, as: 'environments' }, 'composite', 'ASC']
+            ],
             include: [
                 {
                     model: models.Environment,
@@ -131,6 +135,11 @@ function get(req, res, next) {
     let authz = req.authorized || null,
         options = {
             where: { name: req.params.shipment },
+            order: [
+                ['name', 'ASC'],
+                [{ model: models.Environment, as: 'environments' }, 'composite', 'ASC'],
+                [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
+            ],
             include: [
                 { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'iamRole', 'shipmentId'] } },
                 { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }
@@ -251,6 +260,17 @@ function bulk(req, res, next) {
                         environment.buildToken = shipment.environments[0].buildToken || originalShipment.environments[0].buildToken || helpers.generateToken();
                     } else {
                         environment.buildToken = shipment.environments[0].buildToken || helpers.generateToken();
+                    }
+
+                    // Annotations
+                    if (environment.annotations && environment.annotations.length) {
+                        environment.annotations = environment.annotations.reduce((acc, val) => {
+                            if (typeof val.key !== 'undefined' && typeof val.value !== 'undefined') {
+                                acc.push(val);
+                            }
+
+                            return acc;
+                        }, []);
                     }
 
                     let promise = models.Environment.upsert(environment, {

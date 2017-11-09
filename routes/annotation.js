@@ -93,7 +93,7 @@ function post(req, res, next) {
                     arr.push(obj.key);
                     return arr;
                 }, []).join(',');
-                environment.annotations = body;
+                environment.annotations = body.sort(helpers.sortByKey);
             }
             else {
                 let temp = environment.annotations || []
@@ -116,7 +116,7 @@ function post(req, res, next) {
                 }
 
                 req.params.name = body.key;
-                environment.annotations = temp;
+                environment.annotations = temp.sort(helpers.sortByKey);
             }
 
             helpers.updateAuditLog(was, environment.annotations, req);
@@ -157,7 +157,7 @@ function put(req, res, next) {
             }
 
             // setting all annotations
-            environment.annotations = temp;
+            environment.annotations = temp.sort(helpers.sortByKey);
 
             req.params.name = req.params.annotation;
             helpers.updateAuditLog(was, environment.annotations, req);

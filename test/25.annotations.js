@@ -73,7 +73,7 @@ describe('Annotation', function () {
                 .post(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/annotations`)
                 .set('x-username', authUser)
                 .set('x-token', authToken)
-                .send([{"key": "annotation.test.key.1", "value": "this is one"}, {"key": "annotation.test.key.2", "value": "this is two"}])
+                .send([{"key": "annotation.test.key.2", "value": "this is two"}, {"key": "annotation.test.key.1", "value": "this is one"}])
                 .expect('Content-Type', /json/)
                 .expect(201, (err, res) => {
                     if (err) {
@@ -108,6 +108,16 @@ describe('Annotation', function () {
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send([{"key": "annotation.test.key.1"}, {"key": "annotation.test.key.2", "value": "this is two"}])
+                .expect('Content-Type', /json/)
+                .expect(400, done);
+        });
+
+        it('should fail if sending empty objects', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/annotations`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send([{}, {"key": "annotation.test.key.2", "value": "this is two"}])
                 .expect('Content-Type', /json/)
                 .expect(400, done);
         });

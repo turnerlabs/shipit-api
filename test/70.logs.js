@@ -91,7 +91,7 @@ describe('Logs', function () {
 
                     expect(body).to.be.instanceOf(Array);
                     expect(body[0].diff).to.equal("*******")
-                    expect(body.length).to.equal(9);
+                    expect(body.length).to.equal(10);
 
                     return done();
                 });

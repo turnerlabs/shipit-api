@@ -1,7 +1,7 @@
 {
   "enableMonitoring": false,
   "iamRole": "arn:partition:service:region:account:resource",
-  "name": "test4",
+  "name": "test12",
   "parentShipment": {
     "name": "bulk-shipment-app",
     "group": "test",
@@ -13,15 +13,35 @@
       }
     ]
   },
-  "envVars": [],
-  "providers": [],
-  "containers": [
+  "annotations": [
+    {},
     {
-      "image": "registry.services.dmtio.net/sidecar:0.1.0",
-      "name": "sidecar-app",
-      "envVars": [],
-      "ports": []
-    },
+      "key": "foobar",
+      "value": "foobar value"
+    }
+  ],
+  "envVars": [
+    {
+      "name": "NODE_ENV",
+      "value": "production",
+      "type": "basic"
+    }
+  ],
+  "providers": [
+    {
+      "replicas": 2,
+      "barge": "test",
+      "name": "aws:us-east-1",
+      "envVars": [
+        {
+          "name": "LOCATION",
+          "value": "ec2",
+          "type": "basic"
+        }
+      ]
+    }
+  ],
+  "containers": [
     {
       "image": "registry.services.dmtio.net/hello-world:0.1.0",
       "name": "hello-world-app",
@@ -29,11 +49,6 @@
         {
           "name": "HEALTHCHECK",
           "value": "/",
-          "type": "basic"
-        },
-        {
-          "name": "NODE_ENV",
-          "value": "development",
           "type": "basic"
         }
       ],
