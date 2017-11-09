@@ -7,27 +7,27 @@
     "group": "test",
     "envVars": [
       {
-        "name": "CUSTOMER",
-        "value": "mss",
-        "type": "basic"
-      },
-      {
         "name": "MY_SECRET",
         "value": "private",
         "type": "hidden"
+      },
+      {
+        "name": "CUSTOMER",
+        "value": "mss",
+        "type": "basic"
       }
     ]
   },
   "envVars": [
     {
-      "name": "MY_SECRET",
-      "value": "private",
-      "type": "hidden"
-    },
-    {
       "name": "NODE_ENV",
       "value": "development",
       "type": "basic"
+    },
+    {
+      "name": "MY_SECRET",
+      "value": "private",
+      "type": "hidden"
     }
   ],
   "providers": [
@@ -37,16 +37,26 @@
       "name": "aws:us-east-1",
       "envVars": [
         {
-          "name": "LOCATION",
-          "value": "ec2",
-          "type": "basic"
-        },
-        {
           "name": "MY_SECRET",
           "value": "private",
           "type": "hidden"
+        },
+        {
+          "name": "LOCATION",
+          "value": "ec2",
+          "type": "basic"
         }
       ]
+    }
+  ],
+  "annotations": [
+    {
+      "key": "zz top",
+      "value": "the last band"
+    },
+    {
+      "key": "abba",
+      "value": "the first band"
     }
   ],
   "containers": [
@@ -55,14 +65,14 @@
       "name": "hello-world-app",
       "envVars": [
         {
-          "name": "HEALTHCHECK",
-          "value": "/",
-          "type": "basic"
-        },
-        {
           "name": "MY_SECRET",
           "value": "private",
           "type": "hidden"
+        },
+        {
+          "name": "HEALTHCHECK",
+          "value": "/",
+          "type": "basic"
         }
       ],
       "ports": [

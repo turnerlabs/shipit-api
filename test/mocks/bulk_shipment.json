@@ -71,20 +71,8 @@
         "value": "logzio",
         "type": "hidden"
       }],
-      "ports": [{
-          "protocol": "http",
-          "healthcheck": "/_ping",
-          "external": true,
-          "primary": true,
-          "public_vip": false,
-          "enable_proxy_protocol": false,
-          "ssl_arn": "",
-          "ssl_management_type": "iam",
-          "healthcheck_timeout": 1,
-          "healthcheck_interval": 10,
-          "value": 80,
-          "name": "PORT"
-      },{
+      "ports": [
+      {
           "protocol": "https",
           "healthcheck": "/_ping",
           "external": true,
@@ -97,6 +85,20 @@
           "healthcheck_interval": 10,
           "value": 443,
           "name": "PORT_SSL"
+      },
+      {
+          "protocol": "http",
+          "healthcheck": "/_ping",
+          "external": true,
+          "primary": true,
+          "public_vip": false,
+          "enable_proxy_protocol": false,
+          "ssl_arn": "",
+          "ssl_management_type": "iam",
+          "healthcheck_timeout": 1,
+          "healthcheck_interval": 10,
+          "value": 80,
+          "name": "PORT"
       }]
   }],
   "parentShipment": {

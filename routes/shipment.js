@@ -26,6 +26,10 @@ module.exports = router;
 function getAll(req, res, next) {
     let query = {
             attributes: { exclude: ['composite'] },
+            order: [
+                ['name', 'ASC'],
+                [{ model: models.Environment, as: 'environments' }, 'composite', 'ASC']
+            ],
             include: [
                 {
                     model: models.Environment,
@@ -131,6 +135,11 @@ function get(req, res, next) {
     let authz = req.authorized || null,
         options = {
             where: { name: req.params.shipment },
+            order: [
+                ['name', 'ASC'],
+                [{ model: models.Environment, as: 'environments' }, 'composite', 'ASC'],
+                [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
+            ],
             include: [
                 { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'iamRole', 'shipmentId'] } },
                 { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }

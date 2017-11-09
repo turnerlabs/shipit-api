@@ -17,6 +17,12 @@
   "providers": [],
   "containers": [
     {
+      "image": "registry.services.dmtio.net/sidecar:0.1.0",
+      "name": "sidecar-app",
+      "envVars": [],
+      "ports": []
+    },
+    {
       "image": "registry.services.dmtio.net/hello-world:0.1.0",
       "name": "hello-world-app",
       "envVars": [
@@ -31,12 +37,6 @@
           "type": "basic"
         }
       ],
-      "ports": []
-    },
-    {
-      "image": "registry.services.dmtio.net/sidecar:0.1.0",
-      "name": "sidecar-app",
-      "envVars": [],
       "ports": []
     }
   ]
