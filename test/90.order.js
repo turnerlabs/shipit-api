@@ -21,7 +21,7 @@ describe('Order', function () {
                 let data = res.body,
                     names = ['bulk-shipment-app', 'bulk-test-app', 'foo'],
                     envs = [
-                        ['test0', 'test1', 'test2', 'test3', 'test4', 'test5', 'test6'],
+                        ['test0', 'test1', 'test12', 'test2', 'test3', 'test4', 'test5', 'test6'],
                         ['test'],
                         ['back']
                     ];
