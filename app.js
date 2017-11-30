@@ -4,6 +4,8 @@ const express = require('express'),
     morgan = require('morgan'),
     cors = require('cors');
 
+const logFormat = process.env.MORGAN_FORMAT || 'short';
+
 global.status = 200;
 global.appError = null;
 
@@ -17,7 +19,7 @@ app.use(cors());
 
 app.get('/_hc', middleware.health);
 
-app.use(morgan('short'));
+app.use(morgan(logFormat));
 
 const routes = require('./routes'),
     shipment = require('./routes/shipment'),
