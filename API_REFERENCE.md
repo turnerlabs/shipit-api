@@ -160,6 +160,12 @@ enableMonitoring
 - description: Boolean, if true then monitoring of this Shipment Environment will be setup.
 - requirement: must be a valid boolean
 
+enableLoadBalancerAccessLogs
+- type:        String
+- required:    false
+- description: String, the name of the bucket to use for access logs from the load balancer.
+- requirement: Must be a string value
+
 iamRole
 - type:        String
 - required:    false
@@ -740,6 +746,12 @@ enableMonitoring
 - required:    false
 - description: Boolean, if true then monitoring of this Shipment Environment will be setup.
 - requirement: must be a valid boolean
+
+enableLoadBalancerAccessLogs
+- type:        String
+- required:    false
+- description: String, the name of the bucket to use for access logs from the load balancer.
+- requirement: Must be a string value
 
 iamRole
 - type:        String

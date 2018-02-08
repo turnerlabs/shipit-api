@@ -141,7 +141,7 @@ function get(req, res, next) {
                 [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
             ],
             include: [
-                { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'iamRole', 'shipmentId'] } },
+                { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'enableLoadBalancerAccessLogs', 'iamRole', 'shipmentId'] } },
                 { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }
             ]
         };

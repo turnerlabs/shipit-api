@@ -1,5 +1,6 @@
 {
   "enableMonitoring": true,
+  "enableLoadBalancerAccessLogs": "harbor-lb-access-logs-tester",
   "iamRole": "arn:partition:service:region:account:resource",
   "name": "test",
   "parentShipment": {

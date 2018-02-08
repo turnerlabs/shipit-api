@@ -2,6 +2,7 @@
   "name": "bat",
   "buildToken": null,
   "enableMonitoring": true,
+  "enableLoadBalancerAccessLogs": "harbor-lb-access-logs-test-east-east-1",
   "iamRole": "arn:partition:service:region:account:resource",
   "envVars": [
     {

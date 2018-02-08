@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: true,
                 allowNull: true
             },
+            enableLoadBalancerAccessLogs: {
+                type: DataTypes.STRING,
+                defaultValue: null,
+                allowNull: true
+            },
             iamRole: {
                 type: DataTypes.STRING,
                 defaultValue: "",

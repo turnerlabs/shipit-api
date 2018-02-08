@@ -19,15 +19,16 @@ There are several types of objects that are related to a Shipment in ShipIt.
 
 ```json
 {
-    "name":             "String. Name of the environment.",
-    "buildToken":       "String. Long lived auth token.",
-    "enableMonitoring": "Boolean. Whether alerts should be sent to DOC when Shipment is failing; defaults to true.",
-    "iamRole":          "String. IAM Role ARN that the container will assume for permissions to cloud resources",
-    "envVars":          "Array. Env Var objects.",
-    "annotations":      "Array. Annotation objects.",
-    "containers":       "Array. Container objects.",
-    "ports":            "Array. Port objects.",
-    "providers":        "Array. Provider objects."
+    "name":                         "String. Name of the environment.",
+    "buildToken":                   "String. Long lived auth token.",
+    "enableMonitoring":             "Boolean. Whether alerts should be sent to DOC when Shipment is failing; defaults to true.",
+    "enableLoadBalancerAccessLogs": "String. The name of the bucket to be used, example harbor-lb-access-logs-news-ec2. Defaults to null.",
+    "iamRole":                      "String. IAM Role ARN that the container will assume for permissions to cloud resources",
+    "envVars":                      "Array. Env Var objects.",
+    "annotations":                  "Array. Annotation objects.",
+    "containers":                   "Array. Container objects.",
+    "ports":                        "Array. Port objects.",
+    "providers":                    "Array. Provider objects."
 }
 ```
 
