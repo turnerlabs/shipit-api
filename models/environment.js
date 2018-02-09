@@ -33,7 +33,12 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: true,
                 allowNull: true
             },
-            enableLoadBalancerAccessLogs: {
+            access_logs_s3_bucket_name: {
+                type: DataTypes.STRING,
+                defaultValue: null,
+                allowNull: true
+            },
+            access_logs_s3_bucket_prefix: {
                 type: DataTypes.STRING,
                 defaultValue: null,
                 allowNull: true

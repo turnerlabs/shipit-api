@@ -988,7 +988,8 @@ describe('Bulk', function () {
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
-                    expect(body.enableLoadBalancerAccessLogs, 'body.enableLoadBalancerAccessLogs').to.equal("harbor-lb-access-logs-tester");
+                    expect(body.access_logs_s3_bucket_name, 'body.access_logs_s3_bucket_name').to.equal("harbor-lb-access-logs-tester");
+                    expect(body.access_logs_s3_bucket_prefix, 'body.access_logs_s3_bucket_prefix').to.equal('bulk-test-app-test');
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
                     expect(body.providers, 'body.providers').to.have.lengthOf(0);
                     expect(body.containers, 'body.containers').to.have.lengthOf(0);
@@ -1019,7 +1020,8 @@ describe('Bulk', function () {
                     expect(body.parentShipment.group, 'body.parentShipment.group').to.equal('test');
                     expect(body.parentShipment.envVars, 'body.parentShipment.envVars').to.have.lengthOf(2);
                     expect(compare(body.parentShipment.envVars, data.parentShipment.envVars.sort(helpers.byName)), 'compare(body.parentShipment.envVars, data.parentShipment.envVars)').to.be.true;
-                    expect(body.enableLoadBalancerAccessLogs, 'body.enableLoadBalancerAccessLogs').to.equal("harbor-lb-access-logs-tester");
+                    expect(body.access_logs_s3_bucket_name, 'body.access_logs_s3_bucket_name').to.equal("harbor-lb-access-logs-tester");
+                    expect(body.access_logs_s3_bucket_prefix, 'body.access_logs_s3_bucket_prefix').to.equal("bulk-test-app-test");
                     expect(body.envVars, 'body.envVars').to.have.lengthOf(0);
                     expect(body.providers, 'body.providers').to.have.lengthOf(0);
                     expect(body.containers, 'body.containers').to.have.lengthOf(0);

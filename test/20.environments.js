@@ -165,7 +165,8 @@ describe('Environment', function () {
                 .set('x-token', authToken)
                 .send({"enableMonitoring": "false"})
                 .send({"iamRole": "arn:partition:service:region:account:resource"})
-                .send({"enableLoadBalancerAccessLogs": "harbor-lb-access-logs-tester"})
+                .send({"access_logs_s3_bucket_name": "harbor-lb-access-logs-tester"})
+                .send({"access_logs_s3_bucket_prefix": `${testShipment.name}-${testEnvironment.name}`})
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
                     if (err) {
@@ -181,7 +182,8 @@ describe('Environment', function () {
 
                     expect(data.enableMonitoring).to.equal(false);
                     expect(data.iamRole).to.equal("arn:partition:service:region:account:resource");
-                    expect(data.enableLoadBalancerAccessLogs).to.equal("harbor-lb-access-logs-tester");
+                    expect(data.access_logs_s3_bucket_name).to.equal("harbor-lb-access-logs-tester");
+                    expect(data.access_logs_s3_bucket_prefix).to.equal("test-shipment-test-env")
                     expect(data.buildToken).to.not.be.null;
                     expect(data.buildToken).to.be.lengthOf(50);
 
@@ -324,7 +326,8 @@ describe('Environment', function () {
                     expect(data.name).to.equal(testEnvironment.name);
                     expect(data.parentShipment.group).to.equal(testShipment.group);
                     expect(data.parentShipment.name).to.equal(testShipment.name);
-                    expect(data.enableLoadBalancerAccessLogs).to.equal("harbor-lb-access-logs-tester");
+                    expect(data.access_logs_s3_bucket_name).to.equal("harbor-lb-access-logs-tester");
+                    expect(data.access_logs_s3_bucket_prefix).to.equal("test-shipment-test-env");
                     expect(data.envVars).to.have.lengthOf(1);
 
                     done();
