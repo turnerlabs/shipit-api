@@ -29,6 +29,16 @@ module.exports = {
                     )
                 );
             }
+            if (attributes.hasOwnProperty('access_logs_s3_bucket_name')) {
+                changes.push(
+                    queryInterface.removeColumn('Environments', 'access_logs_s3_bucket_name')
+                );
+            }
+            if (attributes.hasOwnProperty('access_logs_s3_bucket_prefix')) {
+                changes.push(
+                    queryInterface.removeColumn('Environments', 'access_logs_s3_bucket_prefix')
+                );
+            }
         });
 
         return Promise.all(changes);
