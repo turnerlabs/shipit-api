@@ -160,14 +160,14 @@ enableMonitoring
 - description: Boolean, if true then monitoring of this Shipment Environment will be setup.
 - requirement: must be a valid boolean
 
-access_logs_s3_bucket_name
+lb_access_logs_s3_bucket_name
 - type:        String
 - required:    false
 - description: String, the name of the bucket to use for access logs from the load balancer. For example, the default
                value is `harbor-lb-access-logs-${barge}-${location}`.
 - requirement: Must be a string value that is a DNS compliant name https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html
 
-access_logs_s3_bucket_prefix
+lb_access_logs_s3_bucket_prefix
 - type:        String
 - required:    false
 - description: String, the prefix for the path for the access logs from the load balancer. For example, the default
@@ -755,14 +755,14 @@ enableMonitoring
 - description: Boolean, if true then monitoring of this Shipment Environment will be setup.
 - requirement: must be a valid boolean
 
-access_logs_s3_bucket_name
+lb_access_logs_s3_bucket_name
 - type:        String
 - required:    false
 - description: String, the name of the bucket to use for access logs from the load balancer. For example, the default
                value is `harbor-lb-access-logs-${barge}-${location}`.
 - requirement: Must be a string value that is a DNS compliant name https://docs.aws.amazon.com/AmazonS3/latest/dev/BucketRestrictions.html
 
-access_logs_s3_bucket_prefix
+lb_access_logs_s3_bucket_prefix
 - type:        String
 - required:    false
 - description: String, the prefix for the path for the access logs from the load balancer. For example, the default

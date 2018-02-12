@@ -2,8 +2,8 @@
   "name": "bat",
   "buildToken": null,
   "enableMonitoring": true,
-  "access_logs_s3_bucket_name": "harbor-lb-access-logs-test-east-east-1",
-  "access_logs_s3_bucket_prefix": "foo-bat",
+  "lb_access_logs_s3_bucket_name": "harbor-lb-access-logs-test-east-east-1",
+  "lb_access_logs_s3_bucket_prefix": "foo-bat",
   "iamRole": "arn:partition:service:region:account:resource",
   "envVars": [
     {

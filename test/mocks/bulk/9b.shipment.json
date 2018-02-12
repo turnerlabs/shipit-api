@@ -1,7 +1,7 @@
 {
   "enableMonitoring": true,
-  "access_logs_s3_bucket_name": "harbor-lb-access-logs-tester",
-  "access_logs_s3_bucket_prefix": "bulk-test-app-test",
+  "lb_access_logs_s3_bucket_name": "harbor-lb-access-logs-tester",
+  "lb_access_logs_s3_bucket_prefix": "bulk-test-app-test",
   "iamRole": "arn:partition:service:region:account:resource",
   "name": "test",
   "parentShipment": {

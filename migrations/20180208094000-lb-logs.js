@@ -3,11 +3,11 @@ module.exports = {
         let changes = [];
 
         queryInterface.describeTable('Environments').then(attributes => {
-            if (!attributes.hasOwnProperty('access_logs_s3_bucket_name')) {
+            if (!attributes.hasOwnProperty('lb_access_logs_s3_bucket_name')) {
                 changes.push(
                     queryInterface.addColumn(
                         'Environments',
-                        'access_logs_s3_bucket_name',
+                        'lb_access_logs_s3_bucket_name',
                         {
                             type: DataTypes.STRING,
                             defaultValue: null,
@@ -16,11 +16,11 @@ module.exports = {
                     )
                 );
             }
-            if (!attributes.hasOwnProperty('access_logs_s3_bucket_prefix')) {
+            if (!attributes.hasOwnProperty('lb_access_logs_s3_bucket_prefix')) {
                 changes.push(
                     queryInterface.addColumn(
                         'Environments',
-                        'access_logs_s3_bucket_prefix',
+                        'lb_access_logs_s3_bucket_prefix',
                         {
                             type: DataTypes.STRING,
                             defaultValue: null,
@@ -38,14 +38,14 @@ module.exports = {
         let changes = [];
 
         queryInterface.describeTable('Environments').then(attributes => {
-            if (attributes.hasOwnProperty('access_logs_s3_bucket_name')) {
+            if (attributes.hasOwnProperty('lb_access_logs_s3_bucket_name')) {
                 changes.push(
-                    queryInterface.removeColumn('Environments', 'access_logs_s3_bucket_name')
+                    queryInterface.removeColumn('Environments', 'lb_access_logs_s3_bucket_name')
                 );
             }
-            if (attributes.hasOwnProperty('access_logs_s3_bucket_prefix')) {
+            if (attributes.hasOwnProperty('lb_access_logs_s3_bucket_prefix')) {
                 changes.push(
-                    queryInterface.removeColumn('Environments', 'access_logs_s3_bucket_prefix')
+                    queryInterface.removeColumn('Environments', 'lb_access_logs_s3_bucket_prefix')
                 );
             }
         });
