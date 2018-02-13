@@ -12,6 +12,18 @@
 
 > Returns an environment object, with a parentShipment field containing the parent shipment
 
+### GET `/v1/shipment/:Shipment/environment/:name/annotations`
+
+> Returns an array of annotation objects
+
+### GET `/v1/shipment/:Shipment/environment/:name/annotation/:key`
+
+> Returns annotation objects
+
+### GET `/v1/shipment/:Shipment/environment/:name`
+
+> Returns an environment object, with a parentShipment field containing the parent shipment
+
 ### GET `/v1/envVar/search`
 
 > Returns a shipment environment, that contains the envVar name and value
@@ -201,6 +213,46 @@ type
                'basic'
 - requirement: Must be 'basic', 'discover', or 'hidden'
 
+```
+
+
+### POST `/v1/shipment/:Shipment/environment/:Environment/annotations`
+
+> Create an Annotation or an Array of Annotations under `/shipment/:Shipment/environment/:Environment`. Returns the `:Environment` object on success.
+
+#### Headers
+
+```
+x-username
+- type:        String
+- required:    true
+- description: The username of authenticated user
+- requirement: Must be a valid turner ldap username
+
+x-token
+- type:        String
+- required:    true
+- description: The token of authenticated user
+- requirement: Must be a valid token for username authenticated against
+               http://auth.services.dmtio.net
+
+```
+
+#### Fields
+
+Can either pass in a single object which will be added to the existing annotations. Or, pass in an entire array of objects,
+which will replace all existing annotations.
+
+```
+key
+- type:        String
+- required:    true
+- description: Name of the annotation
+
+value
+- type:        String
+- required:    true
+- description: The value of the annotation
 ```
 
 
@@ -739,6 +791,46 @@ type
 ```
 
 
+### PUT `/v1/shipment/:Shipment/environment/:Environment/annotation/:Key`
+
+> Updates Annotation `:key` under `/shipment/:Shipment/environment/:Environment`. Returns updated object if successful or error otherwise
+
+#### Headers
+
+```
+x-username
+- type:        String
+- required:    true
+- description: The username of authenticated user
+- requirement: Must be a valid turner ldap username
+
+x-token
+- type:        String
+- required:    true
+- description: The token of authenticated user
+- requirement: Must be a valid token for username authenticated against
+               http://auth.services.dmtio.net
+
+```
+
+#### Fields
+
+```
+key
+- type:        String
+- required:    false
+- description: Will update the key of the annotation
+- requirement: Must be a valid string
+
+value
+- type:        String
+- required:    false
+- description: Will update the value of the annotation :key
+- requirement: Must be a valid string
+
+```
+
+
 ### PUT `/v1/shipment/:Shipment/environment/:Environment/container/:name`
 
 > Updates container `:Container` under `/shipment/:Shipment/environment/:Environment`. Returns updated object if successful or error otherwise
@@ -1155,6 +1247,30 @@ x-token
                http://auth.services.dmtio.net
 
 ```
+
+
+### DELETE `/v1/shipment/:Shipment/environment/:Environment/annotation/:Key`
+
+> Removes Annotation `:key` under `/shipment/:Shipment/environment/:Environment`. Returns updated object if successful or error otherwise
+
+#### Headers
+
+```
+x-username
+- type:        String
+- required:    true
+- description: The username of authenticated user
+- requirement: Must be a valid turner ldap username
+
+x-token
+- type:        String
+- required:    true
+- description: The token of authenticated user
+- requirement: Must be a valid token for username authenticated against
+               http://auth.services.dmtio.net
+
+```
+
 
 ### DELETE `/v1/shipment/:Shipment/environment/:Environment/container/:name`
 

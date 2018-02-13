@@ -26,6 +26,10 @@ module.exports = router;
 function getAll(req, res, next) {
     let query = {
             attributes: { exclude: ['composite'] },
+            order: [
+                ['name', 'ASC'],
+                [{ model: models.Environment, as: 'environments' }, 'composite', 'ASC']
+            ],
             include: [
                 {
                     model: models.Environment,
@@ -131,6 +135,11 @@ function get(req, res, next) {
     let authz = req.authorized || null,
         options = {
             where: { name: req.params.shipment },
+            order: [
+                ['name', 'ASC'],
+                [{ model: models.Environment, as: 'environments' }, 'composite', 'ASC'],
+                [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
+            ],
             include: [
                 { model: models.Environment, as: 'environments', attributes: { exclude: ['buildToken', 'composite', 'enableMonitoring', 'iamRole', 'shipmentId'] } },
                 { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }
@@ -217,6 +226,7 @@ function bulk(req, res, next) {
                     promises = envVars.map((envVar) => {
                         envVar.composite = `${shipment.name}-${envVar.name}`;
                         envVar.shipmentId = shipment.name;
+                        envVar = helpers.prepEnvVar(envVar);
 
                         return models.EnvVar.upsert(envVar, {
                             transaction: taction,
@@ -252,6 +262,17 @@ function bulk(req, res, next) {
                         environment.buildToken = shipment.environments[0].buildToken || helpers.generateToken();
                     }
 
+                    // Annotations
+                    if (environment.annotations && environment.annotations.length) {
+                        environment.annotations = environment.annotations.reduce((acc, val) => {
+                            if (typeof val.key !== 'undefined' && typeof val.value !== 'undefined') {
+                                acc.push(val);
+                            }
+
+                            return acc;
+                        }, []);
+                    }
+
                     let promise = models.Environment.upsert(environment, {
                         transaction: taction,
                         include: _include(shipName, envName, 'environments').include
@@ -264,6 +285,7 @@ function bulk(req, res, next) {
                         environment.envVars.map((envVar) => {
                             envVar.composite = `${environment.composite}-${envVar.name}`;
                             envVar.environmentId = `${environment.composite}`;
+                            envVar = helpers.prepEnvVar(envVar);
 
                             let promise = models.EnvVar.upsert(envVar, {
                                 transaction: taction,
@@ -450,6 +472,10 @@ function getUpserts(model, incoming, composite, foriegnKeyId, taction) {
 
         inc.composite = `${composite}-${inc.name}`;
         inc[foriegnKeyId] = composite;
+        if (model === 'EnvVar') {
+            // we need to make sure that Env Vars have their shaValue set
+            inc = helpers.prepEnvVar(inc);
+        }
         nowObjects.push({model: model, method: 'upsert', values: inc, options: options});
 
         if (model === 'Container') {

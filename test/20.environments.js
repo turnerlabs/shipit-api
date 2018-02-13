@@ -68,6 +68,34 @@ describe('Environment', function () {
                 });
         });
 
+        it('should be able to create a EnvVar on an Environment', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({"name": "NODE_ENV", "value": "development"})
+                .expect('Content-Type', /json/)
+                .expect(201, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let data = res.body,
+                        props = ['name', 'value', 'type'],
+                        excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
+
+                    props.forEach(prop => expect(data).to.have.property(prop));
+                    excludes.forEach(prop => expect(data).to.not.have.property(prop));
+
+                    expect(data.name).to.equal('NODE_ENV');
+                    expect(data.value).to.equal('development');
+                    expect(data.type).to.equal('basic');
+
+                    done();
+                });
+        });
+
         it('should fail when trying to create the same Environment', function (done) {
             request(server)
                 .post(`/v1/shipment/${testShipment.name}/environments`)
@@ -84,6 +112,36 @@ describe('Environment', function () {
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send({})
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail if name contains underscore', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "foo_bar"})
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail if name contains space', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "foo bar"})
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail if name starts with number', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "999foobar"})
                 .expect('Content-Type', /json/)
                 .expect(422, done);
         });
@@ -264,7 +322,7 @@ describe('Environment', function () {
                     expect(data.name).to.equal(testEnvironment.name);
                     expect(data.parentShipment.group).to.equal(testShipment.group);
                     expect(data.parentShipment.name).to.equal(testShipment.name);
-                    expect(data.envVars).to.have.lengthOf(0);
+                    expect(data.envVars).to.have.lengthOf(1);
 
                     done();
                 });

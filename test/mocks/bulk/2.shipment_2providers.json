@@ -13,18 +13,12 @@
       }
     ]
   },
-  "envVars": [
-    {
-      "name": "NODE_ENV",
-      "value": "development",
-      "type": "basic"
-    }
-  ],
+  "envVars": [],
   "providers": [
     {
       "replicas": 2,
       "barge": "test",
-      "name": "aws:us-east-1",
+      "name": "aws:us-east-2",
       "envVars": [
         {
           "name": "LOCATION",
@@ -36,7 +30,7 @@
     {
       "replicas": 2,
       "barge": "test",
-      "name": "aws:us-east-2",
+      "name": "aws:us-east-1",
       "envVars": [
         {
           "name": "LOCATION",

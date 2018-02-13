@@ -61,9 +61,20 @@ function errorHandler(err, req, res, next) {
         body = {
             status: code,
             message: err.message || err.toString() || err
-        };
+        },
+        context = `${req.method} ${req.path}`,
+        shipment,
+        environment;
 
-    console.log('ERROR => ', err);
+    if (context === 'POST /v1/bulk/shipments') {
+        // not much help for context here
+        // let's get the shipment and environment
+        shipment = req.body && req.body.parentShipment && req.body.parentShipment.name || 'no-shipment';
+        environment = req.body && req.body.name || 'no-environment';
+        context = `bulk endpoint ${shipment}:${environment}`
+    }
+
+    console.error('ERROR (%s) => ', context, err);
     res.status(code);
     res.json(body);
 }
@@ -181,6 +192,8 @@ function setGroups(req, res, next) {
     // make sure we have a name to lookup the shipment on
     // if either one of these fail, just continue
     if (!req.authenticated) {
+        return next();
+    } else if (req.tokenType === 'service' && !name) {
         return next();
     } else if (!name) {
         return next({statusCode: 422, message: `No shipment name ${name}.`});

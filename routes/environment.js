@@ -44,6 +44,11 @@ function get(req, res, next) {
                   payload.parentShipment = shipment.toJSON();
                   delete payload.parentShipment.id;
 
+                  // if user is not authed, hide iam role
+                  if (!authz) {
+                      payload.iamRole = helpers.hideValue();
+                  }
+
                   return payload;
               })
               .then(result => {
@@ -52,6 +57,7 @@ function get(req, res, next) {
                               if (!authz && envVar.type === 'hidden') {
                                   envVar.value = helpers.hideValue();
                               }
+                              delete envVar.shaValue;
                               return envVar;
                           },
                           portFieldDel = (port, authz) => {
@@ -67,20 +73,20 @@ function get(req, res, next) {
 
                       if (result.envVars) {
                           result.envVars = result.envVars
-                          .map(envVar => hide(envVar, authz))
-                          .sort(helpers.sortByName);
+                              .map(envVar => hide(envVar, authz))
+                              .sort(helpers.sortByName);
                       }
                       if (result.parentShipment && result.parentShipment.envVars) {
                           result.parentShipment.envVars = result.parentShipment.envVars
-                          .map(envVar => hide(envVar, authz))
-                          .sort(helpers.sortByName);
+                              .map(envVar => hide(envVar, authz))
+                              .sort(helpers.sortByName);
                       }
                       if (result.containers) {
                           result.containers = result.containers.map(container => {
                               if (container.envVars) {
                                   container.envVars = container.envVars
-                                  .map(envVar => hide(envVar, authz))
-                                  .sort(helpers.sortByName);
+                                      .map(envVar => hide(envVar, authz))
+                                      .sort(helpers.sortByName);
                               }
                               if (container.ports) {
                                   container.ports = container.ports.map(port => portFieldDel(port, authz));
@@ -92,11 +98,14 @@ function get(req, res, next) {
                           result.providers = result.providers.map(provider => {
                               if (provider.envVars) {
                                   provider.envVars = provider.envVars
-                                  .map(envVar => hide(envVar, authz))
-                                  .sort(helpers.sortByName);
+                                      .map(envVar => hide(envVar, authz))
+                                      .sort(helpers.sortByName);
                               }
                               return provider;
                           });
+                      }
+                      if (result.annotations) {
+                          result.annotations = result.annotations.sort(helpers.sortByKey)
                       }
                   }
                   return result;
@@ -280,6 +289,10 @@ function _get(req, type, ship, env) {
         query = {
             shipment: {
                 where: { name: ship },
+                order: [
+                    ['name', 'ASC'],
+                    [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC']
+                ],
                 include: [
                     { model: models.EnvVar, as: 'envVars', attributes: { exclude: helpers.excludes.envVar(authz) } }
                 ]
@@ -287,6 +300,15 @@ function _get(req, type, ship, env) {
             environment: {
                 attributes: { exclude: helpers.excludes.environment(authz) },
                 where: { composite: `${ship}-${env}` },
+                order: [
+                    ['name', 'ASC'],
+                    [{ model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC'],
+                    [{ model: models.Provider, as: 'providers' }, 'composite', 'ASC'],
+                    [{ model: models.Provider, as: 'providers' }, { model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC'],
+                    [{ model: models.Container, as: 'containers'}, 'composite', 'ASC'],
+                    [{ model: models.Container, as: 'containers'}, { model: models.EnvVar, as: 'envVars' }, 'composite', 'ASC'],
+                    [{ model: models.Container, as: 'containers'}, { model: models.Port, as: 'ports' }, 'composite', 'ASC'],
+                ],
                 include: [
                     { model: models.EnvVar, as: "envVars", attributes: { exclude: helpers.excludes.envVar(authz) } },
                     { model: models.Provider, as: "providers", attributes: { exclude: helpers.excludes.provider(authz) }, include: [

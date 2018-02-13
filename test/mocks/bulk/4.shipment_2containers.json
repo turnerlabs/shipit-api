@@ -13,15 +13,15 @@
       }
     ]
   },
-  "envVars": [
-    {
-      "name": "NODE_ENV",
-      "value": "development",
-      "type": "basic"
-    }
-  ],
+  "envVars": [],
   "providers": [],
   "containers": [
+    {
+      "image": "registry.services.dmtio.net/sidecar:0.1.0",
+      "name": "sidecar-app",
+      "envVars": [],
+      "ports": []
+    },
     {
       "image": "registry.services.dmtio.net/hello-world:0.1.0",
       "name": "hello-world-app",
@@ -30,14 +30,13 @@
           "name": "HEALTHCHECK",
           "value": "/",
           "type": "basic"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "development",
+          "type": "basic"
         }
       ],
-      "ports": []
-    },
-    {
-      "image": "registry.services.dmtio.net/sidecar:0.1.0",
-      "name": "sidecar-app",
-      "envVars": [],
       "ports": []
     }
   ]

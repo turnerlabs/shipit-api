@@ -56,7 +56,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -84,7 +84,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -134,6 +134,126 @@ describe('EnvVar', function () {
                 .expect('Content-Type', /json/)
                 .expect(422, done);
         });
+
+        it('should fail when name has a - at end', function (done) {
+            let failVar = {name: "FAIL1-", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail when name has a - at beginning', function (done) {
+            let failVar = {name: "-FAIL1", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail with multiple spaces', function (done) {
+            let failVar = {name: "FAIL---1", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail when name has a space', function (done) {
+            let failVar = {name: "FAIL 1", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail when name has a space at beginning', function (done) {
+            let failVar = {name: " FAIL1", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail when name has a space at end', function (done) {
+            let failVar = {name: "FAIL1 ", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail with multiple spaces', function (done) {
+            let failVar = {name: "FAIL    1", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail numbers at beginning', function (done) {
+            let failVar = {name: "888FAIL1", value: "foobar"};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail with empty value', function (done) {
+            let failVar = {name: "TEST", value: ""};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
+
+        it('should fail with empty values', function (done) {
+            let failVar = {name: "TEST", value: "   "};
+
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/envVars`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failVar)
+                .expect('Content-Type', /json/)
+                .expect(422, done);
+        });
     });
 
     describe('Update', function () {
@@ -152,7 +272,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -186,7 +306,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -228,7 +348,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
@@ -255,7 +375,7 @@ describe('EnvVar', function () {
                     let data = res.body,
                         props = ['name', 'value', 'type'],
                         excludes = ['composite', 'containerId', 'environmentId', 'providerId', 'shipmentId',
-                            'createdAt', 'updatedAt', 'deletedAt', 'sha_value'];
+                            'createdAt', 'updatedAt', 'deletedAt', 'shaValue'];
 
                     props.forEach(prop => expect(data).to.have.property(prop));
                     excludes.forEach(prop => expect(data).to.not.have.property(prop));
