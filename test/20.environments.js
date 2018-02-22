@@ -10,6 +10,7 @@ const expect = require('chai').expect,
 
 let testShipment = helpers.fetchMockData('atomic-shipment-req'),
     testEnvironment = helpers.fetchMockData('environment'),
+    testCnamesEnvironment = helpers.fetchMockData('env-cnames')
     authUser = 'test_user',
     authToken = 'foobar_token',
     authnPostData = {username: authUser, token: authToken},
@@ -63,6 +64,40 @@ describe('Environment', function () {
                     expect(data.iamRole).to.not.be.null;
                     expect(data.buildToken).to.not.be.null;
                     expect(data.buildToken).to.have.lengthOf(50);
+                    expect(data.cnames).to.not.be.null;
+                    expect(data.cnames).to.have.lengthOf(0);
+
+                    done();
+                });
+        });
+
+        it('should create Shipment Environment with cnames model', function (done) {
+            request(server)
+                .post(`/v1/shipment/${testShipment.name}/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(testCnamesEnvironment)
+                .expect('Content-Type', /json/)
+                .expect(201, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let data = res.body,
+                        props = ['name', 'enableMonitoring', 'iamRole', 'buildToken'],
+                        excludes = ['composite', 'shipmentId', 'createdAt', 'updatedAt', 'deletedAt'];
+
+                    props.forEach(prop => expect(data).to.have.property(prop));
+                    excludes.forEach(prop => expect(data).to.not.have.property(prop));
+
+                    expect(data.name).to.equal('test-env-cnames');
+                    expect(data.enableMonitoring).to.equal(true);
+                    expect(data.iamRole).to.not.be.null;
+                    expect(data.buildToken).to.not.be.null;
+                    expect(data.buildToken).to.have.lengthOf(50);
+                    expect(data.cnames).to.not.be.null;
+                    expect(data.cnames).to.have.lengthOf(1);
+                    expect(data.cnames[0]).to.equal('shipment.example.com');
 
                     done();
                 });
@@ -165,6 +200,7 @@ describe('Environment', function () {
                 .set('x-token', authToken)
                 .send({"enableMonitoring": "false"})
                 .send({"iamRole": "arn:partition:service:region:account:resource"})
+                .send({"cnames": ["example.com"]})
                 .expect('Content-Type', /json/)
                 .expect(200, (err, res) => {
                     if (err) {
@@ -182,6 +218,41 @@ describe('Environment', function () {
                     expect(data.iamRole).to.equal("arn:partition:service:region:account:resource");
                     expect(data.buildToken).to.not.be.null;
                     expect(data.buildToken).to.be.lengthOf(50);
+                    expect(data.cnames).to.not.be.null;
+                    expect(data.cnames).to.be.lengthOf(1);
+                    expect(data.cnames[0]).to.equal('example.com');
+
+                    done();
+                });
+        });
+
+        it('should update cnames on the Environment', function (done) {
+            request(server)
+                .put(`/v1/shipment/${testShipment.name}/environment/${testEnvironment.name}`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({"cnames": ["foo.example.com", "bar.example.com"]})
+                .expect('Content-Type', /json/)
+                .expect(200, (err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+
+                    let data = res.body,
+                        props = ['name', 'enableMonitoring', 'iamRole', 'buildToken', 'buildToken'],
+                        excludes = ['composite', 'shipmentId', 'createdAt', 'updatedAt', 'deletedAt'];
+
+                    props.forEach(prop => expect(data).to.have.property(prop));
+                    excludes.forEach(prop => expect(data).to.not.have.property(prop));
+
+                    expect(data.enableMonitoring).to.equal(false);
+                    expect(data.iamRole).to.equal("arn:partition:service:region:account:resource");
+                    expect(data.buildToken).to.not.be.null;
+                    expect(data.buildToken).to.be.lengthOf(50);
+                    expect(data.cnames).to.not.be.null;
+                    expect(data.cnames).to.be.lengthOf(2);
+                    expect(data.cnames[0]).to.equal('foo.example.com');
+                    expect(data.cnames[1]).to.equal('bar.example.com');
 
                     done();
                 });

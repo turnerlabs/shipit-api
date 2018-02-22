@@ -42,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.JSONB,
                 field: "annotations",
                 defaultValue: []
+            },
+            cnames: {
+                type: DataTypes.JSONB,
+                field: "cnames",
+                defaultValue: []
             }
         },
         {

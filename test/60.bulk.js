@@ -49,7 +49,7 @@ describe('Bulk', function () {
                         result;
 
                     let props = {
-                            environment: ['name', 'enableMonitoring', 'iamRole', 'buildToken', 'envVars', 'containers', 'providers'],
+                            environment: ['name', 'enableMonitoring', 'iamRole', 'cnames', 'buildToken', 'envVars', 'containers', 'providers'],
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
@@ -572,7 +572,7 @@ describe('Bulk', function () {
 
                     let body = res.body;
                         props = {
-                            environment: ['name', 'enableMonitoring', 'iamRole', 'envVars', 'containers', 'providers'],
+                            environment: ['name', 'enableMonitoring', 'iamRole', 'cnames', 'envVars', 'containers', 'providers'],
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],
@@ -650,7 +650,7 @@ describe('Bulk', function () {
 
                     let body = res.body;
                         props = {
-                            environment: ['name', 'enableMonitoring', 'iamRole', 'buildToken', 'envVars', 'containers', 'providers'],
+                            environment: ['name', 'enableMonitoring', 'iamRole', 'cnames', 'buildToken', 'envVars', 'containers', 'providers'],
                             parentShipment: ['name', 'group', 'envVars'],
                             container: ['name', 'image', 'envVars', 'ports'],
                             provider: ['name', 'replicas', 'barge', 'envVars'],

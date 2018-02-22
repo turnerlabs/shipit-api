@@ -1,0 +1,6 @@
+{
+  "name": "test-env-cnames",
+  "cnames": [
+    "shipment.example.com"
+  ]
+}
