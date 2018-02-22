@@ -3,6 +3,9 @@
   "buildToken": null,
   "enableMonitoring": true,
   "iamRole": "arn:partition:service:region:account:resource",
+  "cnames": [
+    "foobar.example.com"
+  ],
   "envVars": [
     {
       "name": "PORT",

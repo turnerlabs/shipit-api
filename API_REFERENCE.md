@@ -213,6 +213,11 @@ type
                'basic'
 - requirement: Must be 'basic', 'discover', or 'hidden'
 
+cnames
+- type:        Array
+- required:    false
+- description: A list of CNAME strings to set on shared load balancer 
+- requirement: An array
 ```
 
 
