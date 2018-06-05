@@ -7,13 +7,19 @@ const models = require('../models'),
     Promise = require('bluebird');
 
 router.post('/bulk/shipments', checkAuth, bulk);
-router.post('/shipments', checkAuth, post);
+router.post('/ships', checkAuth, post);
+router.post('/shipments', deprecated);
 router.get('/shipments', getAll);
 router.put('/shipment/:shipment', checkAuth, put);
 router.get('/shipment/:shipment', get);
 router.delete('/shipment/:shipment', checkAuth, deleteIt);
 module.exports = router;
 
+
+function deprecated(req, res, next) {
+    res.status(410)
+    res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'})
+}
 
 /**
  * getAll - gets all shipments
@@ -213,175 +219,191 @@ function bulk(req, res, next) {
             return environment.toJSON();
         })
         .then(originalShipment => {
-            models.sequelize.transaction(taction => {
-                return models.Shipment.upsert(shipment, {
-                    transaction: taction,
-                    include: _include(shipName, envName)
-                })
-                .then(result => {
-                    let envVars = shipment.envVars || [],
-                        deletes,
-                        promises;
+            let cloudAllowed = true,
+                allowHeader = req.get('x-cloud-arch') || null;
 
-                    promises = envVars.map((envVar) => {
-                        envVar.composite = `${shipment.name}-${envVar.name}`;
-                        envVar.shipmentId = shipment.name;
-                        envVar = helpers.prepEnvVar(envVar);
+            if (!originalShipment) {
+                // Trying to create a new Shipment
+                // check for the correct header
+                cloudAllowed = allowHeader === 'allowed';
+            }
 
-                        return models.EnvVar.upsert(envVar, {
-                            transaction: taction,
-                            include: []
-                        });
-                    });
-
-                    // if originalShipment exists, check for deletes
-                    if (originalShipment) {
-                        deletes = getDeletes('EnvVar', originalShipment.envVars || [], envVars || [], taction).nowObjects;
-                        deletes = deletes.map(obj => models[obj.model][obj.method](obj.options));
-                    }
-
-                    return Promise.all(promises.concat(deletes));
-                })
-                .then(result => {
-                    let environment = shipment.environments[0] || null,
-                        deletes,
-                        promises = [];
-
-                    if (!environment) {
-                        return null;
-                    }
-
-                    environment.composite = baseComposite;
-                    environment.shipmentId = `${shipment.name}`;
-
-                    // During the migration, we will allow buildToken to be passed in if it exists regardless of
-                    // whether the Shipment is new or not
-                    if (originalShipment) {
-                        environment.buildToken = shipment.environments[0].buildToken || originalShipment.environments[0].buildToken || helpers.generateToken();
-                    } else {
-                        environment.buildToken = shipment.environments[0].buildToken || helpers.generateToken();
-                    }
-
-                    // Annotations
-                    if (environment.annotations && environment.annotations.length) {
-                        environment.annotations = environment.annotations.reduce((acc, val) => {
-                            if (typeof val.key !== 'undefined' && typeof val.value !== 'undefined') {
-                                acc.push(val);
-                            }
-
-                            return acc;
-                        }, []);
-                    }
-
-                    let promise = models.Environment.upsert(environment, {
+            if (cloudAllowed) {
+                models.sequelize.transaction(taction => {
+                    return models.Shipment.upsert(shipment, {
                         transaction: taction,
-                        include: _include(shipName, envName, 'environments').include
-                    });
-                    promises.push(promise);
+                        include: _include(shipName, envName)
+                    })
+                    .then(result => {
+                        let envVars = shipment.envVars || [],
+                            deletes,
+                            promises;
 
-                    // should have a way to cross check if an envVar is not in in the array
-                    // and if it's not there, but is in the current model, then we should delete it.
-                    if (environment.envVars && environment.envVars.length) {
-                        environment.envVars.map((envVar) => {
-                            envVar.composite = `${environment.composite}-${envVar.name}`;
-                            envVar.environmentId = `${environment.composite}`;
+                        promises = envVars.map((envVar) => {
+                            envVar.composite = `${shipment.name}-${envVar.name}`;
+                            envVar.shipmentId = shipment.name;
                             envVar = helpers.prepEnvVar(envVar);
 
-                            let promise = models.EnvVar.upsert(envVar, {
+                            return models.EnvVar.upsert(envVar, {
                                 transaction: taction,
                                 include: []
                             });
-                            promises.push(promise);
                         });
-                    }
 
-                    // if originalShipment exists then check for deletes
+                        // if originalShipment exists, check for deletes
+                        if (originalShipment) {
+                            deletes = getDeletes('EnvVar', originalShipment.envVars || [], envVars || [], taction).nowObjects;
+                            deletes = deletes.map(obj => models[obj.model][obj.method](obj.options));
+                        }
+
+                        return Promise.all(promises.concat(deletes));
+                    })
+                    .then(result => {
+                        let environment = shipment.environments[0] || null,
+                            deletes,
+                            promises = [];
+
+                        if (!environment) {
+                            return null;
+                        }
+
+                        environment.composite = baseComposite;
+                        environment.shipmentId = `${shipment.name}`;
+
+                        // During the migration, we will allow buildToken to be passed in if it exists regardless of
+                        // whether the Shipment is new or not
+                        if (originalShipment) {
+                            environment.buildToken = shipment.environments[0].buildToken || originalShipment.environments[0].buildToken || helpers.generateToken();
+                        } else {
+                            environment.buildToken = shipment.environments[0].buildToken || helpers.generateToken();
+                        }
+
+                        // Annotations
+                        if (environment.annotations && environment.annotations.length) {
+                            environment.annotations = environment.annotations.reduce((acc, val) => {
+                                if (typeof val.key !== 'undefined' && typeof val.value !== 'undefined') {
+                                    acc.push(val);
+                                }
+
+                                return acc;
+                            }, []);
+                        }
+
+                        let promise = models.Environment.upsert(environment, {
+                            transaction: taction,
+                            include: _include(shipName, envName, 'environments').include
+                        });
+                        promises.push(promise);
+
+                        // should have a way to cross check if an envVar is not in in the array
+                        // and if it's not there, but is in the current model, then we should delete it.
+                        if (environment.envVars && environment.envVars.length) {
+                            environment.envVars.map((envVar) => {
+                                envVar.composite = `${environment.composite}-${envVar.name}`;
+                                envVar.environmentId = `${environment.composite}`;
+                                envVar = helpers.prepEnvVar(envVar);
+
+                                let promise = models.EnvVar.upsert(envVar, {
+                                    transaction: taction,
+                                    include: []
+                                });
+                                promises.push(promise);
+                            });
+                        }
+
+                        // if originalShipment exists then check for deletes
+                        if (originalShipment) {
+                            deletes = getDeletes('EnvVar', originalShipment.environments[0].envVars || [], environment.envVars || [], taction).nowObjects;
+                            deletes = deletes.map(obj => models[obj.model][obj.method](obj.options));
+                        }
+
+                        return Promise.all(promises.concat(deletes));
+                    })
+                    .then(result => {
+                        if (!result) {
+                            return null;
+                        }
+
+                        let promises = [],
+                            allPromises,
+                            curContainers = originalShipment && originalShipment.environments[0].containers ? originalShipment.environments[0].containers : [],
+                            newContainers = shipment.environments[0].containers || [],
+                            curProviders = originalShipment && originalShipment.environments[0].providers ? originalShipment.environments[0].providers : [],
+                            newProviders = shipment.environments[0].providers || [];
+
+                        // 1. Delete the things that are not in "new", but are in "current"
+                        allPromises = getDeletes('Container', curContainers, newContainers, taction);
+                        promises = promises.concat(allPromises.nowObjects);
+                        laterObjects = laterObjects.concat(allPromises.laterObjects);
+
+                        allPromises = getDeletes('Provider', curProviders, newProviders, taction);
+                        promises = promises.concat(allPromises.nowObjects);
+                        laterObjects = laterObjects.concat(allPromises.laterObjects);
+
+                        // 2. Upsert all the things in "new"
+                        allPromises = getUpserts('Container', newContainers, baseComposite, 'environmentId', taction);
+                        promises = promises.concat(allPromises.nowObjects);
+                        laterObjects = laterObjects.concat(allPromises.laterObjects);
+
+                        allPromises = getUpserts('Provider', newProviders, baseComposite, 'environmentId', taction);
+                        promises = promises.concat(allPromises.nowObjects);
+                        laterObjects = laterObjects.concat(allPromises.laterObjects);
+
+                        promises = promises.map(obj => {
+                            if (obj.method === 'upsert') {
+                                return models[obj.model][obj.method](obj.values, obj.options);
+                            }
+                            else if (obj.method === 'destroy') {
+                                return models[obj.model][obj.method](obj.options);
+                            }
+                        });
+                        return Promise.all(promises);
+                    })
+                    .then(result => {
+                        if (!result) {
+                            return null;
+                        }
+
+                        let promises = laterObjects.map(obj => {
+                            if (obj.method === 'upsert') {
+                                return models[obj.model][obj.method](obj.values, obj.options);
+                            }
+                            else if (obj.method === 'destroy') {
+                                return models[obj.model][obj.method](obj.options);
+                            }
+                        });
+                        return Promise.all(promises);
+                    });
+                })
+                .then(result => {
+                    let code,
+                        original;
+
                     if (originalShipment) {
-                        deletes = getDeletes('EnvVar', originalShipment.environments[0].envVars || [], environment.envVars || [], taction).nowObjects;
-                        deletes = deletes.map(obj => models[obj.model][obj.method](obj.options));
+                        code = 200;
+                        original = originalShipment;
+                    }
+                    else {
+                        code = 201;
+                        original = {};
                     }
 
-                    return Promise.all(promises.concat(deletes));
+                    req.params.shipment = shipment.name;
+                    req.params.name = shipment.name;
+                    req.params.environment = shipment.environments[0].name || 'parent';
+
+                    helpers.updateAuditLog(original, shipment, req);
+
+                    res.status(code);
+                    res.json(mapper.reverseShipment(shipment));
                 })
-                .then(result => {
-                    if (!result) {
-                        return null;
-                    }
-
-                    let promises = [],
-                        allPromises,
-                        curContainers = originalShipment && originalShipment.environments[0].containers ? originalShipment.environments[0].containers : [],
-                        newContainers = shipment.environments[0].containers || [],
-                        curProviders = originalShipment && originalShipment.environments[0].providers ? originalShipment.environments[0].providers : [],
-                        newProviders = shipment.environments[0].providers || [];
-
-                    // 1. Delete the things that are not in "new", but are in "current"
-                    allPromises = getDeletes('Container', curContainers, newContainers, taction);
-                    promises = promises.concat(allPromises.nowObjects);
-                    laterObjects = laterObjects.concat(allPromises.laterObjects);
-
-                    allPromises = getDeletes('Provider', curProviders, newProviders, taction);
-                    promises = promises.concat(allPromises.nowObjects);
-                    laterObjects = laterObjects.concat(allPromises.laterObjects);
-
-                    // 2. Upsert all the things in "new"
-                    allPromises = getUpserts('Container', newContainers, baseComposite, 'environmentId', taction);
-                    promises = promises.concat(allPromises.nowObjects);
-                    laterObjects = laterObjects.concat(allPromises.laterObjects);
-
-                    allPromises = getUpserts('Provider', newProviders, baseComposite, 'environmentId', taction);
-                    promises = promises.concat(allPromises.nowObjects);
-                    laterObjects = laterObjects.concat(allPromises.laterObjects);
-
-                    promises = promises.map(obj => {
-                        if (obj.method === 'upsert') {
-                            return models[obj.model][obj.method](obj.values, obj.options);
-                        }
-                        else if (obj.method === 'destroy') {
-                            return models[obj.model][obj.method](obj.options);
-                        }
-                    });
-                    return Promise.all(promises);
-                })
-                .then(result => {
-                    if (!result) {
-                        return null;
-                    }
-
-                    let promises = laterObjects.map(obj => {
-                        if (obj.method === 'upsert') {
-                            return models[obj.model][obj.method](obj.values, obj.options);
-                        }
-                        else if (obj.method === 'destroy') {
-                            return models[obj.model][obj.method](obj.options);
-                        }
-                    });
-                    return Promise.all(promises);
-                });
-            })
-            .then(result => {
-                let code,
-                    original;
-
-                if (originalShipment) {
-                    code = 200;
-                    original = originalShipment;
-                }
-                else {
-                    code = 201;
-                    original = {};
-                }
-
-                req.params.shipment = shipment.name;
-                req.params.name = shipment.name;
-                req.params.environment = shipment.environments[0].name || 'parent';
-
-                helpers.updateAuditLog(original, shipment, req);
-
-                res.status(code);
-                res.json(mapper.reverseShipment(shipment));
-            })
-            .catch(handler.error(next));
+                .catch(handler.error(next));
+            }
+            else {
+                // Not allowed to create a new Shipment
+                res.status(410)
+                res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'})
+            }
         });
 }
 

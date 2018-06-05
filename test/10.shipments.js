@@ -36,9 +36,19 @@ describe('Shipments', function () {
             return models.sequelize.sync();
         });
 
-        it('should create Shipment with atomic model', function (done) {
+        it('should return an error on old path', function (done) {
             request(server)
                 .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(testShipment)
+                .expect('Content-Type', /json/)
+                .expect(410, done);
+        })
+
+        it('should create Shipment with atomic model', function (done) {
+            request(server)
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(testShipment)
@@ -64,7 +74,7 @@ describe('Shipments', function () {
 
         it('should error when the same Shipment is resent', function (done) {
             request(server)
-                .post('/v1/shipments')
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(testShipment)
@@ -76,7 +86,7 @@ describe('Shipments', function () {
             let failShipment = {"name": "fail-shipment"};
 
             request(server)
-                .post('/v1/shipments')
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(failShipment)
@@ -88,7 +98,7 @@ describe('Shipments', function () {
             let failShipment = {"group": "test"};
 
             request(server)
-                .post('/v1/shipments')
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(failShipment)
@@ -100,7 +110,7 @@ describe('Shipments', function () {
             let failShipment = {"group": "test", "name": "tester_foo"};
 
             request(server)
-                .post('/v1/shipments')
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(failShipment)
@@ -112,7 +122,7 @@ describe('Shipments', function () {
             let failShipment = {"group": "test", "name": "9999foooo"};
 
             request(server)
-                .post('/v1/shipments')
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(failShipment)
@@ -124,7 +134,7 @@ describe('Shipments', function () {
             let failShipment = {"group": "test", "name": "foo oo"};
 
             request(server)
-                .post('/v1/shipments')
+                .post('/v1/ships')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(failShipment)
