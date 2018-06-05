@@ -31,11 +31,37 @@ beforeEach(function () {
 
 describe('Bulk', function () {
     describe('Create', function () {
+        it('should fail when no header sent', function (done) {
+            let data = helpers.fetchMockData('bulk_shipment');
+
+            request(server)
+                .post('/v1/bulk/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(410, done);
+        });
+
+        it('should fail when wrong header value sent', function (done) {
+            let data = helpers.fetchMockData('bulk_shipment');
+
+            request(server)
+                .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'not allowed')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(data)
+                .expect('Content-Type', /json/)
+                .expect(410, done);
+        });
+
         it('should create with full model', function (done) {
             let data = helpers.fetchMockData('bulk_shipment');
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -128,6 +154,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -155,6 +182,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -183,6 +211,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -211,6 +240,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -240,6 +270,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -269,6 +300,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -313,6 +345,7 @@ describe('Bulk', function () {
             let data = helpers.fetchMockData('bulk/6.shipment_2providers_2containers_3ports');
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
@@ -357,6 +390,7 @@ describe('Bulk', function () {
         it('should create Shipment, but not include empty annotations', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/12.shipment_annotations.failure'))
@@ -387,6 +421,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Environment if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/10.shipment_env.failure'))
@@ -397,6 +432,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Provider if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/11.shipment_provider.failure'))
@@ -407,6 +443,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Two Providers if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/21.shipment_2providers.failure'))
@@ -417,6 +454,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Provider Container if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/31.shipment_provider_container.failure'))
@@ -431,6 +469,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Two Containers if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/41.shipment_2containers.failure'))
@@ -441,6 +480,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Container Two Ports if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/51.shipment_container_2ports.failure'))
@@ -451,6 +491,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Two Providers Two Containers Three Ports if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/61.shipment_2providers_2containers_3ports.failure'))
@@ -461,6 +502,7 @@ describe('Bulk', function () {
         it('should fail when creating Shipment Provider Two Containers Two Ports if missing required fields', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/71.shipment_provider_2containers_2ports.failure'))
@@ -471,6 +513,7 @@ describe('Bulk', function () {
         it('should fail to create a Shipment based on a validation error, and it really should not be created', function (done) {
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(helpers.fetchMockData('bulk/81.shipment_env.failure'))
@@ -857,6 +900,7 @@ describe('Bulk', function () {
 
             request(server)
                 .post('/v1/bulk/shipments')
+                .set('x-cloud-arch', 'allowed')
                 .set('x-username', authUser)
                 .set('x-token', authToken)
                 .send(data)
