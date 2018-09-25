@@ -6,13 +6,41 @@ const models = require('../models'),
     router = require('express').Router(),
     Promise = require('bluebird');
 
-router.post('/bulk/shipments', checkAuth, bulk);
-router.post('/shipments', checkAuth, post);
+router.post('/bulk/shipments', checkAuth, preventCheck, bulk);
+router.post('/shipments', checkAuth, preventCheck, post);
 router.get('/shipments', getAll);
 router.put('/shipment/:shipment', checkAuth, put);
 router.get('/shipment/:shipment', get);
 router.delete('/shipment/:shipment', checkAuth, deleteIt);
 module.exports = router;
+
+
+/**
+ * preventCheck - Check group to see if new Shipments should be prevented
+ *
+ * @param {Object} req  The express request object
+ * @param {Object} res  the express response object
+ * @param {Function} next The next function to perform in the express middleware chain
+ *
+ */
+function preventCheck(req, res, next) {
+    let group = req.groups[0].name,
+        allowedGroups = typeof process.env.ALLOWED_GROUPS === 'undefined'
+            ? ['cnn', 'coredev', 'cnnmoney']
+            : process.env.ALLOWED_GROUPS.split(',');
+
+    if (allowedGroups.indexOf(group) === -1) {
+        // Group is NOT in list of allowed groups
+        // prevent new Shipments
+        req.preventNew = true;
+    }
+    else {
+        // Do not prevent new Shipmnets
+        req.preventNew = false;
+    }
+
+    return next();
+}
 
 
 /**
@@ -64,6 +92,11 @@ function getAll(req, res, next) {
 function post(req, res, next) {
     let body = req.body,
         authz = req.authorized || null;
+
+    if (req.preventNew) {
+        res.status(410);
+        return res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'});
+    }
 
     models.Shipment.create(body)
         .then(result => {
@@ -213,6 +246,12 @@ function bulk(req, res, next) {
             return environment.toJSON();
         })
         .then(originalShipment => {
+            if (!originalShipment && req.preventNew) {
+                // this was going to be a new Shipment
+                res.status(410);
+                return res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'});
+            }
+
             models.sequelize.transaction(taction => {
                 return models.Shipment.upsert(shipment, {
                     transaction: taction,
