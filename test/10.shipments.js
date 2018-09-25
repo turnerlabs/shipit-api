@@ -131,6 +131,18 @@ describe('Shipments', function () {
                 .expect('Content-Type', /json/)
                 .expect(422, done);
         });
+
+        it('should fail when group is not in allowed list', function (done) {
+            let failShipment = {"group": "test-group", "name": "group-fail"};
+
+            request(server)
+                .post('/v1/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(failShipment)
+                .expect('Content-Type', /json/)
+                .expect(410, done);
+        });
     });
 
     describe('Update', function () {

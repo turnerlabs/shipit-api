@@ -482,6 +482,16 @@ describe('Bulk', function () {
                         .expect(404, done);
                 });
         })
+
+        it('should fail when creating Shipment if group in not allowed', function (done) {
+            request(server)
+                .post('/v1/bulk/shipments')
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send(helpers.fetchMockData('bulk/91.shipment.group_failure'))
+                .expect('Content-Type', /json/)
+                .expect(410, done);
+        });
     });
 
     describe('Update', function () {
