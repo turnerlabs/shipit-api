@@ -2,4 +2,5 @@
 version: "2"
 services:
   shipit-api:
+    build: ../
     image: quay.io/turner/shipit-api:${VERSION}
