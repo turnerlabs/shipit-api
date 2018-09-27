@@ -5,8 +5,8 @@ jobs:
       - image: quay.io/turner/harbor-cicd-image:v0.17.0
     environment:
       - BUILD_FILE: .circleci/docker-compose.build.yml
-      - DEPLOY_FILE: .circle/docker-compose.deploy.yml
-      - HC_DEV_FILE: .circle/harbor-compose.dev.yml
+      - DEPLOY_FILE: .circleci/docker-compose.deploy.yml
+      - HC_DEV_FILE: .circleci/harbor-compose.dev.yml
     working_directory: ~/app
     steps:
       - checkout
