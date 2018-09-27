@@ -192,6 +192,33 @@ describe('Environment', function () {
         });
     });
 
+    describe('Create Nothing New', function () {
+        before(function () {
+            let anotherTestShipment = {
+                    "name": "another-test-shipment",
+                    "group": "test-group"
+                }
+
+            return models.Shipment.create(anotherTestShipment);
+        });
+
+        it('should fail if group is not allowed to create new Shipments', function (done) {
+            request(server)
+                .post(`/v1/shipment/another-test-shipment/environments`)
+                .set('x-username', authUser)
+                .set('x-token', authToken)
+                .send({name: "dev"})
+                .expect('Content-Type', /json/)
+                .expect(410, done);
+        });
+
+        after(function () {
+            return Promise.all([
+                models.Shipment.destroy({ where: { name: 'another-test-shipment' } })
+            ]);
+        });
+    });
+
     describe('Update', function () {
         it('should update values on the Environment', function (done) {
             request(server)

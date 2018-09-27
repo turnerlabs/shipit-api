@@ -3,10 +3,11 @@ const models = require('../models'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
     checkAuth = require('.').checkAuth,
+    preventCheck = require('.').preventCheck,
     router = require('express').Router(),
     Promise = require('bluebird');
 
-router.post('/shipment/:shipment/environments', checkAuth, post);
+router.post('/shipment/:shipment/environments', checkAuth, preventCheck, post);
 router.get('/shipment/:shipment/environment/:name', get);
 router.put('/shipment/:shipment/environment/:name', checkAuth, put);
 router.delete('/shipment/:shipment/environment/:name', checkAuth, deleteIt);
@@ -126,6 +127,11 @@ function get(req, res, next) {
 function post(req, res, next) {
     let body = req.body,
         authz = req.authorized || null;
+
+    if (req.preventNew) {
+        res.status(410);
+        return res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'});
+    }
 
     body.shipmentId = req.params.shipment;
     body.composite = `${req.params.shipment}-${body.name}`;

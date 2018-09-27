@@ -22,7 +22,8 @@ module.exports = {
     setGroups,
     authenticate,
     authorize,
-    checkAuth
+    checkAuth,
+    preventCheck
 };
 
 
@@ -291,4 +292,31 @@ function checkAuth(req, res, next) {
         return next({statusCode: 401, message: 'Authorization failure'});
     }
     next();
+}
+
+/**
+ * preventCheck - Check group to see if new Shipments should be prevented
+ *
+ * @param {Object} req  The express request object
+ * @param {Object} res  the express response object
+ * @param {Function} next The next function to perform in the express middleware chain
+ *
+ */
+function preventCheck(req, res, next) {
+    let group = req.groups[0].name,
+        allowedGroups = typeof process.env.ALLOWED_GROUPS === 'undefined'
+            ? ['cnn', 'coredev', 'cnnmoney']
+            : process.env.ALLOWED_GROUPS.split(',');
+
+    if (allowedGroups.indexOf(group) === -1) {
+        // Group is NOT in list of allowed groups
+        // prevent new Shipments
+        req.preventNew = true;
+    }
+    else {
+        // Do not prevent new Shipmnets
+        req.preventNew = false;
+    }
+
+    return next();
 }
