@@ -25,7 +25,7 @@ jobs:
           command: docker-compose -f "${BUILD_FILE}" build
       - run:
           name: Test app image
-          command: docker-compose -f "${BUILD_FILE}" run shipit-api bin/build
+          command: docker-compose -f "${BUILD_FILE}" run shipit-api bin/build-test
       - run:
           name: Login to registry
           command: docker login -u="${DOCKER_USER}" -p="${DOCKER_PASS}" quay.io
