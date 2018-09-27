@@ -7,6 +7,5 @@
 Dockerfile
 LICENSE
 circle.yml
-test
 
 hidden.env
