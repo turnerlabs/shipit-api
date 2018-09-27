@@ -21,11 +21,11 @@ jobs:
               echo "VERSION=$(jq -r .version < package.json)-${CIRCLE_BRANCH}.${CIRCLE_BUILD_NUM}" > .env
             fi
       - run:
+          name: Test app image
+          command: docker-compose -f "${BUILD_FILE}" run shipit-api npm install && npm test
+      - run:
           name: Build app image
           command: docker-compose -f "${BUILD_FILE}" build
-      - run:
-          name: Test app image
-          command: docker-compose -f "${BUILD_FILE}" run shipit-api npm test
       - run:
           name: Login to registry
           command: docker login -u="${DOCKER_USER}" -p="${DOCKER_PASS}" quay.io
