@@ -4,8 +4,8 @@ jobs:
     docker:
       - image: quay.io/turner/harbor-cicd-image:v0.17.0
     environment:
+      - TEST_FILE: .circleci/docker-compose.test.yml
       - BUILD_FILE: .circleci/docker-compose.build.yml
-      - DEPLOY_FILE: .circleci/docker-compose.deploy.yml
       - HC_DEV_FILE: .circleci/harbor-compose.dev.yml
     working_directory: ~/app
     steps:
@@ -21,11 +21,11 @@ jobs:
               echo "VERSION=$(jq -r .version < package.json)-${CIRCLE_BRANCH}.${CIRCLE_BUILD_NUM}" > .env
             fi
       - run:
+          name: Test app image
+          command: docker-compose -f "${TEST_FILE}" run shipit-api npm test
+      - run:
           name: Build app image
           command: docker-compose -f "${BUILD_FILE}" build
-      - run:
-          name: Test app image
-          command: docker-compose -f "${BUILD_FILE}" run shipit-api bin/build-test
       - run:
           name: Login to registry
           command: docker login -u="${DOCKER_USER}" -p="${DOCKER_PASSWORD}" quay.io
@@ -34,10 +34,10 @@ jobs:
           command: docker-compose -f "${BUILD_FILE}" push shipit-api
       - run:
           name: Catalog in Harbor
-          command: harbor-compose -c "${HC_DEV_FILE}" -f "${DEPLOY_FILE}" catalog
+          command: harbor-compose -c "${HC_DEV_FILE}" -f "${BUILD_FILE}" catalog
       - run:
           name: Deploy to Harbor
           command: |
             if [ "${CIRCLE_BRANCH}" != "master" ]; then
-              harbor-compose -c "${HC_DEV_FILE}" -f "${DEPLOY_FILE}" deploy;
+              harbor-compose -c "${HC_DEV_FILE}" -f "${BUILD_FILE}" deploy;
             fi

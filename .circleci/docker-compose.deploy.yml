@@ -1,5 +1,0 @@
-
-version: "2"
-services:
-  shipit-api:
-    image: quay.io/turner/shipit-api:${VERSION}
