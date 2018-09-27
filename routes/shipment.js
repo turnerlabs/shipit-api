@@ -3,6 +3,7 @@ const models = require('../models'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
     checkAuth = require('.').checkAuth,
+    preventCheck = require('.').preventCheck,
     router = require('express').Router(),
     Promise = require('bluebird');
 
@@ -13,35 +14,6 @@ router.put('/shipment/:shipment', checkAuth, put);
 router.get('/shipment/:shipment', get);
 router.delete('/shipment/:shipment', checkAuth, deleteIt);
 module.exports = router;
-
-
-/**
- * preventCheck - Check group to see if new Shipments should be prevented
- *
- * @param {Object} req  The express request object
- * @param {Object} res  the express response object
- * @param {Function} next The next function to perform in the express middleware chain
- *
- */
-function preventCheck(req, res, next) {
-    let group = req.groups[0].name,
-        allowedGroups = typeof process.env.ALLOWED_GROUPS === 'undefined'
-            ? ['cnn', 'coredev', 'cnnmoney']
-            : process.env.ALLOWED_GROUPS.split(',');
-
-    if (allowedGroups.indexOf(group) === -1) {
-        // Group is NOT in list of allowed groups
-        // prevent new Shipments
-        req.preventNew = true;
-    }
-    else {
-        // Do not prevent new Shipmnets
-        req.preventNew = false;
-    }
-
-    return next();
-}
-
 
 /**
  * getAll - gets all shipments
