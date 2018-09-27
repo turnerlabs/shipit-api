@@ -1,0 +1,11 @@
+shipments:
+  mss-shipit-api:
+    env: dev
+    barge: mss
+    containers:
+    - shipit-api
+    replicas: 2
+    group: ops
+    property: dmtio.net
+    project: argo
+    product: mss-shipit-api

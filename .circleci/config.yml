@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: quay.io/turner/harbor-cicd-image:v0.17.0
+    environment:
+      - BUILD_FILE: .circleci/docker-compose.build.yml
+      - DEPLOY_FILE: .circle/docker-compose.deploy.yml
+      - HC_DEV_FILE: .circle/harbor-compose.dev.yml
+    working_directory: ~/app
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 17.06.0-ce
+      - run:
+          name: Set image version
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "VERSION=$(jq -r .version < package.json)" > .env
+            else
+              echo "VERSION=$(jq -r .version < package.json)-${CIRCLE_BRANCH}.${CIRCLE_BUILD_NUM}" > .env
+            fi
+      - run:
+          name: Build app image
+          command: docker-compose -f "${BUILD_FILE}" build
+      - run:
+          name: Test app image
+          command: docker-compse -f "${BUILD_FILE}" run shipit-api npm test
+      - run:
+          name: Login to registry
+          command: docker login -u="${DOCKER_USER}" -p="${DOCKER_PASS}" quay.io
+      - run:
+          name: Push app image to registry
+          command: docker-compose -f "${BUILD_FILE}" push shipit-api
+      - run:
+          name: Catalog in Harbor
+          command: harbor-compose -c "${HC_DEV_FILE}" -f "${DEPLOY_FILE}" catalog
+      - run:
+          name: Deploy to Harbor
+          command: |
+            if [ "${CIRCLE_BRANCH}" != "master" ]; then
+              harbor-compose -c "${HC_DEV_FILE}" -f "${DEPLOY_FILE}" deploy;
+            fi
