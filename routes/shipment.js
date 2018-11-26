@@ -3,17 +3,17 @@ const models = require('../models'),
     handler = require('../lib/handler'),
     helpers = require('../lib/helpers'),
     checkAuth = require('.').checkAuth,
+    preventCheck = require('.').preventCheck,
     router = require('express').Router(),
     Promise = require('bluebird');
 
-router.post('/bulk/shipments', checkAuth, bulk);
-router.post('/shipments', checkAuth, post);
+router.post('/bulk/shipments', checkAuth, preventCheck, bulk);
+router.post('/shipments', checkAuth, preventCheck, post);
 router.get('/shipments', getAll);
 router.put('/shipment/:shipment', checkAuth, put);
 router.get('/shipment/:shipment', get);
 router.delete('/shipment/:shipment', checkAuth, deleteIt);
 module.exports = router;
-
 
 /**
  * getAll - gets all shipments
@@ -64,6 +64,11 @@ function getAll(req, res, next) {
 function post(req, res, next) {
     let body = req.body,
         authz = req.authorized || null;
+
+    if (req.preventNew) {
+        res.status(410);
+        return res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'});
+    }
 
     models.Shipment.create(body)
         .then(result => {
@@ -213,6 +218,12 @@ function bulk(req, res, next) {
             return environment.toJSON();
         })
         .then(originalShipment => {
+            if (!originalShipment && req.preventNew) {
+                // this was going to be a new Shipment
+                res.status(410);
+                return res.json({code: 410, message: 'Gone', reason: 'Creation of Shipments has been disabled.'});
+            }
+
             models.sequelize.transaction(taction => {
                 return models.Shipment.upsert(shipment, {
                     transaction: taction,

@@ -4,7 +4,7 @@ const mode = process.env.NODE_ENV;
 const models = require('../models'),
     queries = Object.keys(models).filter(k => k.toLowerCase() !== 'sequelize' ).map(k => `DROP TABLE IF EXISTS "${k}s" CASCADE`);
 
-if (mode === 'test') {
+if (mode === 'test' || mode === 'cicd') {
     console.log('Starting to reset database:');
     models.sequelize.query('DROP TABLE IF EXISTS "SequelizeMeta"')
         .then(() => {

@@ -1,0 +1,28 @@
+
+version: "2"
+services:
+  shipit-api:
+    build: ../
+    image: quay.io/turner/shipit-api:${VERSION}
+    ports:
+      - 80:6055
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      DATABASE_URL: postgres://shipit:shipit@shipit-db/shipit
+      HEALTHCHECK: /_hc
+      LOCAL_SECRET: c2hoLCBkb24ndCB0ZWxsIGFueW9uZSB0aGlzIGlzIGEgdGVzdA==
+      NODE_ENV: cicd
+      PORT: 6055
+
+  db:
+     image: postgres:9.6.4
+     container_name: shipit-db
+     ports:
+       - 15432:15432
+     environment:
+       POSTGRES_USER: shipit
+       POSTGRES_PASSWORD: shipit
+       POSTGRES_DB: shipit
